@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Computer Networks — Student Project Catalogue (108 projects)</title>
+<style>
+:root{--ink:#1d2433;--mute:#5b6476;--line:#dfe3ea;--bg:#f6f7f9;--t1:#2f7d5b;--t2:#2b5fa8;--t3:#8a3b8f}
+*{box-sizing:border-box} body{margin:0;font:15px/1.5 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:28px;margin:0 0 4px} .sub{color:var(--mute);margin:0 0 20px}
+.intro{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:22px}
+.intro ul{margin:6px 0 0 18px;padding:0}
+.tierinfo{background:#fff;border:1px solid var(--line);border-left:6px solid;border-radius:10px;padding:14px 20px;margin:0 0 16px}
+.tierinfo.t1{border-left-color:var(--t1)} .tierinfo.t2{border-left-color:var(--t2)} .tierinfo.t3{border-left-color:var(--t3)}
+.tierinfo h2{font-size:18px;margin:4px 0 8px} .tierinfo h4{margin:8px 0 4px;font-size:14px} .tierinfo ul{margin:0 0 0 18px;padding:0;font-size:14px}
+.grid3{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:18px}
+table{border-collapse:collapse;font-size:13.5px;width:100%} td{border-bottom:1px solid var(--line);padding:3px 4px} td:last-child{text-align:right;font-weight:600}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line);margin-bottom:16px}
+.bar input,.bar select,.bar button{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:#fff}
+.bar input{flex:1;min-width:200px} .bar button{cursor:pointer} #count{color:var(--mute);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-top:4px solid;border-radius:10px;padding:14px 18px}
+.card.t1{border-top-color:var(--t1)} .card.t2{border-top-color:var(--t2)} .card.t3{border-top-color:var(--t3)}
+.card header{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pid{font-weight:700;font-family:ui-monospace,Consolas,monospace}
+.tierbadge{font-size:12px;color:#fff;padding:1px 8px;border-radius:20px}
+.t1 .tierbadge{background:var(--t1)} .t2 .tierbadge{background:var(--t2)} .t3 .tierbadge{background:var(--t3)}
+.wk{font-size:11.5px;border:1px solid var(--line);border-radius:20px;padding:0 7px;color:var(--mute)}
+.card h3{margin:8px 0 4px;font-size:17px} .summ{margin:0 0 6px} .meta{font-size:13px;color:var(--mute);margin:0 0 6px}
+details{margin:6px 0} summary{cursor:pointer;font-weight:600;font-size:14px}
+details ol,details ul{margin:4px 0 0 20px;padding:0;font-size:14px} .note{font-size:12.5px;color:var(--mute);margin:4px 0}
+.hidden{display:none}
+@media (max-width:800px){.grid3{grid-template-columns:1fr} .cards{grid-template-columns:1fr}}
+@media print{.bar{display:none} body{background:#fff} .card{break-inside:avoid} .cards{grid-template-columns:1fr} details>summary{list-style:none}}
+</style></head><body><div class="wrap">
+<h1>Computer Networks — Student Project Catalogue <br>Assoc. Prof. PhD. Nicolaie Popescu-Bodorin, 2022-2026</h1>
+<p class="sub">108 projects based on Weeks 1–7 (lecture, seminar and laboratory) · 36 per grade band · Deliverables: Word document + application</p>
+<div class="intro"><b>How to use this catalogue</b>
+<ul><li>Projects are coded <b>A01–A36</b> (grade 5–7), <b>B01–B36</b> (grade 7–8) and <b>C01–C36</b> (grade 8–10). The grade band is the maximum achievable grade if all requirements are met.</li>
+<li>Each project lists a plan of work, project-specific application features and document content; the standard tier requirements below apply in addition.</li>
+<li>Network scanning, capture and attack-related projects must be performed only on the student's own machines or the isolated lab network.</li>
+<li>Course languages: C on Linux (Labs 3, 5) and Java (Week 7). Other languages require coordinator approval.</li></ul></div>
+
+<section class="tierinfo t1" id="req-t1">
+ <h2>Tier A — Foundational projects (Grade 5–7) · projects A01–A36</h2>
+ <div class="grid3">
+  <div><h4>General</h4><ul><li><b>Team:</b> Individual</li><li><b>Workload:</b> ≈ 25–35 hours</li><li><b>Document length:</b> 10–15 pages</li></ul>
+  <h4>Grading rubric</h4><table><tr><td>Application works for the required features</td><td>40%</td></tr><tr><td>Correct use of course concepts</td><td>20%</td></tr><tr><td>Word document quality and completeness</td><td>25%</td></tr><tr><td>Oral presentation and answers</td><td>15%</td></tr></table></div>
+  <div><h4>Word document — standard structure</h4><ul><li>Cover page (title, student, group, academic year, coordinator)</li><li>Table of contents</li><li>1. Introduction — problem statement and objectives</li><li>2. Theoretical background — the course concepts used, with references to the lecture weeks</li><li>3. Design — functional requirements, main components, simple diagram</li><li>4. Implementation — key code fragments with explanation</li><li>5. Testing — test cases, screenshots and/or Wireshark/tcpdump captures</li><li>6. Conclusions — what works, what was learned, possible extensions</li><li>References (RFCs, Kurose &amp; Ross, course materials)</li></ul></div>
+  <div><h4>Application — standard package</h4><ul><li>Complete source code that compiles/runs without errors</li><li>README with build and run instructions (Linux and/or Windows)</li><li>Sample input/configuration files and example output</li><li>Runs on the lab machines with standard tools only</li></ul></div>
+ </div>
+</section>
+<section class="tierinfo t2" id="req-t2">
+ <h2>Tier B — Intermediate projects (Grade 7–8) · projects B01–B36</h2>
+ <div class="grid3">
+  <div><h4>General</h4><ul><li><b>Team:</b> Individual or pair</li><li><b>Workload:</b> ≈ 40–55 hours</li><li><b>Document length:</b> 15–25 pages</li></ul>
+  <h4>Grading rubric</h4><table><tr><td>Functionality and robustness</td><td>35%</td></tr><tr><td>Design and protocol specification</td><td>20%</td></tr><tr><td>Testing, measurements and evidence</td><td>15%</td></tr><tr><td>Word document quality</td><td>20%</td></tr><tr><td>Presentation and live demo</td><td>10%</td></tr></table></div>
+  <div><h4>Word document — standard structure</h4><ul><li>Cover page, abstract (≈150 words), table of contents</li><li>1. Introduction — context, objectives, scope</li><li>2. Theoretical background — protocols and RFCs involved</li><li>3. Requirements — functional and non-functional</li><li>4. Architecture — component diagram, sequence diagrams</li><li>5. Protocol specification — message formats, framing, state machine, error handling</li><li>6. Implementation — modules, concurrency model, important algorithms</li><li>7. Testing and validation — test plan, Wireshark evidence, interoperability with standard tools</li><li>8. Performance measurements — methodology, tables and graphs</li><li>9. User manual — installation and usage</li><li>10. Conclusions and future work</li><li>References and annex (selected code listings)</li></ul></div>
+  <div><h4>Application — standard package</h4><ul><li>Structured source code (packages/modules) under version control (Git history required)</li><li>Build script (Maven/Gradle/Makefile) and README</li><li>Executable (JAR/binary) and configuration files</li><li>Test scripts or unit tests</li><li>Capture files (.pcapng) used as evidence in the document</li></ul></div>
+ </div>
+</section>
+<section class="tierinfo t3" id="req-t3">
+ <h2>Tier C — Advanced projects (Grade 8–10) · projects C01–C36</h2>
+ <div class="grid3">
+  <div><h4>General</h4><ul><li><b>Team:</b> Individual or pair (team of 3 only with extended scope)</li><li><b>Workload:</b> ≈ 70–100 hours</li><li><b>Document length:</b> 25–40 pages</li></ul>
+  <h4>Grading rubric</h4><table><tr><td>Technical complexity and correctness</td><td>30%</td></tr><tr><td>Architecture and protocol/algorithm design</td><td>15%</td></tr><tr><td>Experimental evaluation and comparison</td><td>20%</td></tr><tr><td>Security and limitations analysis</td><td>5%</td></tr><tr><td>Word document (scientific quality)</td><td>20%</td></tr><tr><td>Defence: demo and technical questions</td><td>10%</td></tr></table></div>
+  <div><h4>Word document — standard structure</h4><ul><li>Cover page, abstract, keywords, table of contents, list of figures</li><li>1. Introduction — motivation, objectives, contributions</li><li>2. State of the art — relevant RFCs, existing tools and how this project relates to them</li><li>3. Requirements and threat model / assumptions</li><li>4. System architecture — component, deployment and sequence diagrams</li><li>5. Detailed protocol/algorithm design — formats, state machines, pseudocode</li><li>6. Implementation — technical decisions, concurrency, error handling, security</li><li>7. Experimental evaluation — testbed (namespaces/netem/lab PCs), methodology, repeated runs, graphs</li><li>8. Comparison with standard implementations (e.g. Linux TCP, BIND, Nginx, OpenSSH)</li><li>9. Security analysis and limitations</li><li>10. Conclusions and future work</li><li>References (IEEE style) and annexes (configuration, extended results)</li></ul></div>
+  <div><h4>Application — standard package</h4><ul><li>Professional-quality source code with Git history, modular architecture and comments</li><li>Automated build and automated tests (unit + integration)</li><li>Deployment/run scripts for the testbed (reproducible experiments)</li><li>Executables, configuration examples and datasets/captures</li><li>README with architecture overview and quick-start</li><li>Live demo prepared for the defence</li></ul></div>
+ </div>
+</section>
+<div class="bar">
+ <input id="q" type="search" placeholder="Search title, description, language…">
+ <select id="tier"><option value="">All grade bands</option><option value="t1">Grade 5–7 (A)</option><option value="t2">Grade 7–8 (B)</option><option value="t3">Grade 8–10 (C)</option></select>
+ <select id="week"><option value="">All weeks</option><option value="w1">W1 · Networks, edge &amp; core, delay</option><option value="w2">W2 · Layering, queueing, Wireshark</option><option value="w3">W3 · Web, HTTP, sockets in C</option><option value="w4">W4 · Cookies, caching, HTTPS, SSH, FTP</option><option value="w5">W5 · Email, DNS, NAT</option><option value="w6">W6 · Transport layer, TCP/UDP</option><option value="w7">W7 · Socket programming in Java</option></select>
+ <button id="tog">Collapse details</button><button onclick="window.print()">Print / PDF</button>
+ <span id="count"></span>
+</div>
+<div class="cards" id="cards">
+<article class="card t1" data-tier="t1" data-weeks="w1 w2" data-text="network delay calculator a desktop/console tool that computes transmission, propagation, queueing and end-to-end delay for a path of links, reproducing seminar 1 and 2 problems. java or c">
+ <header><span class="pid">A01</span><span class="tierbadge">Grade 5–7</span><span class="wk">W1</span><span class="wk">W2</span></header>
+ <h3>Network Delay Calculator</h3>
+ <p class="summ">A desktop/console tool that computes transmission, propagation, queueing and end-to-end delay for a path of links, reproducing Seminar 1 and 2 problems.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Collect the delay formulas (d_trans = L/R, d_prop = d/s, end-to-end over N links)</li><li>Design input format for a path of links (rate, length, propagation speed)</li><li>Implement per-link and total delay computation, with unit conversion (bps/kbps/Mbps, m/km)</li><li>Add a store-and-forward vs. cut-through comparison mode</li><li>Validate results against the solved seminar problems</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Input of 1–10 links with rate, distance and packet size</li><li>Per-link breakdown table of d_trans and d_prop</li><li>Unit conversion helper (bits/bytes, ms/µs)</li><li>Export of results to a CSV file</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Table comparing tool output with the Seminar 1 Problem 1–2 answers</li><li>Explanation of store-and-forward with a worked example</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w1" data-text="packet vs. circuit switching simulator a simple simulator that shows how many users a link can support with circuit switching versus packet switching, using the binomial model from lecture 1. java">
+ <header><span class="pid">A02</span><span class="tierbadge">Grade 5–7</span><span class="wk">W1</span></header>
+ <h3>Packet vs. Circuit Switching Simulator</h3>
+ <p class="summ">A simple simulator that shows how many users a link can support with circuit switching versus packet switching, using the binomial model from Lecture 1.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review the circuit/packet switching comparison from Lecture 1 §5.3</li><li>Implement the binomial probability that more than N users are active</li><li>Implement a circuit-switching capacity calculator (TDM/FDM slots)</li><li>Plot or tabulate results for several activity probabilities</li><li>Compare with Seminar 1 Problem 4</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Inputs: link rate, per-user rate, activity probability, number of users</li><li>Output: probability of overload for packet switching</li><li>Output: maximum users for circuit switching</li><li>Simple text or Swing chart of probability vs. number of users</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Mathematical model and assumptions</li><li>Discussion of when circuit switching is preferable</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w1 w2" data-text="ping and traceroute report generator an application that runs ping and traceroute/tracert against a list of hosts, parses the output and produces an html/text report of rtt and hop count. python or java (wrapper)">
+ <header><span class="pid">A03</span><span class="tierbadge">Grade 5–7</span><span class="wk">W1</span><span class="wk">W2</span></header>
+ <h3>Ping and Traceroute Report Generator</h3>
+ <p class="summ">An application that runs ping and traceroute/tracert against a list of hosts, parses the output and produces an HTML/text report of RTT and hop count.</p>
+ <p class="meta"><b>Language/tools:</b> Python or Java (wrapper) &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Study ping and traceroute output formats on Linux and Windows (Lab 1, Lab 2 Task 6)</li><li>Write parsers for both formats</li><li>Compute min/avg/max RTT and packet loss per host</li><li>Identify hops with timeouts (* * *)</li><li>Generate a summary report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Host list read from a text file</li><li>Platform detection (Linux/Windows) and correct command invocation</li><li>Per-host statistics and per-hop table</li><li>Report saved as HTML or TXT</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of how traceroute uses TTL and ICMP Time Exceeded</li><li>Analysis of at least 5 real destinations (local, national, international)</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w2" data-text="encapsulation visualizer an educational app that shows how an http request is wrapped by tcp, ip and ethernet headers, with header sizes and overhead percentage. java (swing/javafx) or web page">
+ <header><span class="pid">A04</span><span class="tierbadge">Grade 5–7</span><span class="wk">W2</span></header>
+ <h3>Encapsulation Visualizer</h3>
+ <p class="summ">An educational app that shows how an HTTP request is wrapped by TCP, IP and Ethernet headers, with header sizes and overhead percentage.</p>
+ <p class="meta"><b>Language/tools:</b> Java (Swing/JavaFX) or web page &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review encapsulation and demultiplexing (Lecture 2 §3)</li><li>Model header fields for Ethernet, IPv4, TCP, UDP and HTTP</li><li>Draw nested boxes for each layer</li><li>Compute total overhead for a user-chosen payload size</li><li>Reproduce Seminar 1 Problem 7 (cost of headers)</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Payload size input and transport choice (TCP/UDP)</li><li>Graphical layered view with header sizes</li><li>Overhead percentage and efficiency</li><li>Click on a header to see its fields</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Comparison of OSI and TCP/IP models with a mapping table</li><li>Header-overhead calculations for 3 payload sizes</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w2 w3" data-text="wireshark capture lab workbook a guided analysis of real captures: dns lookup, tcp handshake, http get and response, with a small helper that extracts statistics from a tshark csv export. none (analysis) + small java/c helper">
+ <header><span class="pid">A05</span><span class="tierbadge">Grade 5–7</span><span class="wk">W2</span><span class="wk">W3</span></header>
+ <h3>Wireshark Capture Lab Workbook</h3>
+ <p class="summ">A guided analysis of real captures: DNS lookup, TCP handshake, HTTP GET and response, with a small helper that extracts statistics from a tshark CSV export.</p>
+ <p class="meta"><b>Language/tools:</b> None (analysis) + small Java/C helper &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture a web page load with Wireshark (Lab 2 Task 3–4)</li><li>Apply capture and display filters</li><li>Identify each layer&#x27;s header fields in one packet</li><li>Export fields with tshark to CSV</li><li>Write a helper that counts packets per protocol and computes handshake RTT</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Helper program reading a tshark CSV export</li><li>Protocol distribution table</li><li>RTT estimate from SYN/SYN-ACK timestamps</li><li>Top 5 talkers (IP addresses)</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Annotated screenshots of each layer</li><li>List of filters used and their meaning</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w2 w6" data-text="bandwidth-delay product explorer a calculator for throughput bottlenecks and the bandwidth-delay product, showing the tcp window required to fill a link. java or c">
+ <header><span class="pid">A06</span><span class="tierbadge">Grade 5–7</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Bandwidth-Delay Product Explorer</h3>
+ <p class="summ">A calculator for throughput bottlenecks and the bandwidth-delay product, showing the TCP window required to fill a link.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review end-to-end throughput (min of link rates) and BDP (Lecture 2 §7, Week 6 Problem 4)</li><li>Implement bottleneck detection over a path</li><li>Compute BDP in bits, bytes and segments</li><li>Compute the throughput achievable for a given window size</li><li>Validate against seminar problems</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Path definition with multiple link rates and RTT</li><li>Bottleneck link highlighted</li><li>BDP and required window in MSS units</li><li>Throughput vs. window table</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of why a 64 KB window limits long-distance throughput</li><li>Worked examples (LAN, transatlantic, satellite)</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w2" data-text="traffic intensity and little&#x27;s law calculator a queueing calculator that computes traffic intensity la/r, estimated queueing delay, and uses little&#x27;s law to relate arrival rate, delay and queue length. java">
+ <header><span class="pid">A07</span><span class="tierbadge">Grade 5–7</span><span class="wk">W2</span></header>
+ <h3>Traffic Intensity and Little&#x27;s Law Calculator</h3>
+ <p class="summ">A queueing calculator that computes traffic intensity La/R, estimated queueing delay, and uses Little&#x27;s law to relate arrival rate, delay and queue length.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review Lecture 2 §6 and Seminar 2 Problems 4–5</li><li>Implement La/R and classify the regime (light, heavy, overload)</li><li>Implement Little&#x27;s law in all three directions</li><li>Add a simple M/M/1 delay estimate</li><li>Tabulate delay as intensity approaches 1</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Inputs: packet size, arrival rate, link rate</li><li>Traffic intensity with colour-coded warning</li><li>Little&#x27;s law solver</li><li>Delay vs. intensity table</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Discussion of why delay grows without bound as La/R → 1</li><li>Assumptions and limits of the model</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3" data-text="tcp echo client and server in c a clean, documented implementation of the lab 3 echo client and server, extended with command-line options and error handling. c (linux)">
+ <header><span class="pid">A08</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span></header>
+ <h3>TCP Echo Client and Server in C</h3>
+ <p class="summ">A clean, documented implementation of the Lab 3 echo client and server, extended with command-line options and error handling.</p>
+ <p class="meta"><b>Language/tools:</b> C (Linux) &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement socket/bind/listen/accept/recv/send on the server</li><li>Implement socket/connect/send/recv on the client</li><li>Handle partial reads and writes (loop until complete)</li><li>Add command-line port and address options</li><li>Test with nc and observe sockets with ss</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Echo server on a configurable port</li><li>Echo client reading lines from stdin</li><li>Proper error messages using perror</li><li>Graceful shutdown on Ctrl+C</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Sequence diagram of the socket calls</li><li>Output of ss -tan during a session with explanation</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3 w7" data-text="line-framed chat (two users) a two-user chat over tcp that uses newline framing, demonstrating that a tcp stream is not a sequence of messages. java">
+ <header><span class="pid">A09</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Line-Framed Chat (Two Users)</h3>
+ <p class="summ">A two-user chat over TCP that uses newline framing, demonstrating that a TCP stream is not a sequence of messages.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design a line-based message format</li><li>Implement server that relays lines between two clients</li><li>Implement client with a reader thread and writer loop</li><li>Test with long messages and multiple messages per send</li><li>Capture traffic with Wireshark</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Server accepting exactly two clients</li><li>Nickname on connect</li><li>Messages relayed with timestamps</li><li>QUIT command</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of framing problems with screenshots from Lab 3 Task 5</li><li>Wireshark capture showing several messages in one segment</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3" data-text="minimal http/1.1 client a command-line client that sends get requests over raw tcp sockets and parses the status line, headers and body using content-length. c or java (raw sockets, no http library)">
+ <header><span class="pid">A10</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span></header>
+ <h3>Minimal HTTP/1.1 Client</h3>
+ <p class="summ">A command-line client that sends GET requests over raw TCP sockets and parses the status line, headers and body using Content-Length.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java (raw sockets, no HTTP library) &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review HTTP/1.1 request and response format (Lecture 3 §8)</li><li>Build the request string with Host and Connection headers</li><li>Parse the status line and headers</li><li>Read the body using Content-Length</li><li>Save the body to a file</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>URL parsing (host, port, path)</li><li>Display of status code and headers</li><li>Body saved to disk</li><li>Verbose mode showing raw request</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Annotated example request and response</li><li>Comparison with curl -v output</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3" data-text="static file http server a small web server that serves files from a folder with correct status codes (200, 404, 400) and content-type headers. java or c">
+ <header><span class="pid">A11</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span></header>
+ <h3>Static File HTTP Server</h3>
+ <p class="summ">A small web server that serves files from a folder with correct status codes (200, 404, 400) and Content-Type headers.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Parse the request line and Host header</li><li>Map the path to a file safely (block ../)</li><li>Return 200 with Content-Type and Content-Length</li><li>Return 404 and 400 error pages</li><li>Test with a browser and curl</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Configurable document root and port</li><li>MIME type detection by file extension</li><li>Access log (client IP, path, status)</li><li>Default index.html</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Table of status codes implemented and when they are returned</li><li>Browser screenshots and curl -i output</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3" data-text="http page load time estimator a calculator that estimates page load time for non-persistent, persistent and parallel http connections, reproducing seminar 3 problems 2–3. java or web page">
+ <header><span class="pid">A12</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span></header>
+ <h3>HTTP Page Load Time Estimator</h3>
+ <p class="summ">A calculator that estimates page load time for non-persistent, persistent and parallel HTTP connections, reproducing Seminar 3 Problems 2–3.</p>
+ <p class="meta"><b>Language/tools:</b> Java or web page &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review RTT costs of HTTP connections (Lecture 3 §7)</li><li>Model one base HTML plus N objects</li><li>Compute time for non-persistent serial, non-persistent parallel and persistent</li><li>Include transmission time for object sizes</li><li>Validate against Seminar 3</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Inputs: RTT, number of objects, object size, bandwidth, parallel connections</li><li>Side-by-side comparison of the three modes</li><li>Timeline drawing of RTTs</li><li>Explanation text per result</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Derivation of formulas</li><li>Discussion of HTTP/1.1 head-of-line blocking</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w4" data-text="cookie inspector a tool that fetches a page, lists the set-cookie headers, explains each attribute (expires, max-age, path, domain, secure, httponly, samesite) and replays requests with the cookies. java or python">
+ <header><span class="pid">A13</span><span class="tierbadge">Grade 5–7</span><span class="wk">W4</span></header>
+ <h3>Cookie Inspector</h3>
+ <p class="summ">A tool that fetches a page, lists the Set-Cookie headers, explains each attribute (Expires, Max-Age, Path, Domain, Secure, HttpOnly, SameSite) and replays requests with the cookies.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review cookies and state (Lecture 4 §2)</li><li>Send HTTP requests and capture Set-Cookie</li><li>Parse cookie attributes</li><li>Store cookies in a simple jar and resend them</li><li>Test on a local server you write that counts visits</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Cookie jar file</li><li>Attribute explanation table</li><li>Visit-counter demo server</li><li>Request replay with Cookie header</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Privacy discussion: first-party vs. third-party cookies</li><li>Captured exchanges from Lab 4 Task 1</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w4" data-text="conditional get tester a client that tests whether a server supports caching validation using if-modified-since and if-none-match, reporting 200 vs. 304 responses. java or c">
+ <header><span class="pid">A14</span><span class="tierbadge">Grade 5–7</span><span class="wk">W4</span></header>
+ <h3>Conditional GET Tester</h3>
+ <p class="summ">A client that tests whether a server supports caching validation using If-Modified-Since and If-None-Match, reporting 200 vs. 304 responses.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review freshness and validation (Lecture 4 §3.1)</li><li>Request a resource and read Last-Modified and ETag</li><li>Repeat with conditional headers</li><li>Measure bytes saved by 304 responses</li><li>Test on 5 public sites and one local server</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Single URL or batch mode</li><li>Report of Cache-Control, Expires, ETag, Last-Modified</li><li>200/304 result and bytes transferred</li><li>Summary table</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of heuristic freshness</li><li>Results table and interpretation</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w4" data-text="telnet vs. ssh security demonstration a documented lab comparing a telnet session captured in clear text with an ssh session, plus a helper that extracts typed characters from a telnet capture. lab setup + c/java helper">
+ <header><span class="pid">A15</span><span class="tierbadge">Grade 5–7</span><span class="wk">W4</span></header>
+ <h3>TELNET vs. SSH Security Demonstration</h3>
+ <p class="summ">A documented lab comparing a TELNET session captured in clear text with an SSH session, plus a helper that extracts typed characters from a TELNET capture.</p>
+ <p class="meta"><b>Language/tools:</b> Lab setup + C/Java helper &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Install telnetd and sshd in a lab VM (Lab 4 Task 3–4)</li><li>Capture a TELNET login and an SSH login</li><li>Follow the TCP stream and identify the password</li><li>Write a helper that reconstructs keystrokes from a TELNET pcap export</li><li>Compare what an eavesdropper sees in both cases</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Helper reading tshark output of TELNET data</li><li>Reconstructed session transcript</li><li>Detection of option negotiation bytes (IAC)</li><li>Summary of exposed information</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Ethics note: capture only your own lab traffic</li><li>Side-by-side screenshots TELNET vs. SSH</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w4" data-text="ftp client (passive mode) a command-line ftp client supporting user, pass, pasv, list, retr, stor and quit over two tcp connections. c or java">
+ <header><span class="pid">A16</span><span class="tierbadge">Grade 5–7</span><span class="wk">W4</span></header>
+ <h3>FTP Client (Passive Mode)</h3>
+ <p class="summ">A command-line FTP client supporting USER, PASS, PASV, LIST, RETR, STOR and QUIT over two TCP connections.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review FTP control and data connections (Lecture 4 §8)</li><li>Implement the control connection and reply parsing (3-digit codes)</li><li>Implement PASV and data connection setup</li><li>Implement LIST, RETR, STOR with TYPE I</li><li>Test against vsftpd in a lab VM</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Interactive prompt (ls, get, put, quit)</li><li>Multi-line reply handling</li><li>Binary transfer mode</li><li>Transfer progress and speed</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Sequence diagram of control and data connections</li><li>Explanation of why active mode fails behind NAT</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="smtp mail sender a client that sends an email through a lab smtp server by speaking helo/ehlo, mail from, rcpt to, data and quit directly. java or c">
+ <header><span class="pid">A17</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>SMTP Mail Sender</h3>
+ <p class="summ">A client that sends an email through a lab SMTP server by speaking HELO/EHLO, MAIL FROM, RCPT TO, DATA and QUIT directly.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review SMTP dialogue (Lecture 5 §3)</li><li>Implement the command/response exchange with reply-code checks</li><li>Build headers (From, To, Subject, Date)</li><li>Handle dot-stuffing in the body</li><li>Test with a local Postfix or a test SMTP server</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Command-line or simple GUI for sender, recipient, subject, body</li><li>Verbose log of the SMTP dialogue</li><li>Multiple recipients</li><li>Error reporting for 4xx/5xx replies</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Annotated SMTP session transcript</li><li>SMTP vs. HTTP comparison (push vs. pull)</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="mime message builder and viewer an application that builds a multipart mime message with a text body and an attachment encoded in base64, and parses such messages back. java">
+ <header><span class="pid">A18</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>MIME Message Builder and Viewer</h3>
+ <p class="summ">An application that builds a multipart MIME message with a text body and an attachment encoded in Base64, and parses such messages back.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review MIME headers and multipart structure (Lecture 5 §4)</li><li>Implement Base64 encoding/decoding (or use library and explain)</li><li>Build multipart/mixed with boundaries</li><li>Parse a .eml file and extract attachments</li><li>Test the result in a real mail client</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>.eml file output</li><li>Attachment extraction to a folder</li><li>Display of headers and part tree</li><li>Content-Type detection</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Example message annotated part by part</li><li>Size overhead of Base64 (33%) with calculation</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="pop3 mail reader a pop3 client that logs in, lists messages, downloads and optionally deletes them. java or c">
+ <header><span class="pid">A19</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>POP3 Mail Reader</h3>
+ <p class="summ">A POP3 client that logs in, lists messages, downloads and optionally deletes them.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review POP3 states: authorization, transaction, update</li><li>Implement USER/PASS, STAT, LIST, RETR, DELE, QUIT</li><li>Handle multi-line responses terminated by &#x27;.&#x27;</li><li>Save each message as .eml</li><li>Test with Dovecot in a lab VM</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Message list with sizes</li><li>Download selected or all messages</li><li>Optional delete after download</li><li>Header summary (From, Subject, Date)</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>POP3 state diagram</li><li>Comparison POP3 vs. IMAP</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="dns lookup tool with dig comparison a tool that resolves a, aaaa, mx, ns and cname records via a dns library and compares results with dig, explaining ttls and the resolution chain. java or c (using system resolver)">
+ <header><span class="pid">A20</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>DNS Lookup Tool with dig Comparison</h3>
+ <p class="summ">A tool that resolves A, AAAA, MX, NS and CNAME records via a DNS library and compares results with dig, explaining TTLs and the resolution chain.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C (using system resolver) &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review DNS hierarchy and record types (Lecture 5 §7–8)</li><li>Query records with a library (e.g. JNDI DNS or res_query)</li><li>Run dig +trace for the same names</li><li>Tabulate results and TTLs</li><li>Repeat queries to observe caching</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Record-type selection</li><li>Output table: name, type, value, TTL</li><li>Batch mode for a list of domains</li><li>Comparison with dig output</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of iterative vs. recursive resolution</li><li>dig +trace annotated output</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6" data-text="port scanner for own lab hosts a tcp connect scanner limited to the student&#x27;s own lab machines that reports open/closed/filtered ports and the service names. java or c">
+ <header><span class="pid">A21</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span></header>
+ <h3>Port Scanner for Own Lab Hosts</h3>
+ <p class="summ">A TCP connect scanner limited to the student&#x27;s own lab machines that reports open/closed/filtered ports and the service names.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review ports and sockets (Week 6 §3)</li><li>Implement connect() with a timeout</li><li>Map ports to service names (/etc/services)</li><li>Add a configurable port range</li><li>Restrict targets to private/loopback addresses</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Target and port range input</li><li>Open/closed/filtered classification</li><li>Service name lookup</li><li>Results saved to CSV</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Responsible-use statement</li><li>Comparison with ss/netstat output on the target</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6 w7" data-text="udp echo with loss statistics a udp echo client/server where the client sends numbered datagrams, measures rtt and reports lost and reordered packets. java">
+ <header><span class="pid">A22</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>UDP Echo with Loss Statistics</h3>
+ <p class="summ">A UDP echo client/server where the client sends numbered datagrams, measures RTT and reports lost and reordered packets.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement UDP echo server (DatagramSocket)</li><li>Client sends N sequence-numbered datagrams at a set rate</li><li>Measure RTT per datagram with timeouts</li><li>Detect loss, duplicates and reordering</li><li>Test with tc netem loss on Linux</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Configurable count, size and rate</li><li>RTT min/avg/max and jitter</li><li>Loss percentage</li><li>CSV log of each datagram</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Why UDP does not retransmit: discussion</li><li>Results with 0%, 5% and 20% netem loss</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6" data-text="tcp handshake and state observer a lab project capturing the three-way handshake and teardown, and a helper that polls ss/netstat to log tcp state transitions. script + c/java helper">
+ <header><span class="pid">A23</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span></header>
+ <h3>TCP Handshake and State Observer</h3>
+ <p class="summ">A lab project capturing the three-way handshake and teardown, and a helper that polls ss/netstat to log TCP state transitions.</p>
+ <p class="meta"><b>Language/tools:</b> Script + C/Java helper &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture SYN, SYN-ACK, ACK and FIN sequences (Lab 6 Task 4)</li><li>Write a helper that logs states every 100 ms</li><li>Provoke TIME_WAIT and CLOSE_WAIT</li><li>Draw the observed state diagram</li><li>Compare with the RFC 9293 diagram</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>State-polling program</li><li>Timeline log of transitions</li><li>Filter by port</li><li>Summary of time spent in TIME_WAIT</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Annotated handshake capture with sequence numbers</li><li>Explanation of TIME_WAIT purpose</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6" data-text="stop-and-wait efficiency calculator a calculator and animation of stop-and-wait vs. sliding window utilization, reproducing week 6 problems 2–3. java">
+ <header><span class="pid">A24</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span></header>
+ <h3>Stop-and-Wait Efficiency Calculator</h3>
+ <p class="summ">A calculator and animation of stop-and-wait vs. sliding window utilization, reproducing Week 6 Problems 2–3.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review utilization U = (L/R)/(RTT + L/R)</li><li>Implement stop-and-wait utilization</li><li>Implement sliding window utilization for window W</li><li>Animate packets and ACKs on a timeline</li><li>Validate with seminar answers</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Inputs: L, R, RTT, W</li><li>Utilization and throughput output</li><li>Simple timeline animation</li><li>Minimum window to reach 100% utilization</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Derivations</li><li>Effect of RTT on utilization (graph)</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6" data-text="rto estimator a tool that computes srtt, rttvar and rto from a sequence of rtt samples according to rfc 6298, reproducing week 6 problem 7. java or c">
+ <header><span class="pid">A25</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span></header>
+ <h3>RTO Estimator</h3>
+ <p class="summ">A tool that computes SRTT, RTTVAR and RTO from a sequence of RTT samples according to RFC 6298, reproducing Week 6 Problem 7.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review the EWMA formulas (alpha = 1/8, beta = 1/4)</li><li>Implement the estimator with initial RTO 1 s</li><li>Read samples from a file or from live ping</li><li>Plot SRTT and RTO over time</li><li>Apply Karn&#x27;s algorithm note</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>File or live-ping input</li><li>Table of SRTT, RTTVAR, RTO per sample</li><li>Simple chart</li><li>Back-off simulation on timeout</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of why RTO must adapt</li><li>Results for a stable and a noisy path</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w7" data-text="java tcp echo: iterative vs. concurrent two versions of an echo server, iterative and thread-per-client, with a test client that opens several connections simultaneously to show the difference. java">
+ <header><span class="pid">A26</span><span class="tierbadge">Grade 5–7</span><span class="wk">W7</span></header>
+ <h3>Java TCP Echo: Iterative vs. Concurrent</h3>
+ <p class="summ">Two versions of an echo server, iterative and thread-per-client, with a test client that opens several connections simultaneously to show the difference.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement iterative server</li><li>Implement thread-per-client server</li><li>Write a load client opening K parallel connections</li><li>Measure response time for each client</li><li>Observe threads with jstack/ps</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Server mode switch</li><li>Load client with K connections</li><li>Timing report</li><li>Logs with thread names</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Comparison table of results</li><li>When an iterative server is acceptable</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w7" data-text="java udp time server a udp server that returns the current time and a client that computes clock offset and rtt (simplified ntp idea). java">
+ <header><span class="pid">A27</span><span class="tierbadge">Grade 5–7</span><span class="wk">W7</span></header>
+ <h3>Java UDP Time Server</h3>
+ <p class="summ">A UDP server that returns the current time and a client that computes clock offset and RTT (simplified NTP idea).</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design request/response datagram format</li><li>Implement DatagramSocket server</li><li>Client records t0, t3 and server t1, t2</li><li>Compute offset and delay</li><li>Add timeout and retry</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Server on a configurable port</li><li>Client showing offset and RTT</li><li>Repeat mode with statistics</li><li>Timeout handling</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Offset/delay formulas</li><li>Measurements between two lab PCs</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w1" data-text="network interface and configuration reporter a cross-platform tool that reports interfaces, ip addresses, mac, default gateway and dns servers, like lab 1 tasks 1–2. java or c">
+ <header><span class="pid">A28</span><span class="tierbadge">Grade 5–7</span><span class="wk">W1</span></header>
+ <h3>Network Interface and Configuration Reporter</h3>
+ <p class="summ">A cross-platform tool that reports interfaces, IP addresses, MAC, default gateway and DNS servers, like Lab 1 Tasks 1–2.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Use NetworkInterface (Java) or getifaddrs (C)</li><li>Read default route and DNS configuration</li><li>Classify addresses (private, public, loopback, link-local)</li><li>Detect public IP via a simple HTTP query</li><li>Produce a report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Interface list with addresses</li><li>Address classification</li><li>Gateway and DNS info</li><li>Report export</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of private vs. public addressing and NAT</li><li>Outputs on Linux and Windows</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w1 w3" data-text="simple text protocol design: guess the number design and implement a small application protocol (seminar 1 problem 6) for a guessing game played over tcp. java or c">
+ <header><span class="pid">A29</span><span class="tierbadge">Grade 5–7</span><span class="wk">W1</span><span class="wk">W3</span></header>
+ <h3>Simple Text Protocol Design: Guess the Number</h3>
+ <p class="summ">Design and implement a small application protocol (Seminar 1 Problem 6) for a guessing game played over TCP.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Write the protocol specification: messages, order, errors</li><li>Implement server keeping game state per client</li><li>Implement client</li><li>Test with nc to show text protocol</li><li>Handle invalid messages</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Commands NEW, GUESS n, QUIT</li><li>Responses HIGHER, LOWER, CORRECT, ERR</li><li>Score per session</li><li>Multiple sequential clients</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Protocol specification document (formal)</li><li>State diagram for client and server</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3 w4" data-text="http headers security checker a tool that requests a set of urls and checks security headers (hsts, content-security-policy, x-frame-options, cookie flags) and https redirection. java or python">
+ <header><span class="pid">A30</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>HTTP Headers Security Checker</h3>
+ <p class="summ">A tool that requests a set of URLs and checks security headers (HSTS, Content-Security-Policy, X-Frame-Options, cookie flags) and HTTPS redirection.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>List relevant headers and their purpose</li><li>Fetch over HTTP and HTTPS</li><li>Check redirect from HTTP to HTTPS</li><li>Score each site</li><li>Generate a report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>URL list input</li><li>Pass/fail per header</li><li>Redirect chain display</li><li>HTML report</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of each header</li><li>Results for 10 sites with discussion</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w4" data-text="tls certificate inspector a tool that connects via tls, retrieves the certificate chain and displays subject, issuer, validity, san and key info, warning on expiry. java or python">
+ <header><span class="pid">A31</span><span class="tierbadge">Grade 5–7</span><span class="wk">W4</span></header>
+ <h3>TLS Certificate Inspector</h3>
+ <p class="summ">A tool that connects via TLS, retrieves the certificate chain and displays subject, issuer, validity, SAN and key info, warning on expiry.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review TLS handshake and chain of trust (Lecture 4 §5)</li><li>Open a TLS connection and get peer certificates</li><li>Display fields for each certificate</li><li>Check expiry and hostname match</li><li>Compare with openssl s_client output</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Host and port input</li><li>Chain display</li><li>Expiry warning (less than 30 days)</li><li>Batch check for a list of hosts</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Explanation of the chain of trust</li><li>What HTTPS hides and what it does not (SNI, IP, size)</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="usenet-style flooding simulator a simulator of news flooding between servers in a graph, counting duplicates and showing how message ids prevent loops. java">
+ <header><span class="pid">A32</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>Usenet-Style Flooding Simulator</h3>
+ <p class="summ">A simulator of news flooding between servers in a graph, counting duplicates and showing how message IDs prevent loops.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review Usenet flooding (Lecture 5 §6)</li><li>Model servers and links as a graph</li><li>Implement flooding with and without message-ID suppression</li><li>Count messages sent and duplicates</li><li>Test on 3 topologies</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Topology from a file</li><li>Step-by-step propagation view</li><li>Statistics per run</li><li>Comparison with/without IDs</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Analysis of message complexity</li><li>Topology diagrams</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w5" data-text="nat translation table simulator a simulator that shows how a nat router rewrites source ip/port for outgoing connections and maps replies back, using a translation table. java">
+ <header><span class="pid">A33</span><span class="tierbadge">Grade 5–7</span><span class="wk">W5</span></header>
+ <h3>NAT Translation Table Simulator</h3>
+ <p class="summ">A simulator that shows how a NAT router rewrites source IP/port for outgoing connections and maps replies back, using a translation table.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review NAT operation (Lecture 5 §9)</li><li>Model internal hosts and connections</li><li>Implement port allocation and translation table</li><li>Simulate incoming packets with/without mapping</li><li>Show why inbound connections fail</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Add hosts and connections interactively</li><li>Translation table view</li><li>Packet before/after rewrite</li><li>Timeout of idle entries</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>NAT consequences (end-to-end argument, port forwarding)</li><li>Worked example matching Seminar 5</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w6" data-text="throughput test with iperf3 and netem an experimental study of tcp throughput between two lab machines under added delay and loss, with an automation script and graphs. scripts + report">
+ <header><span class="pid">A34</span><span class="tierbadge">Grade 5–7</span><span class="wk">W6</span></header>
+ <h3>Throughput Test with iperf3 and netem</h3>
+ <p class="summ">An experimental study of TCP throughput between two lab machines under added delay and loss, with an automation script and graphs.</p>
+ <p class="meta"><b>Language/tools:</b> Scripts + report &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Set up iperf3 server/client (Lab 6 Task W7/L7)</li><li>Apply tc netem delay (0–200 ms) and loss (0–5%)</li><li>Automate runs with a script</li><li>Collect JSON output</li><li>Plot throughput vs. delay and loss</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Bash/PowerShell automation script</li><li>JSON parsing to CSV</li><li>Plotting script</li><li>Reproducible README</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Experimental methodology</li><li>Comparison with the Mathis formula (throughput ≈ MSS/(RTT·√p))</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w3 w7" data-text="length-prefixed message protocol library a small reusable library for sending and receiving length-prefixed messages over tcp, with a demo client/server. java">
+ <header><span class="pid">A35</span><span class="tierbadge">Grade 5–7</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Length-Prefixed Message Protocol Library</h3>
+ <p class="summ">A small reusable library for sending and receiving length-prefixed messages over TCP, with a demo client/server.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design frame format: 4-byte length + payload</li><li>Implement writeMessage/readMessage using DataInput/OutputStream</li><li>Handle maximum size and malformed frames</li><li>Unit tests with split and joined frames</li><li>Demo application</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Library JAR</li><li>Demo echo of objects as JSON strings</li><li>Unit tests</li><li>Limit on frame size</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Line framing vs. length prefix comparison</li><li>Test cases and results</li></ul></details>
+</article>
+<article class="card t1" data-tier="t1" data-weeks="w2 w6" data-text="hex dump header decoder a tool that takes a hex dump of an ethernet/ipv4/tcp or udp packet and decodes each header field, as in week 6 problem 8. java or c">
+ <header><span class="pid">A36</span><span class="tierbadge">Grade 5–7</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Hex Dump Header Decoder</h3>
+ <p class="summ">A tool that takes a hex dump of an Ethernet/IPv4/TCP or UDP packet and decodes each header field, as in Week 6 Problem 8.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review header layouts (Ethernet II, IPv4, TCP, UDP)</li><li>Parse hex text input</li><li>Decode fields including flags and options</li><li>Verify the IPv4 checksum</li><li>Test with dumps from Wireshark</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Paste hex input</li><li>Field table per layer</li><li>Checksum verification</li><li>Flag interpretation (SYN, ACK, FIN...)</li></ul>
+   <p class="note">Plus the standard application package for Grade 5–7 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 5–7 structure (10–15 pages), with these project-specific sections/content:</p><ul><li>Header diagrams</li><li>Three decoded examples</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w7" data-text="multi-room chat server with custom protocol a concurrent tcp chat server with rooms, private messages and a formally specified text protocol, plus a gui client. java">
+ <header><span class="pid">B01</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Multi-Room Chat Server with Custom Protocol</h3>
+ <p class="summ">A concurrent TCP chat server with rooms, private messages and a formally specified text protocol, plus a GUI client.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Write the protocol specification (commands, replies, error codes, framing)</li><li>Implement thread-per-client or thread-pool server with shared room state</li><li>Synchronize shared structures correctly</li><li>Build a Swing/JavaFX client with a reader thread</li><li>Test with 20+ simulated clients</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Commands: NICK, JOIN, PART, MSG, PRIV, LIST, QUIT</li><li>Room list and user list</li><li>GUI client</li><li>Server log and admin console (kick, broadcast)</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Protocol spec with ABNF-like grammar</li><li>Concurrency design and race-condition analysis</li><li>Load test results</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w4" data-text="http/1.1 server with persistent connections and chunked encoding a web server that supports keep-alive, pipelining-safe request parsing, chunked transfer encoding for dynamic content and head requests. java or c">
+ <header><span class="pid">B02</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>HTTP/1.1 Server with Persistent Connections and Chunked Encoding</h3>
+ <p class="summ">A web server that supports keep-alive, pipelining-safe request parsing, chunked transfer encoding for dynamic content and HEAD requests.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Parse requests incrementally from the stream</li><li>Implement keep-alive with idle timeout</li><li>Implement chunked encoding for generated pages</li><li>Support GET, HEAD and basic POST</li><li>Measure page load with persistent vs. non-persistent mode</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Static and dynamic (generated) pages</li><li>Keep-alive with configurable timeout</li><li>Chunked responses</li><li>Access log in Common Log Format</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Message-end rules (Content-Length, chunked, close)</li><li>Performance comparison with measured RTTs</li><li>Wireshark proof of connection reuse</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w4" data-text="caching http proxy a forward http proxy that caches responses, honours cache-control/expires and revalidates with conditional get. java">
+ <header><span class="pid">B03</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>Caching HTTP Proxy</h3>
+ <p class="summ">A forward HTTP proxy that caches responses, honours Cache-Control/Expires and revalidates with conditional GET.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement request forwarding to origin servers</li><li>Design cache storage (memory + disk) keyed by URL</li><li>Implement freshness computation and conditional revalidation</li><li>Handle concurrent clients</li><li>Measure hit ratio and latency savings</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Browser configured to use the proxy</li><li>Cache hit/miss/revalidated statistics page</li><li>Max cache size with LRU eviction</li><li>Logging of decisions</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Freshness algorithm explained with examples</li><li>Hit ratio and latency measurements</li><li>Limits: HTTPS cannot be cached without interception</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w4" data-text="ftp server (subset of rfc 959) an ftp server supporting user login, pasv and port, list, retr, stor, cwd, pwd, mkd, dele and type a/i. java or c">
+ <header><span class="pid">B04</span><span class="tierbadge">Grade 7–8</span><span class="wk">W4</span></header>
+ <h3>FTP Server (Subset of RFC 959)</h3>
+ <p class="summ">An FTP server supporting user login, PASV and PORT, LIST, RETR, STOR, CWD, PWD, MKD, DELE and TYPE A/I.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement control connection state machine per client</li><li>Implement passive and active data connections</li><li>Implement file system commands with a chroot-like root</li><li>Implement ASCII vs. binary conversion</li><li>Test with FileZilla and the ftp command</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>User accounts from a config file</li><li>Concurrent sessions</li><li>Passive port range configuration</li><li>Transfer log</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Command/reply table</li><li>State diagram</li><li>Analysis of FTP over NAT and why passive mode helps</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="imap mail client (read-only) a gui mail client implementing imap login, list, select, fetch (headers, body), search and logout directly over sockets with tls. java">
+ <header><span class="pid">B05</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>IMAP Mail Client (Read-Only)</h3>
+ <p class="summ">A GUI mail client implementing IMAP LOGIN, LIST, SELECT, FETCH (headers, body), SEARCH and LOGOUT directly over sockets with TLS.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review IMAP tags, untagged responses and literals</li><li>Implement command/response parser with literal handling</li><li>Implement folder browsing and message list</li><li>Parse MIME structure to display text and attachments</li><li>Test against Dovecot or a real provider with app password</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Folder tree</li><li>Message list with flags</li><li>Message view with attachments</li><li>Search by sender/subject</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>IMAP vs. POP3 design comparison</li><li>Annotated IMAP session</li><li>Parser design</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="smtp server with local mailboxes a receiving smtp server that accepts mail for local users, stores it in mbox/maildir and exposes it via a minimal pop3 server. java or c">
+ <header><span class="pid">B06</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>SMTP Server with Local Mailboxes</h3>
+ <p class="summ">A receiving SMTP server that accepts mail for local users, stores it in mbox/Maildir and exposes it via a minimal POP3 server.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement SMTP server state machine (EHLO, MAIL, RCPT, DATA, RSET, QUIT)</li><li>Validate local recipients</li><li>Store messages with Received header</li><li>Implement POP3 server over the same store</li><li>Test with swaks/telnet and a mail client</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>SMTP on port 2525, POP3 on 1100</li><li>Multiple users</li><li>Size limit and error replies</li><li>Logs</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Mail system architecture (MUA, MSA, MTA, MDA)</li><li>Session transcripts</li><li>Spam/open-relay considerations</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="dns client from scratch (binary messages) a dns resolver client that builds query messages byte by byte, sends them over udp, parses answers including name compression, and falls back to tcp on tc=1. c or java">
+ <header><span class="pid">B07</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>DNS Client from Scratch (Binary Messages)</h3>
+ <p class="summ">A DNS resolver client that builds query messages byte by byte, sends them over UDP, parses answers including name compression, and falls back to TCP on TC=1.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement header and question encoding</li><li>Parse answer, authority and additional sections</li><li>Implement name compression pointers</li><li>Support A, AAAA, MX, NS, CNAME, TXT, SOA</li><li>Implement TCP fallback and timeouts</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>dig-like command line</li><li>Record display with TTL</li><li>Choice of DNS server</li><li>Hex dump mode</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>DNS message format with diagrams</li><li>Comparison with dig on 10 names</li><li>Wireshark validation</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="caching dns forwarder a local dns server that forwards queries to an upstream resolver, caches answers by ttl and serves a local zone file. java or c">
+ <header><span class="pid">B08</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>Caching DNS Forwarder</h3>
+ <p class="summ">A local DNS server that forwards queries to an upstream resolver, caches answers by TTL and serves a local zone file.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement UDP DNS server loop</li><li>Forward unknown queries and relay responses</li><li>Cache records respecting TTL</li><li>Load local records from a zone file</li><li>Measure latency with cold vs. warm cache</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Local zone (e.g. lab.local)</li><li>Cache statistics</li><li>Blocklist feature (return NXDOMAIN)</li><li>Logging of queries</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Caching and TTL analysis</li><li>Measurements</li><li>Security notes (cache poisoning, DNSSEC)</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6" data-text="reliable file transfer over udp (stop-and-wait) a file transfer application over udp that implements stop-and-wait arq with sequence numbers, acks, checksums and timeouts. java or c">
+ <header><span class="pid">B09</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span></header>
+ <h3>Reliable File Transfer over UDP (Stop-and-Wait)</h3>
+ <p class="summ">A file transfer application over UDP that implements stop-and-wait ARQ with sequence numbers, ACKs, checksums and timeouts.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design packet format (seq, flags, length, checksum)</li><li>Implement sender with timeout and retransmission</li><li>Implement receiver with duplicate detection</li><li>Test under netem loss, delay and corruption</li><li>Measure throughput vs. loss</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Send/receive any file</li><li>Configurable timeout</li><li>Statistics: retransmissions, duplicates, throughput</li><li>MD5 check at the end</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Protocol FSMs (rdt3.0 style)</li><li>Experiments and graphs</li><li>Utilization compared with theory</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6" data-text="sliding window protocol simulator (gbn and sr) an animated simulator of go-back-n and selective repeat with configurable window, loss and delay, showing buffers and timers. java (gui)">
+ <header><span class="pid">B10</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span></header>
+ <h3>Sliding Window Protocol Simulator (GBN and SR)</h3>
+ <p class="summ">An animated simulator of Go-Back-N and Selective Repeat with configurable window, loss and delay, showing buffers and timers.</p>
+ <p class="meta"><b>Language/tools:</b> Java (GUI) &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Model sender/receiver windows and timers</li><li>Implement GBN behaviour</li><li>Implement SR behaviour</li><li>Animate packets and ACKs, allow user to drop packets</li><li>Compare retransmission counts</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Window size, timeout and loss settings</li><li>Click-to-lose packets</li><li>Side-by-side GBN vs. SR</li><li>Statistics panel</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Algorithm descriptions</li><li>Experiment results</li><li>Sequence number space requirement for SR</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6" data-text="tcp congestion control simulator (tahoe and reno) a simulator that plots cwnd and ssthresh over time for tahoe and reno given loss events, reproducing week 6 problem 6. java or python">
+ <header><span class="pid">B11</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span></header>
+ <h3>TCP Congestion Control Simulator (Tahoe and Reno)</h3>
+ <p class="summ">A simulator that plots cwnd and ssthresh over time for Tahoe and Reno given loss events, reproducing Week 6 Problem 6.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement slow start, congestion avoidance, fast retransmit, fast recovery</li><li>Define loss events by round or random probability</li><li>Plot cwnd over RTT rounds</li><li>Compare Tahoe vs. Reno</li><li>Validate against the seminar trace</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Event script input</li><li>cwnd/ssthresh chart</li><li>Throughput estimate</li><li>Export of traces</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>RFC 5681 summary</li><li>Comparison graphs</li><li>Brief note on CUBIC and BBR</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w2 w6" data-text="network traffic monitor with libpcap a live traffic monitor that captures packets, decodes ethernet/ip/tcp/udp headers and displays statistics per protocol, host and port. c (libpcap) or java (pcap4j)">
+ <header><span class="pid">B12</span><span class="tierbadge">Grade 7–8</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Network Traffic Monitor with libpcap</h3>
+ <p class="summ">A live traffic monitor that captures packets, decodes Ethernet/IP/TCP/UDP headers and displays statistics per protocol, host and port.</p>
+ <p class="meta"><b>Language/tools:</b> C (libpcap) or Java (pcap4j) &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Open a capture handle with a BPF filter</li><li>Decode headers by layer</li><li>Aggregate statistics per flow (5-tuple)</li><li>Display top flows and bandwidth</li><li>Validate against Wireshark</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Interface and filter selection</li><li>Live statistics refresh</li><li>Flow table</li><li>Save to pcap</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Encapsulation and demultiplexing in code</li><li>Comparison with Wireshark</li><li>Performance limits</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w4" data-text="ssh tunnel manager a gui tool to create, monitor and close ssh local and remote port forwards, with host-key verification and key-based login. java (jsch) or python (paramiko)">
+ <header><span class="pid">B13</span><span class="tierbadge">Grade 7–8</span><span class="wk">W4</span></header>
+ <h3>SSH Tunnel Manager</h3>
+ <p class="summ">A GUI tool to create, monitor and close SSH local and remote port forwards, with host-key verification and key-based login.</p>
+ <p class="meta"><b>Language/tools:</b> Java (JSch) or Python (paramiko) &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review SSH channels and tunnels (Lecture 4 §7)</li><li>Implement public-key authentication</li><li>Implement known_hosts verification</li><li>Create local (-L) and remote (-R) forwards</li><li>Demonstrate tunnelling a clear-text service</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Saved tunnel profiles</li><li>Start/stop and status</li><li>Bytes transferred per tunnel</li><li>Host-key warning dialog</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>SSH architecture (transport, auth, connection)</li><li>Wireshark: tunnelled vs. clear traffic</li><li>Security of host-key verification</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w4" data-text="web crawler with politeness and statistics a multithreaded crawler limited to one domain that obeys robots.txt, uses persistent connections and reports response codes, sizes and timing. java">
+ <header><span class="pid">B14</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>Web Crawler with Politeness and Statistics</h3>
+ <p class="summ">A multithreaded crawler limited to one domain that obeys robots.txt, uses persistent connections and reports response codes, sizes and timing.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement URL frontier and visited set</li><li>Fetch with HTTP/1.1 keep-alive</li><li>Parse links from HTML</li><li>Respect robots.txt and rate limits</li><li>Produce a site report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Start URL and depth limit</li><li>Thread count setting</li><li>Broken link report (4xx/5xx)</li><li>Size and timing statistics</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Crawler architecture</li><li>Measured impact of persistent connections</li><li>Ethics and robots.txt</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w1 w2 w5 w6" data-text="network diagnostics dashboard an application that combines ping, traceroute, dns lookup, tcp port test and http timing into one diagnostic report for a target. java or web">
+ <header><span class="pid">B15</span><span class="tierbadge">Grade 7–8</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>Network Diagnostics Dashboard</h3>
+ <p class="summ">An application that combines ping, traceroute, DNS lookup, TCP port test and HTTP timing into one diagnostic report for a target.</p>
+ <p class="meta"><b>Language/tools:</b> Java or web &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark, W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement each test as a module</li><li>Measure DNS time, TCP connect time, TLS time, TTFB</li><li>Run tests in parallel</li><li>Present a timeline breakdown</li><li>Save history</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Single target diagnosis</li><li>Timing waterfall</li><li>History and comparison</li><li>Export to HTML</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Delay components mapped to lecture concepts</li><li>Case studies of 3 problems diagnosed</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w7" data-text="distributed key-value store (single node + replication) a tcp key-value server with a binary length-prefixed protocol and a simple primary-backup replication to a second node. java">
+ <header><span class="pid">B16</span><span class="tierbadge">Grade 7–8</span><span class="wk">W7</span></header>
+ <h3>Distributed Key-Value Store (Single Node + Replication)</h3>
+ <p class="summ">A TCP key-value server with a binary length-prefixed protocol and a simple primary-backup replication to a second node.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design binary protocol (GET/PUT/DELETE)</li><li>Implement concurrent server with ConcurrentHashMap</li><li>Implement replication from primary to backup</li><li>Implement client library and CLI</li><li>Test failover manually</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>CLI client</li><li>Persistence to disk</li><li>Replication status</li><li>Benchmark tool</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Protocol spec</li><li>Consistency discussion</li><li>Benchmark results</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w7" data-text="multiplayer tic-tac-toe over tcp a game server matching players into games, with a gui client, reconnect handling and spectator mode. java">
+ <header><span class="pid">B17</span><span class="tierbadge">Grade 7–8</span><span class="wk">W7</span></header>
+ <h3>Multiplayer Tic-Tac-Toe over TCP</h3>
+ <p class="summ">A game server matching players into games, with a GUI client, reconnect handling and spectator mode.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design protocol messages and game states</li><li>Implement lobby and matchmaking</li><li>Implement game logic on the server (authoritative)</li><li>Build GUI client</li><li>Handle disconnects and timeouts</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Lobby with waiting players</li><li>Concurrent games</li><li>Spectator mode</li><li>Leaderboard</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>State machine of a game session</li><li>Concurrency design</li><li>Test scenarios</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6 w7" data-text="udp multicast chat and discovery a lan chat that uses multicast for peer discovery and messages, with unicast fallback for private messages. java">
+ <header><span class="pid">B18</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>UDP Multicast Chat and Discovery</h3>
+ <p class="summ">A LAN chat that uses multicast for peer discovery and messages, with unicast fallback for private messages.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review UDP and multicast groups</li><li>Implement MulticastSocket join/leave</li><li>Implement presence announcements and timeouts</li><li>Implement private messages over unicast UDP</li><li>Test across lab PCs and capture IGMP</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Peer list auto-updated</li><li>Group chat</li><li>Private messages</li><li>Message loss indicator</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Multicast basics and IGMP capture</li><li>Reliability limits</li><li>Test results</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w4 w7" data-text="remote command execution service with authentication a client/server that executes a whitelist of commands remotely over tls with username/password authentication and audit logging. java">
+ <header><span class="pid">B19</span><span class="tierbadge">Grade 7–8</span><span class="wk">W4</span><span class="wk">W7</span></header>
+ <h3>Remote Command Execution Service with Authentication</h3>
+ <p class="summ">A client/server that executes a whitelist of commands remotely over TLS with username/password authentication and audit logging.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Create a keystore and enable SSLServerSocket</li><li>Implement authentication with hashed passwords</li><li>Implement command whitelist and output streaming</li><li>Add audit log</li><li>Compare to SSH design</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>TLS-encrypted sessions</li><li>Command whitelist config</li><li>Streaming output</li><li>Audit log</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Threat model</li><li>TLS setup steps</li><li>Comparison with TELNET and SSH</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w6 w7" data-text="http load tester a tool that generates concurrent http load, measures latency percentiles and throughput, and compares keep-alive vs. new connections. java">
+ <header><span class="pid">B20</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>HTTP Load Tester</h3>
+ <p class="summ">A tool that generates concurrent HTTP load, measures latency percentiles and throughput, and compares keep-alive vs. new connections.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement worker threads with raw sockets or HttpClient</li><li>Measure latency per request</li><li>Compute p50/p90/p99</li><li>Compare persistent and non-persistent</li><li>Test against own server from Tier projects</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Concurrency and duration settings</li><li>Latency histogram</li><li>Requests/s</li><li>CSV export</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Methodology</li><li>Results and graphs</li><li>Little&#x27;s law applied to the results</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="nat router in user space (simulation over udp) a user-space program that acts as nat between two udp &#x27;networks&#x27; (ports on loopback), rewriting addresses in a custom packet header. c or java">
+ <header><span class="pid">B21</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>NAT Router in User Space (Simulation over UDP)</h3>
+ <p class="summ">A user-space program that acts as NAT between two UDP &#x27;networks&#x27; (ports on loopback), rewriting addresses in a custom packet header.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Define a simple simulated IP/UDP header</li><li>Implement translation table with timeouts</li><li>Forward packets inside→outside and back</li><li>Drop unsolicited inbound packets</li><li>Add static port forwarding</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Live translation table display</li><li>Port-forward rules</li><li>Statistics</li><li>Logging</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>NAT behaviour types (full cone, symmetric)</li><li>Test scenarios</li><li>Relation to Lab 5 Task 6</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6" data-text="packet capture analyzer for tcp performance an offline analyzer that reads a pcap file and computes per-connection rtt samples, retransmissions, duplicate acks and throughput. java or python">
+ <header><span class="pid">B22</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span></header>
+ <h3>Packet Capture Analyzer for TCP Performance</h3>
+ <p class="summ">An offline analyzer that reads a pcap file and computes per-connection RTT samples, retransmissions, duplicate ACKs and throughput.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Parse pcap files</li><li>Reconstruct TCP connections</li><li>Match segments to ACKs for RTT</li><li>Detect retransmissions and dup ACKs</li><li>Report per connection</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>pcap input</li><li>Per-flow report</li><li>RTT and throughput graphs</li><li>Comparison with Wireshark Expert Info</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Algorithms used</li><li>Analysis of captures under netem loss</li><li>Validation</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w7" data-text="file synchronization tool over tcp a client/server tool that synchronizes a folder by exchanging file lists with hashes and transferring only changed files. java">
+ <header><span class="pid">B23</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>File Synchronization Tool over TCP</h3>
+ <p class="summ">A client/server tool that synchronizes a folder by exchanging file lists with hashes and transferring only changed files.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design protocol: LIST with hashes, GET, PUT</li><li>Implement hashing and comparison</li><li>Transfer with length prefix framing</li><li>Handle conflicts and deletions</li><li>Test with large files</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Sync now / watch mode</li><li>Progress display</li><li>Conflict report</li><li>Bandwidth limit</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Protocol spec</li><li>Comparison with FTP and rsync</li><li>Measurements</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w4" data-text="mini web framework with cookie sessions an http server with routing, form parsing and cookie-based sessions, used to build a small login-protected notes app. java">
+ <header><span class="pid">B24</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>Mini Web Framework with Cookie Sessions</h3>
+ <p class="summ">An HTTP server with routing, form parsing and cookie-based sessions, used to build a small login-protected notes app.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement request routing</li><li>Parse query strings and form bodies</li><li>Implement session store with secure random IDs</li><li>Set cookies with HttpOnly and SameSite</li><li>Build the notes application</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Login/logout</li><li>Notes CRUD</li><li>Session expiry</li><li>CSRF token on forms</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>State over stateless HTTP</li><li>Security analysis of cookies</li><li>Screenshots and captures</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5" data-text="email newsletter sender with mime and smtp auth an application that sends personalized html+text multipart emails to a list via smtp with starttls and auth. java">
+ <header><span class="pid">B25</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span></header>
+ <h3>Email Newsletter Sender with MIME and SMTP AUTH</h3>
+ <p class="summ">An application that sends personalized HTML+text multipart emails to a list via SMTP with STARTTLS and AUTH.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement SMTP with STARTTLS and AUTH LOGIN/PLAIN</li><li>Build multipart/alternative messages</li><li>Template personalization</li><li>Rate limiting and error handling</li><li>Delivery report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Recipient CSV</li><li>HTML/text templates</li><li>Send report with status per recipient</li><li>Test mode to a local server</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>STARTTLS and AUTH explanation</li><li>MIME structure</li><li>Anti-spam considerations (SPF, DKIM overview)</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w1 w2 w6" data-text="bandwidth and latency measurement tool a client/server tool like a simplified iperf: tcp and udp throughput tests, rtt, jitter and loss measurement. java or c">
+ <header><span class="pid">B26</span><span class="tierbadge">Grade 7–8</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Bandwidth and Latency Measurement Tool</h3>
+ <p class="summ">A client/server tool like a simplified iperf: TCP and UDP throughput tests, RTT, jitter and loss measurement.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design control protocol for test negotiation</li><li>Implement TCP bulk transfer test</li><li>Implement UDP constant-rate test with sequence numbers</li><li>Compute jitter (RFC 3550 method)</li><li>Compare with iperf3</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>TCP and UDP modes</li><li>Duration and rate settings</li><li>Report per second</li><li>JSON output</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Measurement methodology</li><li>Comparison with iperf3</li><li>Effect of netem delay/loss</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w4" data-text="https client with certificate pinning a client that fetches resources over tls, verifies the chain normally, and optionally pins public-key hashes, demonstrating mitm detection with a lab proxy. java">
+ <header><span class="pid">B27</span><span class="tierbadge">Grade 7–8</span><span class="wk">W4</span></header>
+ <h3>HTTPS Client with Certificate Pinning</h3>
+ <p class="summ">A client that fetches resources over TLS, verifies the chain normally, and optionally pins public-key hashes, demonstrating MITM detection with a lab proxy.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Use SSLSocket with custom TrustManager</li><li>Extract SPKI hash</li><li>Implement pinning policy</li><li>Set up mitmproxy in lab to test</li><li>Report detection</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Pin configuration file</li><li>Verbose handshake info</li><li>MITM detection alert</li><li>TLS version/cipher display</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Chain of trust and its weaknesses</li><li>Lab MITM setup and results</li><li>Ethics note</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6 w7" data-text="chat over udp with reliability layer a chat application that runs over udp but adds its own acks, retransmissions and ordering, compared with a tcp version. java">
+ <header><span class="pid">B28</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Chat over UDP with Reliability Layer</h3>
+ <p class="summ">A chat application that runs over UDP but adds its own ACKs, retransmissions and ordering, compared with a TCP version.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design reliability header</li><li>Implement per-peer sequence numbers and ACKs</li><li>Implement retransmission timer</li><li>Order delivery</li><li>Compare with TCP chat under loss</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Group chat</li><li>Delivery status indicators</li><li>Loss simulation slider</li><li>Statistics</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Why rebuild TCP features</li><li>Experiment results</li><li>Head-of-line blocking discussion</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3" data-text="web server log analyzer and visualizer a tool that parses apache/nginx access logs, computes status code distribution, top resources, bandwidth and visitors, with charts. java or python">
+ <header><span class="pid">B29</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span></header>
+ <h3>Web Server Log Analyzer and Visualizer</h3>
+ <p class="summ">A tool that parses Apache/Nginx access logs, computes status code distribution, top resources, bandwidth and visitors, with charts.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Parse Common/Combined Log Format</li><li>Aggregate statistics</li><li>Detect suspicious patterns (scans, 404 floods)</li><li>Visualize results</li><li>Test on own server logs</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Log upload or path</li><li>Charts</li><li>Filters by date/status</li><li>HTML report export</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>HTTP status semantics</li><li>Findings on a real log</li><li>Privacy of logs</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w7" data-text="remote desktop lite (screen streaming) stream compressed screenshots from one machine to another over tcp and send back mouse/keyboard events. java">
+ <header><span class="pid">B30</span><span class="tierbadge">Grade 7–8</span><span class="wk">W7</span></header>
+ <h3>Remote Desktop Lite (Screen Streaming)</h3>
+ <p class="summ">Stream compressed screenshots from one machine to another over TCP and send back mouse/keyboard events.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture screen with Robot</li><li>Compress frames (JPEG) and send with length prefix</li><li>Receive and display frames</li><li>Send input events back</li><li>Measure frame rate and bandwidth</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Viewer and host apps</li><li>Quality/frame-rate settings</li><li>Input control toggle</li><li>Statistics overlay</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Protocol design</li><li>Bandwidth/latency measurements</li><li>Security considerations</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w5 w6" data-text="dns-based service health monitor a monitor that periodically resolves domains, checks tcp ports and http endpoints, records ttl changes and alerts on failures. java">
+ <header><span class="pid">B31</span><span class="tierbadge">Grade 7–8</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>DNS-Based Service Health Monitor</h3>
+ <p class="summ">A monitor that periodically resolves domains, checks TCP ports and HTTP endpoints, records TTL changes and alerts on failures.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement scheduled checks</li><li>Record DNS answers and TTL changes</li><li>Check port reachability and HTTP status</li><li>Alert via email (SMTP client)</li><li>Store history</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Config of targets</li><li>Status dashboard</li><li>Email alerts</li><li>History charts</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Monitoring design</li><li>Incident examples</li><li>DNS TTL and propagation</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w7" data-text="peer-to-peer file sharing (tracker-based) a tracker server lists which peers have which files; peers download files in chunks directly from other peers. java">
+ <header><span class="pid">B32</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Peer-to-Peer File Sharing (Tracker-Based)</h3>
+ <p class="summ">A tracker server lists which peers have which files; peers download files in chunks directly from other peers.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design tracker and peer protocols</li><li>Implement tracker registry</li><li>Implement chunked transfer between peers</li><li>Parallel download from multiple peers</li><li>Integrity check by hash</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Share folder</li><li>Search via tracker</li><li>Parallel chunks</li><li>Progress and speeds</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Client-server vs. P2P (Lecture 3 §2)</li><li>Distribution time analysis</li><li>Experiments</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w3 w7" data-text="protocol fuzzer for own servers a tool that sends malformed and boundary-case messages to the student&#x27;s own http/chat servers and reports crashes, hangs and wrong replies. java or python">
+ <header><span class="pid">B33</span><span class="tierbadge">Grade 7–8</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Protocol Fuzzer for Own Servers</h3>
+ <p class="summ">A tool that sends malformed and boundary-case messages to the student&#x27;s own HTTP/chat servers and reports crashes, hangs and wrong replies.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Define message grammars</li><li>Generate mutations (length, encoding, missing fields)</li><li>Detect crashes and timeouts</li><li>Minimize failing inputs</li><li>Fix found bugs</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Target config</li><li>Mutation strategies</li><li>Crash report</li><li>Replay of failing cases</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Testing methodology</li><li>Bugs found and fixes</li><li>Robustness principle discussion</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w6 w7" data-text="tcp socket options experimenter a tool that measures the effect of tcp_nodelay, so_rcvbuf/so_sndbuf, so_linger and keep-alive on latency and throughput. java or c">
+ <header><span class="pid">B34</span><span class="tierbadge">Grade 7–8</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>TCP Socket Options Experimenter</h3>
+ <p class="summ">A tool that measures the effect of TCP_NODELAY, SO_RCVBUF/SO_SNDBUF, SO_LINGER and keep-alive on latency and throughput.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review socket options (Week 7 §6.6)</li><li>Build client/server test harness</li><li>Measure small-message latency with/without Nagle</li><li>Measure throughput vs. buffer size under delay</li><li>Analyze SO_LINGER behaviour (RST vs FIN)</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Option toggles</li><li>Test scenarios</li><li>Results tables</li><li>Capture integration</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Nagle and delayed ACK interaction</li><li>Buffer size vs. BDP</li><li>Captures</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w4" data-text="http/2 frame inspector a tool that connects with http/2 (h2 over tls via alpn), sends requests on multiple streams and displays the frames (headers, data, settings, window_update). java or python">
+ <header><span class="pid">B35</span><span class="tierbadge">Grade 7–8</span><span class="wk">W4</span></header>
+ <h3>HTTP/2 Frame Inspector</h3>
+ <p class="summ">A tool that connects with HTTP/2 (h2 over TLS via ALPN), sends requests on multiple streams and displays the frames (HEADERS, DATA, SETTINGS, WINDOW_UPDATE).</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Review HTTP/2 framing</li><li>Negotiate ALPN h2</li><li>Implement frame reader/writer (HPACK via library)</li><li>Open several streams concurrently</li><li>Display frames in a timeline</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Target URL list</li><li>Frame log</li><li>Stream view</li><li>Comparison with HTTP/1.1 timing</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>HTTP/2 vs. HTTP/1.1 vs. HTTP/3</li><li>Frame examples</li><li>Head-of-line blocking at TCP level</li></ul></details>
+</article>
+<article class="card t2" data-tier="t2" data-weeks="w1 w5 w6" data-text="lab network inventory scanner a tool that discovers hosts in the lab subnet (icmp/arp table, tcp probes), resolves reverse dns and identifies services by banner. java">
+ <header><span class="pid">B36</span><span class="tierbadge">Grade 7–8</span><span class="wk">W1</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>Lab Network Inventory Scanner</h3>
+ <p class="summ">A tool that discovers hosts in the lab subnet (ICMP/ARP table, TCP probes), resolves reverse DNS and identifies services by banner.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Enumerate subnet addresses</li><li>Check reachability</li><li>Reverse DNS lookup (PTR)</li><li>Banner grabbing on common ports</li><li>Produce inventory report</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Subnet input (own lab only)</li><li>Host table</li><li>Service banners</li><li>Export</li></ul>
+   <p class="note">Plus the standard application package for Grade 7–8 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 7–8 structure (15–25 pages), with these project-specific sections/content:</p><ul><li>Methods and their limitations</li><li>Responsible use</li><li>Results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w6" data-text="reliable transport over udp with sliding window and congestion control a full user-space transport protocol over udp with connection setup, selective repeat, adaptive rto (rfc 6298), fast retransmit and reno-style congestion control, evaluated under netem. c or java">
+ <header><span class="pid">C01</span><span class="tierbadge">Grade 8–10</span><span class="wk">W6</span></header>
+ <h3>Reliable Transport over UDP with Sliding Window and Congestion Control</h3>
+ <p class="summ">A full user-space transport protocol over UDP with connection setup, Selective Repeat, adaptive RTO (RFC 6298), fast retransmit and Reno-style congestion control, evaluated under netem.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Write a protocol specification (header, handshake, teardown, FSM)</li><li>Implement connection management with 3-way handshake and FIN</li><li>Implement SR window, cumulative + selective ACKs</li><li>Implement RTO estimation, fast retransmit and cwnd/ssthresh</li><li>Evaluate throughput vs. delay/loss and compare with TCP via iperf3</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Library + file transfer demo</li><li>Live cwnd/RTT trace export</li><li>Configurable algorithms (fixed window / Reno)</li><li>Fairness test with two flows</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Full protocol RFC-style specification</li><li>Experimental evaluation with graphs and statistical repetition</li><li>Comparison with TCP and discussion of differences</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w5" data-text="recursive dns resolver from scratch a recursive resolver that starts from root hints, follows referrals, handles cname chains and glue records, caches with ttl and serves clients over udp/tcp. c or java">
+ <header><span class="pid">C02</span><span class="tierbadge">Grade 8–10</span><span class="wk">W5</span></header>
+ <h3>Recursive DNS Resolver from Scratch</h3>
+ <p class="summ">A recursive resolver that starts from root hints, follows referrals, handles CNAME chains and glue records, caches with TTL and serves clients over UDP/TCP.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement DNS message encoding/decoding with compression</li><li>Implement iterative resolution from root servers</li><li>Handle glue, out-of-bailiwick NS lookups and CNAME chains</li><li>Implement TTL cache including negative caching</li><li>Serve clients and compare performance with a public resolver</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Resolver daemon</li><li>Trace mode showing each referral (like dig +trace)</li><li>Cache inspector</li><li>Benchmark tool</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Resolution algorithm with diagrams</li><li>Performance and cache-hit measurements</li><li>Security: cache poisoning, source port randomization, DNSSEC overview</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w4 w7" data-text="http/1.1 web server with tls, virtual hosts and thread pool a production-style web server with tls (sni-based virtual hosts), keep-alive, chunked encoding, conditional get, range requests, compression and a configurable thread pool. java">
+ <header><span class="pid">C03</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W4</span><span class="wk">W7</span></header>
+ <h3>HTTP/1.1 Web Server with TLS, Virtual Hosts and Thread Pool</h3>
+ <p class="summ">A production-style web server with TLS (SNI-based virtual hosts), keep-alive, chunked encoding, conditional GET, range requests, compression and a configurable thread pool.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design modular architecture (listener, parser, router, handlers)</li><li>Implement HTTP/1.1 compliance features incl. Range and If-None-Match</li><li>Add TLS with keystore and SNI virtual hosts</li><li>Add gzip compression and caching headers</li><li>Benchmark against Nginx under load</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Config file (hosts, roots, certificates)</li><li>Thread pool and connection limits</li><li>Access and error logs</li><li>Admin status page</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Architecture and design patterns</li><li>RFC 9110/9112 compliance matrix</li><li>Benchmark and profiling results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w5" data-text="mail system: smtp + imap server with web client a complete small mail system: smtp receiving server with starttls and auth, imap4 server subset (login, list, select, fetch, store, search, expunge) and a webmail front-end. java">
+ <header><span class="pid">C04</span><span class="tierbadge">Grade 8–10</span><span class="wk">W5</span></header>
+ <h3>Mail System: SMTP + IMAP Server with Web Client</h3>
+ <p class="summ">A complete small mail system: SMTP receiving server with STARTTLS and AUTH, IMAP4 server subset (LOGIN, LIST, SELECT, FETCH, STORE, SEARCH, EXPUNGE) and a webmail front-end.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design storage (Maildir) and user database</li><li>Implement SMTP server with STARTTLS/AUTH</li><li>Implement IMAP subset with UID support</li><li>Implement webmail over HTTP using IMAP/SMTP as backend</li><li>Interoperability tests with Thunderbird</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Three integrated services</li><li>Thunderbird compatibility</li><li>Attachments via MIME</li><li>Admin user management</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>System architecture diagram</li><li>Protocol compliance tables</li><li>Security analysis (TLS, open relay, auth)</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4" data-text="ssh-like secure shell and port forwarding a simplified secure remote shell: diffie-hellman key exchange, host key verification, aes-gcm encrypted channel, public-key user auth, multiplexed channels for shell and port forwarding. java">
+ <header><span class="pid">C05</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span></header>
+ <h3>SSH-like Secure Shell and Port Forwarding</h3>
+ <p class="summ">A simplified secure remote shell: Diffie-Hellman key exchange, host key verification, AES-GCM encrypted channel, public-key user auth, multiplexed channels for shell and port forwarding.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design handshake and record format inspired by SSH transport layer</li><li>Implement ECDH key exchange and key derivation</li><li>Implement host key fingerprints (TOFU) and user public-key auth</li><li>Implement channel multiplexing (shell, exec, local forward)</li><li>Security testing and Wireshark validation</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Client and server</li><li>known_hosts handling</li><li>Interactive shell</li><li>Local port forwarding</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Cryptographic design and threat model</li><li>Comparison with SSH (RFC 4251–4254)</li><li>Known weaknesses of the implementation</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4 w5" data-text="content delivery network simulator a mini-cdn with an origin server, several edge caching proxies and a dns server that returns the nearest edge based on client network, with netem-emulated distances. java">
+ <header><span class="pid">C06</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span><span class="wk">W5</span></header>
+ <h3>Content Delivery Network Simulator</h3>
+ <p class="summ">A mini-CDN with an origin server, several edge caching proxies and a DNS server that returns the nearest edge based on client network, with netem-emulated distances.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement origin and edge caching servers (HTTP)</li><li>Implement DNS-based request routing</li><li>Emulate geography with netem delays</li><li>Implement cache invalidation API</li><li>Measure latency and origin load with/without CDN</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Origin, 3 edges, DNS router</li><li>Edge selection policies</li><li>Monitoring dashboard</li><li>Invalidation</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>CDN concepts (Lecture 4 §3.2)</li><li>Experimental results</li><li>Discussion of DNS TTL effects on routing</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w2 w3 w5 w6" data-text="network protocol analyzer (mini-wireshark) a gui packet analyzer with live capture and pcap files, dissectors for ethernet, arp, ipv4, icmp, tcp, udp, dns and http, display filters and tcp stream reassembly. java or c++">
+ <header><span class="pid">C07</span><span class="tierbadge">Grade 8–10</span><span class="wk">W2</span><span class="wk">W3</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>Network Protocol Analyzer (Mini-Wireshark)</h3>
+ <p class="summ">A GUI packet analyzer with live capture and pcap files, dissectors for Ethernet, ARP, IPv4, ICMP, TCP, UDP, DNS and HTTP, display filters and TCP stream reassembly.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C++ &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W3 · Web, HTTP, sockets in C, W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture with libpcap/pcap4j</li><li>Design pluggable dissector architecture</li><li>Implement dissectors and field tree</li><li>Implement display filter language</li><li>Implement Follow TCP Stream</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Packet list, details tree, hex pane</li><li>Filters (e.g. tcp.port == 80 &amp;&amp; ip.src == ...)</li><li>Stream reassembly</li><li>Statistics (protocol hierarchy, conversations)</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Architecture and parser design</li><li>Validation vs. Wireshark on reference captures</li><li>Performance analysis</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w6" data-text="tcp congestion control comparison testbed an automated testbed with network namespaces and netem that compares reno, cubic and bbr for throughput, fairness and latency under varying bdp and loss. linux (scripts) + python/java analysis">
+ <header><span class="pid">C08</span><span class="tierbadge">Grade 8–10</span><span class="wk">W6</span></header>
+ <h3>TCP Congestion Control Comparison Testbed</h3>
+ <p class="summ">An automated testbed with network namespaces and netem that compares Reno, CUBIC and BBR for throughput, fairness and latency under varying BDP and loss.</p>
+ <p class="meta"><b>Language/tools:</b> Linux (scripts) + Python/Java analysis &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Build topology with network namespaces and a bottleneck</li><li>Automate experiments (iperf3, ss -ti sampling)</li><li>Vary delay, bandwidth, loss, buffer size</li><li>Compute Jain&#x27;s fairness and bufferbloat latency</li><li>Statistical analysis with repetitions</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Reproducible scripts</li><li>Data collection pipeline</li><li>Plot generation</li><li>Results dashboard (HTML)</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Algorithms explained (Reno, CUBIC, BBR)</li><li>Experimental design and threats to validity</li><li>Results and conclusions</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w7" data-text="peer-to-peer file distribution with dht a decentralized p2p system using a kademlia-like dht for peer and content lookup, chunked parallel downloads and integrity verification. java">
+ <header><span class="pid">C09</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W7</span></header>
+ <h3>Peer-to-Peer File Distribution with DHT</h3>
+ <p class="summ">A decentralized P2P system using a Kademlia-like DHT for peer and content lookup, chunked parallel downloads and integrity verification.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement node IDs, XOR distance and routing table</li><li>Implement FIND_NODE/STORE/FIND_VALUE over UDP</li><li>Implement chunk transfer over TCP with hashes</li><li>Handle churn (nodes leaving)</li><li>Evaluate lookup hops and download time vs. peers</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Node application with CLI/GUI</li><li>Publish and download files</li><li>Network visualization</li><li>Simulation of 50+ nodes</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>DHT theory</li><li>Distribution time vs. client-server (Lecture 3)</li><li>Experimental evaluation</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4" data-text="http/2 server (subset) an http/2 server over tls with alpn supporting streams, hpack, flow control, settings, ping, goaway and server-side prioritization. java or go">
+ <header><span class="pid">C10</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span></header>
+ <h3>HTTP/2 Server (Subset)</h3>
+ <p class="summ">An HTTP/2 server over TLS with ALPN supporting streams, HPACK, flow control, SETTINGS, PING, GOAWAY and server-side prioritization.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Go &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Study RFC 9113 framing and stream states</li><li>Implement TLS + ALPN negotiation</li><li>Implement frame layer and stream state machine</li><li>Implement HPACK (static + dynamic table)</li><li>Test with curl --http2 and browsers, compare with HTTP/1.1</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Static file serving over h2</li><li>Flow control windows</li><li>Debug frame log</li><li>Benchmark</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Stream state machine</li><li>Compliance tests (h2spec)</li><li>Performance comparison and HOL discussion</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4 w6" data-text="quic-inspired multiplexed transport over udp a udp-based transport with encrypted packets, multiple independent streams without head-of-line blocking, connection ids and loss recovery, carrying a simple http-like protocol. java or c">
+ <header><span class="pid">C11</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span><span class="wk">W6</span></header>
+ <h3>QUIC-Inspired Multiplexed Transport over UDP</h3>
+ <p class="summ">A UDP-based transport with encrypted packets, multiple independent streams without head-of-line blocking, connection IDs and loss recovery, carrying a simple HTTP-like protocol.</p>
+ <p class="meta"><b>Language/tools:</b> Java or C &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design packet and stream frame format</li><li>Implement 1-RTT handshake with key exchange and AEAD</li><li>Implement independent streams and per-stream ordering</li><li>Implement ACK ranges and loss detection</li><li>Compare with TCP+TLS under loss</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Client/server library</li><li>Demo file server with parallel streams</li><li>Connection migration demo (IP change)</li><li>Trace export</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Design rationale vs. QUIC (RFC 9000)</li><li>HOL blocking experiments</li><li>Security analysis</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w5 w6" data-text="nat router and firewall with netfilter-style rules a user-space nat gateway using tun interfaces that translates tcp/udp/icmp, tracks connections, supports port forwarding and stateful firewall rules. c (linux, tun/raw sockets) or java simulation">
+ <header><span class="pid">C12</span><span class="tierbadge">Grade 8–10</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>NAT Router and Firewall with Netfilter-Style Rules</h3>
+ <p class="summ">A user-space NAT gateway using TUN interfaces that translates TCP/UDP/ICMP, tracks connections, supports port forwarding and stateful firewall rules.</p>
+ <p class="meta"><b>Language/tools:</b> C (Linux, TUN/raw sockets) or Java simulation &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Set up namespaces and TUN devices</li><li>Parse and rewrite IP/TCP/UDP headers with checksum update</li><li>Implement connection tracking and timeouts</li><li>Implement rule engine (accept/drop, port forward)</li><li>Test web browsing and FTP through the gateway</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Gateway daemon</li><li>Rule config</li><li>Connection table viewer</li><li>Logging</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>NAT and conntrack design</li><li>FTP and NAT problem with active mode</li><li>Performance and correctness tests</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w5 w7" data-text="distributed chat system with federation multiple chat servers that federate (like email domains): users user@server, dns srv-based server discovery, server-to-server tls links and offline message storage. java">
+ <header><span class="pid">C13</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W5</span><span class="wk">W7</span></header>
+ <h3>Distributed Chat System with Federation</h3>
+ <p class="summ">Multiple chat servers that federate (like email domains): users user@server, DNS SRV-based server discovery, server-to-server TLS links and offline message storage.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W5 · Email, DNS, NAT, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design client-server and server-server protocols</li><li>Implement DNS SRV lookup for federation</li><li>Implement TLS server-to-server links</li><li>Implement offline storage and delivery</li><li>Test with 3 servers and 30 clients</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Server and GUI client</li><li>Federated messaging</li><li>Presence</li><li>Admin console</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Analogy with SMTP architecture</li><li>Protocol specs</li><li>Scalability and failure tests</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w2 w6" data-text="network emulator (user-space netem) a udp/tcp proxy that emulates delay, jitter, bandwidth limits, loss (bernoulli and gilbert-elliott), reordering and queue limits, validated against tc netem. c or java">
+ <header><span class="pid">C14</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Network Emulator (User-Space netem)</h3>
+ <p class="summ">A UDP/TCP proxy that emulates delay, jitter, bandwidth limits, loss (Bernoulli and Gilbert-Elliott), reordering and queue limits, validated against tc netem.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design pipeline: queue, scheduler, impairments</li><li>Implement token-bucket bandwidth limit and finite buffer</li><li>Implement loss models and reordering</li><li>Validate delay distribution and queueing behaviour</li><li>Use it to reproduce Lecture 2 queueing results</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Config profiles (3G, satellite, Wi-Fi)</li><li>Live statistics</li><li>Scriptable API</li><li>Trace output</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Queueing theory link (traffic intensity, Little&#x27;s law)</li><li>Validation experiments</li><li>Comparison with tc netem</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w6 w7" data-text="load balancer with health checks a layer-4/layer-7 load balancer supporting round-robin, least-connections and consistent hashing, with active health checks and sticky sessions via cookies. java">
+ <header><span class="pid">C15</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Load Balancer with Health Checks</h3>
+ <p class="summ">A layer-4/layer-7 load balancer supporting round-robin, least-connections and consistent hashing, with active health checks and sticky sessions via cookies.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement L4 TCP proxying with NIO</li><li>Implement L7 HTTP routing</li><li>Implement algorithms and health checks</li><li>Implement cookie-based stickiness</li><li>Benchmark and fault-injection tests</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Config of backends</li><li>Algorithm switch at runtime</li><li>Stats dashboard</li><li>Graceful backend removal</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Architecture</li><li>Algorithm comparison results</li><li>Failure scenarios</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w7" data-text="event-driven server with java nio a non-blocking server framework using selector, with pluggable protocols (echo, http, chat), compared with thread-per-client under 10,000 connections. java">
+ <header><span class="pid">C16</span><span class="tierbadge">Grade 8–10</span><span class="wk">W7</span></header>
+ <h3>Event-Driven Server with Java NIO</h3>
+ <p class="summ">A non-blocking server framework using Selector, with pluggable protocols (echo, HTTP, chat), compared with thread-per-client under 10,000 connections.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Study blocking vs. non-blocking I/O</li><li>Implement reactor pattern with Selector</li><li>Implement buffer management and framing</li><li>Implement protocols on top</li><li>Benchmark C10K scenario</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Framework library</li><li>Three protocol demos</li><li>Benchmark client</li><li>Metrics</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Reactor pattern and design</li><li>Performance and memory comparison</li><li>Limits and tuning (ulimit, ephemeral ports)</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4" data-text="secure file transfer protocol implementation a file transfer protocol with tls 1.3 mutual authentication, resumable transfers, integrity checks, directory sync and bandwidth control — a modern replacement for ftp. java">
+ <header><span class="pid">C17</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span></header>
+ <h3>Secure File Transfer Protocol Implementation</h3>
+ <p class="summ">A file transfer protocol with TLS 1.3 mutual authentication, resumable transfers, integrity checks, directory sync and bandwidth control — a modern replacement for FTP.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Specify protocol (single connection, multiplexed control/data)</li><li>Implement mutual TLS with own CA</li><li>Implement resume by offset and chunk hashes</li><li>Implement directory operations</li><li>Compare with FTP, SFTP and SCP</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Client GUI and server</li><li>Certificate management tool</li><li>Resume after interruption</li><li>Transfer queue</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Design vs. FTP&#x27;s two connections</li><li>Security analysis</li><li>Benchmark</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w6 w7" data-text="real-time voice chat over udp voice calls over udp with rtp-like packets, jitter buffer, packet loss concealment and quality statistics (loss, jitter, latency). java">
+ <header><span class="pid">C18</span><span class="tierbadge">Grade 8–10</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Real-Time Voice Chat over UDP</h3>
+ <p class="summ">Voice calls over UDP with RTP-like packets, jitter buffer, packet loss concealment and quality statistics (loss, jitter, latency).</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture/playback audio with javax.sound</li><li>Packetize with sequence numbers and timestamps</li><li>Implement adaptive jitter buffer</li><li>Implement loss concealment</li><li>Measure quality under netem</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Call setup via TCP signaling</li><li>Voice over UDP</li><li>Live statistics</li><li>Codec choice (PCM/compressed)</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Why UDP for real-time</li><li>Jitter buffer design</li><li>Quality experiments (MOS estimate)</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w4" data-text="web application firewall (reverse proxy) a reverse proxy that inspects http requests and blocks common attacks (sqli, xss, path traversal) using a rule engine, with rate limiting and logging. java">
+ <header><span class="pid">C19</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W4</span></header>
+ <h3>Web Application Firewall (Reverse Proxy)</h3>
+ <p class="summ">A reverse proxy that inspects HTTP requests and blocks common attacks (SQLi, XSS, path traversal) using a rule engine, with rate limiting and logging.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement reverse proxy with keep-alive</li><li>Implement rule engine (regex + scoring)</li><li>Implement rate limiting (token bucket)</li><li>Build vulnerable test app</li><li>Evaluate detection rate and false positives</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Rule files</li><li>Block/monitor mode</li><li>Dashboard of blocked requests</li><li>Rate limit config</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>HTTP attack surface</li><li>Evaluation methodology and results</li><li>Limits (TLS, encodings)</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4 w5" data-text="dns over https proxy with privacy analysis a local dns stub that receives udp queries and forwards them via doh (rfc 8484), with caching, plus an analysis of what an on-path observer sees for udp dns vs. doh. java or python">
+ <header><span class="pid">C20</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span><span class="wk">W5</span></header>
+ <h3>DNS over HTTPS Proxy with Privacy Analysis</h3>
+ <p class="summ">A local DNS stub that receives UDP queries and forwards them via DoH (RFC 8484), with caching, plus an analysis of what an on-path observer sees for UDP DNS vs. DoH.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement UDP DNS listener</li><li>Implement DoH client (wire format over HTTP/2)</li><li>Add caching and failover</li><li>Capture and compare traffic</li><li>Measure latency overhead</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Stub resolver daemon</li><li>Provider selection</li><li>Statistics</li><li>Logging toggle</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>DNS privacy (Lecture 5 §8.5)</li><li>Traffic comparison captures</li><li>Latency results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w6 w7" data-text="iot telemetry system with mqtt-like broker a publish/subscribe broker with topics, wildcards, qos 0/1, retained messages and keep-alive, plus simulated sensor clients and a dashboard. java">
+ <header><span class="pid">C21</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>IoT Telemetry System with MQTT-like Broker</h3>
+ <p class="summ">A publish/subscribe broker with topics, wildcards, QoS 0/1, retained messages and keep-alive, plus simulated sensor clients and a dashboard.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design binary protocol (CONNECT, PUBLISH, SUBSCRIBE, PUBACK, PINGREQ)</li><li>Implement broker with topic tree</li><li>Implement QoS 1 with retransmission</li><li>Build sensor simulator and dashboard</li><li>Scale test with 1000 clients</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Broker</li><li>Sensor simulator</li><li>Web dashboard</li><li>Persistence of retained messages</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Pub/sub vs. client-server</li><li>Protocol spec</li><li>Scalability results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w2" data-text="traceroute and path mtu discovery tool with raw sockets a traceroute implementation using raw sockets with udp, icmp and tcp syn probes, as-number annotation, and path mtu discovery using df flag. c (linux)">
+ <header><span class="pid">C22</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W2</span></header>
+ <h3>Traceroute and Path MTU Discovery Tool with Raw Sockets</h3>
+ <p class="summ">A traceroute implementation using raw sockets with UDP, ICMP and TCP SYN probes, AS-number annotation, and path MTU discovery using DF flag.</p>
+ <p class="meta"><b>Language/tools:</b> C (Linux) &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement raw socket probe sending with TTL</li><li>Parse ICMP Time Exceeded and Destination Unreachable</li><li>Implement three probe methods</li><li>Implement PMTUD with DF bit</li><li>Compare paths and explain differences</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>CLI with options like traceroute</li><li>Per-hop RTT statistics</li><li>Path MTU result</li><li>JSON output</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>ICMP mechanisms</li><li>Comparison of probe types across firewalls</li><li>Network-of-networks analysis (Lecture 1 §6)</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w4 w7" data-text="collaborative text editor over websockets a real-time collaborative editor with own websocket implementation (handshake + framing per rfc 6455) and operational transformation or crdt for consistency. java">
+ <header><span class="pid">C23</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W4</span><span class="wk">W7</span></header>
+ <h3>Collaborative Text Editor over WebSockets</h3>
+ <p class="summ">A real-time collaborative editor with own WebSocket implementation (handshake + framing per RFC 6455) and operational transformation or CRDT for consistency.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement HTTP Upgrade and WebSocket framing</li><li>Implement document model with OT/CRDT</li><li>Implement presence and cursors</li><li>Handle reconnection and resync</li><li>Test with concurrent editors</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Browser client</li><li>Server</li><li>Document history</li><li>Multiple documents</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>WebSocket protocol analysis</li><li>Consistency algorithm</li><li>Latency and convergence tests</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w5" data-text="email security analyzer (spf, dkim, dmarc) a tool that parses raw emails, verifies dkim signatures, evaluates spf via dns lookups, checks dmarc alignment and traces the received path. java or python">
+ <header><span class="pid">C24</span><span class="tierbadge">Grade 8–10</span><span class="wk">W5</span></header>
+ <h3>Email Security Analyzer (SPF, DKIM, DMARC)</h3>
+ <p class="summ">A tool that parses raw emails, verifies DKIM signatures, evaluates SPF via DNS lookups, checks DMARC alignment and traces the Received path.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Parse headers and Received chain</li><li>Implement SPF evaluation (mechanisms, includes)</li><li>Implement DKIM verification (canonicalization, RSA)</li><li>Implement DMARC policy check</li><li>Test on a corpus of real and spoofed messages</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>.eml input</li><li>Verdict report</li><li>Received path visualization</li><li>Batch mode</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Email authentication standards</li><li>Evaluation results</li><li>Limits of each mechanism</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w2 w6" data-text="bufferbloat analyzer a testbed and tool that measures latency under load with different buffer sizes and queue disciplines (pfifo, fq_codel, cake), connecting queueing theory with practice. linux scripts + java/python">
+ <header><span class="pid">C25</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Bufferbloat Analyzer</h3>
+ <p class="summ">A testbed and tool that measures latency under load with different buffer sizes and queue disciplines (pfifo, fq_codel, cake), connecting queueing theory with practice.</p>
+ <p class="meta"><b>Language/tools:</b> Linux scripts + Java/Python &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Build bottleneck with namespaces and tc</li><li>Generate load (TCP bulk) and measure RTT concurrently</li><li>Vary buffer size and qdisc</li><li>Analyze delay distributions</li><li>Relate to traffic intensity and Little&#x27;s law</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Automation scripts</li><li>Measurement tool</li><li>Graphs</li><li>Report generator</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Theory of queueing delay and loss</li><li>Experimental results</li><li>Recommendations</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4 w7" data-text="mini distributed web cache with consistent hashing a cluster of caching proxies that share the url space using consistent hashing, supports node join/leave and replication of hot objects. java">
+ <header><span class="pid">C26</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span><span class="wk">W7</span></header>
+ <h3>Mini Distributed Web Cache with Consistent Hashing</h3>
+ <p class="summ">A cluster of caching proxies that share the URL space using consistent hashing, supports node join/leave and replication of hot objects.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement consistent hashing ring with virtual nodes</li><li>Implement inter-node forwarding</li><li>Implement membership with heartbeats</li><li>Implement hot-object replication</li><li>Evaluate hit ratio and rebalancing cost</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Cache nodes</li><li>Admin view of ring</li><li>Workload generator</li><li>Metrics</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Design</li><li>Experiments with Zipf workloads</li><li>Comparison with single cache</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w2 w6" data-text="network intrusion detection system a signature- and anomaly-based nids: captures packets, reassembles tcp streams, applies snort-like rules and detects port scans and syn floods. c or java">
+ <header><span class="pid">C27</span><span class="tierbadge">Grade 8–10</span><span class="wk">W2</span><span class="wk">W6</span></header>
+ <h3>Network Intrusion Detection System</h3>
+ <p class="summ">A signature- and anomaly-based NIDS: captures packets, reassembles TCP streams, applies Snort-like rules and detects port scans and SYN floods.</p>
+ <p class="meta"><b>Language/tools:</b> C or Java &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Capture and decode packets</li><li>Implement TCP reassembly</li><li>Implement rule parser and matcher</li><li>Implement scan/flood detectors (thresholds)</li><li>Evaluate on test traffic in an isolated lab</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Rule files</li><li>Alert log and dashboard</li><li>pcap replay mode</li><li>Performance stats</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>NIDS architecture</li><li>Detection evaluation (TPR/FPR)</li><li>Ethics and isolated lab setup</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w3 w4 w6" data-text="http adaptive video streaming system a dash-like streaming system: server with multiple bitrate segments and manifest, client with throughput- and buffer-based bitrate adaptation, evaluated under varying bandwidth. java + web client">
+ <header><span class="pid">C28</span><span class="tierbadge">Grade 8–10</span><span class="wk">W3</span><span class="wk">W4</span><span class="wk">W6</span></header>
+ <h3>HTTP Adaptive Video Streaming System</h3>
+ <p class="summ">A DASH-like streaming system: server with multiple bitrate segments and manifest, client with throughput- and buffer-based bitrate adaptation, evaluated under varying bandwidth.</p>
+ <p class="meta"><b>Language/tools:</b> Java + web client &nbsp;·&nbsp; <b>Course weeks:</b> W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Segment video at several bitrates (ffmpeg)</li><li>Implement HTTP server and manifest</li><li>Implement client with adaptation algorithms</li><li>Emulate bandwidth changes with tc</li><li>Measure rebuffering and quality switches</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Streaming server</li><li>Player with stats overlay</li><li>Two adaptation algorithms</li><li>Experiment scripts</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Why HTTP/TCP for video</li><li>Algorithm design</li><li>QoE evaluation</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w2" data-text="simulator of a network of routers (store-and-forward) a discrete-event simulator of packets traversing a topology of routers with finite queues, measuring delay components, loss and throughput, validated against analytical formulas. java">
+ <header><span class="pid">C29</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W2</span></header>
+ <h3>Simulator of a Network of Routers (Store-and-Forward)</h3>
+ <p class="summ">A discrete-event simulator of packets traversing a topology of routers with finite queues, measuring delay components, loss and throughput, validated against analytical formulas.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement discrete-event engine</li><li>Model links (rate, propagation) and queues</li><li>Generate traffic (Poisson, bursty)</li><li>Collect per-component delay statistics</li><li>Validate against M/M/1 and seminar problems</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Topology editor/file</li><li>Simulation run with progress</li><li>Statistics and graphs</li><li>Scenario comparison</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Simulation methodology</li><li>Validation results</li><li>Experiments on packet vs. circuit switching</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w4 w7" data-text="secure messaging app with end-to-end encryption a client-server messenger where the server only relays ciphertext: x25519 key agreement, aes-gcm, key fingerprint verification, offline delivery. java">
+ <header><span class="pid">C30</span><span class="tierbadge">Grade 8–10</span><span class="wk">W4</span><span class="wk">W7</span></header>
+ <h3>Secure Messaging App with End-to-End Encryption</h3>
+ <p class="summ">A client-server messenger where the server only relays ciphertext: X25519 key agreement, AES-GCM, key fingerprint verification, offline delivery.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W4 · Cookies, caching, HTTPS, SSH, FTP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design protocol and key directory</li><li>Implement key exchange and encryption</li><li>Implement fingerprint verification UI</li><li>Implement offline storage on server</li><li>Security review and captures</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Server relay</li><li>GUI client</li><li>Fingerprint/QR verification</li><li>Group chat (optional)</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Threat model</li><li>Comparison with TLS-only security</li><li>Analysis of metadata leakage</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w6" data-text="packet-level tcp implementation on tun a minimal tcp stack in user space over a tun device that can accept connections from the linux kernel: handshake, data transfer, acks, retransmission and teardown. c (linux)">
+ <header><span class="pid">C31</span><span class="tierbadge">Grade 8–10</span><span class="wk">W6</span></header>
+ <h3>Packet-Level TCP Implementation on TUN</h3>
+ <p class="summ">A minimal TCP stack in user space over a TUN device that can accept connections from the Linux kernel: handshake, data transfer, ACKs, retransmission and teardown.</p>
+ <p class="meta"><b>Language/tools:</b> C (Linux) &nbsp;·&nbsp; <b>Course weeks:</b> W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Set up TUN device and IP parsing</li><li>Implement TCP header parsing and checksum</li><li>Implement TCB and state machine (RFC 9293)</li><li>Implement send/receive buffers and retransmission</li><li>Interoperate with nc and curl</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>User-space stack</li><li>Echo and simple HTTP server on top</li><li>State trace log</li><li>Wireshark validation</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>State machine implementation</li><li>Interoperability tests</li><li>Limitations vs. kernel TCP</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w6 w7" data-text="network management via snmp-like agent and manager an agent exposing interface counters and system info over udp with a simple mib tree, and a manager that polls agents, graphs traffic and raises threshold alarms. java">
+ <header><span class="pid">C32</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Network Management via SNMP-like Agent and Manager</h3>
+ <p class="summ">An agent exposing interface counters and system info over UDP with a simple MIB tree, and a manager that polls agents, graphs traffic and raises threshold alarms.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design MIB tree and message format (GET, GETNEXT, SET, TRAP)</li><li>Implement agent reading OS counters</li><li>Implement manager with polling scheduler</li><li>Implement graphs and alarms</li><li>Test with 5 lab hosts</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Agent and manager</li><li>Traffic graphs per interface</li><li>Trap notifications</li><li>Config</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Network management concepts</li><li>Protocol spec</li><li>Results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w5" data-text="anycast/geo dns load distribution experiment an authoritative dns server for a lab zone that answers differently based on client subnet (geo-dns), weighted round-robin and health, with ttl impact analysis. java or python + scripts">
+ <header><span class="pid">C33</span><span class="tierbadge">Grade 8–10</span><span class="wk">W5</span></header>
+ <h3>Anycast/Geo DNS Load Distribution Experiment</h3>
+ <p class="summ">An authoritative DNS server for a lab zone that answers differently based on client subnet (geo-DNS), weighted round-robin and health, with TTL impact analysis.</p>
+ <p class="meta"><b>Language/tools:</b> Java or Python + scripts &nbsp;·&nbsp; <b>Course weeks:</b> W5 · Email, DNS, NAT</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Implement authoritative DNS server (SOA, NS, A, AAAA)</li><li>Implement policy engine (subnet, weights, health)</li><li>Integrate health checks</li><li>Simulate clients from different subnets</li><li>Measure convergence time vs. TTL</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Authoritative server</li><li>Policy config</li><li>Health monitor</li><li>Query log analytics</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Authoritative vs. recursive DNS</li><li>TTL trade-offs</li><li>Experiment results</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w4 w6 w7" data-text="remote lab automation platform a web platform that dispatches network experiments (ping, iperf3, captures) to agent machines over an authenticated tls channel and collects results. java + web">
+ <header><span class="pid">C34</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W4</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Remote Lab Automation Platform</h3>
+ <p class="summ">A web platform that dispatches network experiments (ping, iperf3, captures) to agent machines over an authenticated TLS channel and collects results.</p>
+ <p class="meta"><b>Language/tools:</b> Java + web &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W4 · Cookies, caching, HTTPS, SSH, FTP, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design agent protocol with mutual TLS</li><li>Implement job scheduling and result upload</li><li>Implement web UI with sessions</li><li>Implement experiment templates</li><li>Run multi-agent experiments</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Controller web app</li><li>Agents</li><li>Experiment templates</li><li>Results visualization</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Architecture and security</li><li>Example experiments</li><li>Scalability</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w2 w5 w6" data-text="covert-channel and protocol anomaly research study a research project in an isolated lab: implement a dns tunnelling proof-of-concept and a detector based on query entropy, length and frequency, evaluating detection accuracy. python/java + lab">
+ <header><span class="pid">C35</span><span class="tierbadge">Grade 8–10</span><span class="wk">W2</span><span class="wk">W5</span><span class="wk">W6</span></header>
+ <h3>Covert-Channel and Protocol Anomaly Research Study</h3>
+ <p class="summ">A research project in an isolated lab: implement a DNS tunnelling proof-of-concept and a detector based on query entropy, length and frequency, evaluating detection accuracy.</p>
+ <p class="meta"><b>Language/tools:</b> Python/Java + lab &nbsp;·&nbsp; <b>Course weeks:</b> W2 · Layering, queueing, Wireshark, W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Isolated lab with own DNS server</li><li>Implement data encoding in DNS queries (own domain only)</li><li>Collect normal and tunnelled traffic</li><li>Design detection features and classifier</li><li>Evaluate precision/recall</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>Encoder/decoder PoC (lab only)</li><li>Detector tool</li><li>Dataset</li><li>Evaluation scripts</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Ethics and isolation statement</li><li>Detection methodology</li><li>Results and defences</li></ul></details>
+</article>
+<article class="card t3" data-tier="t3" data-weeks="w1 w2 w3 w4 w5 w6 w7" data-text="complete course protocol suite demonstrator an integrated educational application with modules for each week: delay calculator, encapsulation viewer, http client, dns client, smtp sender, tcp state visualizer and socket playground, with quizzes. java">
+ <header><span class="pid">C36</span><span class="tierbadge">Grade 8–10</span><span class="wk">W1</span><span class="wk">W2</span><span class="wk">W3</span><span class="wk">W4</span><span class="wk">W5</span><span class="wk">W6</span><span class="wk">W7</span></header>
+ <h3>Complete Course Protocol Suite Demonstrator</h3>
+ <p class="summ">An integrated educational application with modules for each week: delay calculator, encapsulation viewer, HTTP client, DNS client, SMTP sender, TCP state visualizer and socket playground, with quizzes.</p>
+ <p class="meta"><b>Language/tools:</b> Java &nbsp;·&nbsp; <b>Course weeks:</b> W1 · Networks, edge &amp; core, delay, W2 · Layering, queueing, Wireshark, W3 · Web, HTTP, sockets in C, W4 · Cookies, caching, HTTPS, SSH, FTP, W5 · Email, DNS, NAT, W6 · Transport layer, TCP/UDP, W7 · Socket programming in Java</p>
+ <details open><summary>Plan / structure of work</summary><ol><li>Design modular GUI architecture</li><li>Implement one functional module per week</li><li>Integrate packet capture viewer for live examples</li><li>Add quizzes based on seminar problems</li><li>User testing with colleagues</li></ol></details>
+ <details open><summary>Deliverable 1 — Application</summary><ul><li>7 modules with live networking</li><li>Quiz engine with scoring</li><li>Built-in explanations</li><li>Installer</li></ul>
+   <p class="note">Plus the standard application package for Grade 8–10 (see tier requirements).</p></details>
+ <details open><summary>Deliverable 2 — Word document</summary>
+   <p class="note">Standard Grade 8–10 structure (25–40 pages), with these project-specific sections/content:</p><ul><li>Pedagogical design</li><li>Module-by-module technical description</li><li>User testing results</li></ul></details>
+</article></div>
+</div>
+<script>
+const q=document.getElementById('q'),tier=document.getElementById('tier'),week=document.getElementById('week'),cnt=document.getElementById('count');
+const cards=[...document.querySelectorAll('.card')];
+function f(){const s=q.value.trim().toLowerCase();let n=0;
+ cards.forEach(c=>{const ok=(!tier.value||c.dataset.tier===tier.value)&&(!week.value||c.dataset.weeks.split(' ').includes(week.value))&&(!s||c.dataset.text.includes(s)||c.textContent.toLowerCase().includes(s));
+ c.classList.toggle('hidden',!ok);if(ok)n++;});cnt.textContent=n+' of '+cards.length+' projects';}
+[q,tier,week].forEach(x=>x.addEventListener('input',f));f();
+let open=true;document.getElementById('tog').onclick=e=>{open=!open;document.querySelectorAll('.card details').forEach(d=>d.open=open);e.target.textContent=open?'Collapse details':'Expand details';};
+</script></body></html>
