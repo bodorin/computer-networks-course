@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Networks · Week 08 · The Network Layer and IPv4 Addressing</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#ffffff;--ink:#1b2233;--muted:#5a6478;--line:#dde2ec;
+  --accent:#2952e3;--accent-soft:#e9eeff;
+  --b:#16884a;--b-soft:#e5f5ec;--i:#b86e00;--i-soft:#fff3dd;--a:#7f33c9;--a-soft:#f2e7ff;
+  --code-bg:#111827;--code-ink:#e5e7eb;--warn:#b42318;--warn-soft:#fdeceb;--ok:#127a3f;--ok-soft:#e3f4ea;
+  --hl:#ffe58a;--shadow:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.05);
+}
+body.dark{
+  --bg:#0e1320;--panel:#161d2e;--ink:#e6e9f2;--muted:#9aa4ba;--line:#2a3349;
+  --accent:#7d9bff;--accent-soft:#1d2848;
+  --b:#4cc985;--b-soft:#12301f;--i:#f0b252;--i-soft:#3a2a0e;--a:#c18cff;--a-soft:#2c1a45;
+  --code-bg:#0a0f1a;--warn:#ff8a7a;--warn-soft:#3b1612;--ok:#5ed492;--ok-soft:#10301d;--hl:#6b5a12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,.mono{font-family:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;font-size:.92em}
+code{background:var(--accent-soft);padding:.05em .35em;border-radius:4px}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:100}
+header.top{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+header.top .inner{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;max-width:1500px;margin:0 auto}
+header.top .brand{font-weight:700;font-size:1rem}
+header.top .brand small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.tracks{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.tracks span{font-size:.8rem;color:var(--muted);margin-right:.2rem}
+.tracks button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:.35rem .75rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.85rem}
+.tracks button.on[data-track=b]{background:var(--b);color:#fff;border-color:var(--b)}
+.tracks button.on[data-track=i]{background:var(--i);color:#fff;border-color:var(--i)}
+.tracks button.on[data-track=a]{background:var(--a);color:#fff;border-color:var(--a)}
+.btn{border-radius:8px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:hover{filter:brightness(.96)}
+.btn:disabled{opacity:.5;cursor:default}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:1.5rem;max-width:1500px;margin:0 auto;padding:1.2rem}
+nav#toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;font-size:.86rem;padding:.8rem;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+nav#toc b{display:block;margin-bottom:.4rem}
+nav#toc a{display:block;text-decoration:none;color:var(--ink);padding:.18rem .4rem;border-radius:6px}
+nav#toc a.sub{padding-left:1.2rem;color:var(--muted);font-size:.82rem}
+nav#toc a.active{background:var(--accent-soft);color:var(--accent)}
+nav#toc a.gone{display:none}
+main{min-width:0}
+main section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow)}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .4rem}
+h2{font-size:1.5rem;margin:.2rem 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--line);scroll-margin-top:80px}
+h3{font-size:1.18rem;margin:1.4rem 0 .5rem;scroll-margin-top:80px}
+h4{margin:1rem 0 .4rem}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel));border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem}
+.hero .meta{color:var(--muted);font-size:.92rem}
+.lvl{position:relative;border-left:4px solid var(--line);padding:.6rem .9rem .6rem 1rem;margin:.9rem 0;border-radius:0 10px 10px 0}
+.lvl::before{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;padding:.08rem .5rem;border-radius:999px;margin-bottom:.35rem;color:#fff}
+.lvl[data-level=b]{border-color:var(--b);background:var(--b-soft)}
+.lvl[data-level=b]::before{content:"BEGINNER";background:var(--b)}
+.lvl[data-level=i]{border-color:var(--i);background:var(--i-soft)}
+.lvl[data-level=i]::before{content:"INTERMEDIATE";background:var(--i)}
+.lvl[data-level=a]{border-color:var(--a);background:var(--a-soft)}
+.lvl[data-level=a]::before{content:"ADVANCED";background:var(--a)}
+.lvl.plain{background:transparent}
+.hidden-lvl{display:none!important}
+.callout{border:1px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin:.9rem 0;background:var(--panel)}
+.callout.note{border-left:5px solid var(--accent)}
+.callout.tip{border-left:5px solid var(--ok);background:var(--ok-soft)}
+.callout.warn{border-left:5px solid var(--warn);background:var(--warn-soft)}
+.callout.key{border-left:5px solid var(--i);background:var(--i-soft)}
+.callout > b:first-child{display:block;margin-bottom:.2rem}
+table.data{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.92rem;background:var(--panel)}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--accent-soft)}
+table.data tr:nth-child(even) td{background:rgba(127,127,127,.04)}
+.scroll{overflow-x:auto}
+pre.code{position:relative;background:var(--code-bg);color:var(--code-ink);padding:.9rem 1rem;border-radius:10px;overflow:auto;font-size:.85rem;line-height:1.5}
+pre.code code{background:none;padding:0;color:inherit}
+pre.code .copy{position:absolute;top:.4rem;right:.4rem;font-size:.72rem;padding:.15rem .5rem;border-radius:6px;border:1px solid #475569;background:#1f2937;color:#e5e7eb;cursor:pointer}
+.c-k{color:#93c5fd}.c-s{color:#fca5a5}.c-c{color:#94a3b8;font-style:italic}.c-n{color:#fcd34d}
+.tool{border:2px solid var(--accent);border-radius:14px;padding:1rem 1.2rem;margin:1.1rem 0;background:var(--panel)}
+.tool > .tt{font-weight:700;color:var(--accent);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:center}
+.tool > .tt::before{content:"⚙";font-size:1.1rem}
+.tool label{font-size:.88rem;color:var(--muted);margin-right:.3rem}
+.tool input[type=text],.tool input[type=number],.tool select,.tool textarea{font:inherit;font-family:"JetBrains Mono",Consolas,monospace;font-size:.92rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tool textarea{width:100%;min-height:90px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.4rem 0}
+.out{margin-top:.6rem;font-size:.92rem}
+.out .err{color:var(--warn);font-weight:600}
+.out .ok{color:var(--ok);font-weight:600}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.92rem}
+.kv div:nth-child(odd){color:var(--muted)}
+.kv div:nth-child(even){font-family:"JetBrains Mono",Consolas,monospace}
+.bitrow{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:.3rem 0}
+.bit{width:30px;height:34px;border-radius:6px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;cursor:pointer;user-select:none;background:var(--bg)}
+.bit.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bit small{font-size:.55rem;opacity:.75}
+.bits-net{background:var(--b-soft)!important;color:var(--b)!important}
+.bits-host{background:var(--i-soft)!important;color:var(--i)!important}
+.binline{font-family:monospace;letter-spacing:.04em}
+.binline .n{color:var(--b);font-weight:700}
+.binline .h{color:var(--i);font-weight:700}
+.binline .s{color:var(--a);font-weight:700}
+details.sol{border:1px dashed var(--line);border-radius:10px;padding:.45rem .8rem;margin:.6rem 0;background:var(--panel)}
+details.sol summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.sol[open]{background:var(--bg)}
+.problem{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.9rem 0;background:var(--panel)}
+.problem > .ph{font-weight:700;margin-bottom:.3rem}
+.q{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.8rem 0;background:var(--panel)}
+.q.lvl{border-left-width:4px}
+.qhead{font-weight:600;margin-bottom:.5rem}
+.qnum{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 .45rem;margin-right:.3rem;font-size:.85rem}
+.opts{display:grid;gap:.35rem}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:.45rem .7rem;border-radius:8px;cursor:pointer;font:inherit}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.exp{margin-top:.5rem;font-size:.92rem;padding:.5rem .7rem;background:var(--accent-soft);border-radius:8px}
+.qscore{position:sticky;bottom:10px;margin-top:1rem;background:var(--accent);color:#fff;padding:.5rem 1rem;border-radius:10px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.qscore button{background:#fff;color:var(--accent);border:0;border-radius:6px;padding:.2rem .6rem;cursor:pointer}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:.8rem 0}
+.roadmap .wk{border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;background:var(--panel);font-size:.86rem}
+.roadmap .wk b{display:block;font-size:.95rem;margin-bottom:.2rem}
+.roadmap .wk.cur{border:2px solid var(--accent);background:var(--accent-soft)}
+.roadmap .wk ul{margin:.3rem 0 0;padding-left:1.1rem}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.obj > div{border-radius:12px;padding:.7rem .9rem;font-size:.9rem}
+.obj .ob{background:var(--b-soft);border:1px solid var(--b)}
+.obj .oi{background:var(--i-soft);border:1px solid var(--i)}
+.obj .oa{background:var(--a-soft);border:1px solid var(--a)}
+.obj h4{margin:.1rem 0 .3rem}
+.obj ul{margin:0;padding-left:1.1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.pill{display:inline-block;padding:.05rem .5rem;border-radius:999px;font-size:.78rem;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.bar{display:flex;height:42px;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:.5rem 0;font-size:.7rem}
+.bar > div{display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;white-space:nowrap;border-right:1px solid rgba(255,255,255,.5)}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;font-size:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.3rem}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.hdr-grid{display:grid;grid-template-columns:repeat(32,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.74rem;margin:.6rem 0}
+.hdr-grid .bitscale{background:var(--bg);text-align:center;color:var(--muted);font-size:.62rem;border-right:1px solid var(--line)}
+.hdr-grid .f{border:1px solid var(--line);padding:.45rem .2rem;text-align:center;cursor:pointer;background:var(--accent-soft);transition:background .15s}
+.hdr-grid .f:hover,.hdr-grid .f.sel{background:var(--hl)}
+.checklist label{display:block;padding:.2rem 0}
+.glossary dt{font-weight:700;margin-top:.5rem}
+.glossary dd{margin:0 0 .3rem 1rem;color:var(--muted)}
+svg text{font-family:"Segoe UI",system-ui,sans-serif}
+.small{font-size:.85rem;color:var(--muted)}
+.tag-b,.tag-i,.tag-a{font-size:.7rem;font-weight:700;padding:.05rem .4rem;border-radius:999px;color:#fff}
+.tag-b{background:var(--b)}.tag-i{background:var(--i)}.tag-a{background:var(--a)}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1rem}
+.drill-ok{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.drill-bad{background:var(--warn-soft)!important;border-color:var(--warn)!important}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}nav#toc{position:relative;top:0;max-height:none}.roadmap,.obj{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:600px){.roadmap,.obj{grid-template-columns:1fr}main section.chapter{padding:1rem}}
+@media print{header.top,nav#toc,#progress,.tool{display:none}.layout{display:block}details.sol{display:block}details.sol>*{display:block}.hidden-lvl{display:block!important}}
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="top"><div class="inner">
+<div class="brand">Computer Networks · Week 08 · Course + Seminar + Lab<small>Chapter 4 — The Network Layer: Addressing, the Internet Protocol and Routing</small></div>
+<div class="tracks"><span>Learning track:</span>
+<button type="button" data-track="b" title="Show only beginner material">Beginner</button>
+<button type="button" data-track="i" title="Beginner + intermediate material">Intermediate</button>
+<button type="button" data-track="a" title="Everything: beginner + intermediate + advanced">Advanced (all)</button>
+<button type="button" class="btn" id="themeBtn" title="Toggle dark / light theme">◐ Theme</button>
+</div></div></header>
+<div class="layout">
+<nav id="toc"><b>Contents</b></nav>
+<main>
+<div class="hero">
+  <div class="meta">Chapter 4 · The Network Layer · Part 1 of 4 · 2 hours (course 50' + seminar 35' + lab 35')</div>
+  <h1>The Network Layer and IPv4 Logical Addressing</h1>
+  <p>This lesson opens the network-layer chapter. You will see what the network layer does and why the Internet needs <em>logical</em> addresses on top of the physical ones. Then comes the structure of an IPv4 address and the historical class system (A–E). After that: the special and private address blocks, the subnet mask and the bitwise AND that extracts a network address. The lesson ends with Java's <code>InetAddress</code> class, which applications use to work with IP addresses and hostnames.</p>
+  <p class="small">Use the <b>Learning track</b> buttons at the top to filter the content. <span class="tag-b">BEGINNER</span> shows the essentials. <span class="tag-i">INTERMEDIATE</span> adds mechanisms and calculations. <span class="tag-a">ADVANCED</span> adds standards details, edge cases and design reasoning. The levels build on each other, so the Advanced track shows everything.</p>
+</div>
+
+<section class="chapter">
+  <h2 id="roadmap">0. Chapter roadmap and learning outcomes</h2>
+  <p>Chapter 4 runs over four 2-hour sessions. Each session is self-contained but builds on the previous one.</p>
+  <div class="roadmap"><div class="wk cur"><b>Week 08 · Network layer & IPv4 addressing <span class="pill">you are here</span></b><ul><li>Role of the network layer: forwarding vs routing</li><li>Logical vs physical addressing</li><li>IPv4 structure, binary, classes A–E</li><li>Special & private addresses</li><li>Subnet mask, AND, host count</li><li>Java InetAddress class</li></ul></div><div class="wk"><b>Week 09 · Subnetting, VLSM, CIDR, supernetting</b><ul><li>FLSM subnetting & magic number</li><li>Sizing by hosts / by subnets</li><li>VLSM design (largest first)</li><li>CIDR notation & allocation</li><li>Supernetting / route summarization</li><li>Longest prefix match</li></ul></div><div class="wk"><b>Week 10 · The Internet Protocol: IPv4 & IPv6</b><ul><li>IPv4 header, checksum, TTL</li><li>Fragmentation, MTU, PMTUD</li><li>ICMP, ARP, DHCP, NAT</li><li>IPv6 addresses, types, EUI-64</li><li>IPv6 header, NDP, SLAAC</li><li>IPv4→IPv6 transition</li></ul></div><div class="wk"><b>Week 11 · Routing in IP networks</b><ul><li>Routing table, LPM, AD, metric</li><li>Static & default routing</li><li>Algorithm classification</li><li>Dijkstra & Bellman-Ford</li><li>Distance-vector (RIP) vs link-state (OSPF)</li><li>IGP vs EGP, BGP</li></ul></div></div>
+  <h3 id="outcomes">Learning outcomes for this week</h3>
+  <div class="obj">
+    <div class="ob"><h4>Beginner</h4><ul>
+      <li>Explain what the network layer does and name its two key functions.</li>
+      <li>Tell a MAC address from an IP address.</li>
+      <li>Convert an IPv4 address between dotted decimal and binary.</li>
+      <li>Identify the class of an address and its default mask.</li>
+      <li>Recognise private, loopback and broadcast addresses.</li></ul></div>
+    <div class="oi"><h4>Intermediate</h4><ul>
+      <li>Apply the bitwise AND to find the network address.</li>
+      <li>Compute the broadcast address, the host range and the host count.</li>
+      <li>Decide whether two hosts are on the same network.</li>
+      <li>Use <code>InetAddress</code> to resolve names and inspect addresses.</li></ul></div>
+    <div class="oa"><h4>Advanced</h4><ul>
+      <li>Argue why classful addressing failed and what replaced it.</li>
+      <li>Explain the special cases: /31, /32, the wildcard mask, CGNAT space.</li>
+      <li>Handle Java's signed bytes, DNS caching, <code>NetworkInterface</code> and prefix lengths.</li>
+      <li>Relate the data plane and control plane to SDN.</li></ul></div>
+  </div>
+  <div class="callout note"><b>Prerequisites</b>Layered models (OSI and TCP/IP), the data link layer and MAC addresses, and binary numbers (powers of 2). A short binary refresher is included below.</div>
+</section>
+
+<section class="chapter">
+  <h2 id="netlayer">1. The network layer: role and services</h2>
+
+  <div class="lvl" data-level="b">
+    <h3 id="where">1.1 Where the network layer sits</h3>
+    <p>The <b>network layer</b> is layer 3 of the OSI model. In TCP/IP it is called the <b>Internet layer</b>. Its job is to carry data from a <em>source host</em> to a <em>destination host</em> across many interconnected networks, possibly on the other side of the planet. The data link layer only moves frames across a single link or LAN; the network layer works <b>end-to-end</b>, across the whole path.</p>
+    <table class="data">
+      <tr><th>Layer (TCP/IP)</th><th>PDU name</th><th>Addresses used</th><th>Scope</th></tr>
+      <tr><td>Application</td><td>message</td><td>hostnames (e.g. <code>www.example.com</code>)</td><td>process to process</td></tr>
+      <tr><td>Transport</td><td>segment (TCP) / datagram (UDP)</td><td>port numbers</td><td>process to process</td></tr>
+      <tr><td><b>Internet (network)</b></td><td><b>packet / datagram</b></td><td><b>IP addresses (logical)</b></td><td><b>host to host, across networks</b></td></tr>
+      <tr><td>Link</td><td>frame</td><td>MAC addresses (physical)</td><td>one hop (one link / LAN)</td></tr>
+    </table>
+    <p><b>Encapsulation:</b> the sender's network layer takes a transport segment, adds an IP header (source IP, destination IP, TTL, protocol and so on) and passes the resulting <em>IP packet</em> to the link layer, which wraps it in a frame. Every router along the path removes the frame, looks at the IP header, decides where to send the packet next and wraps it in a <em>new</em> frame for the next link.</p>
+    <div class="callout tip"><b>Analogy</b>An IP packet is a letter with a destination postal address. The postal network (routers) moves it from sorting centre to sorting centre. Each local delivery van (a link) uses a different, local identifier, such as a van number or street slot. That local identifier plays the role of the MAC address.</div>
+  </div>
+
+  <div class="lvl" data-level="b">
+    <h3 id="functions">1.2 The two key functions: forwarding and routing</h3>
+    <div class="grid2">
+      <div class="callout key"><b>Forwarding (data plane)</b>A <em>local</em> action inside one router. When a packet arrives on an input interface, the router looks up its destination address in the <b>forwarding table</b> and moves the packet to the right output interface. It happens per packet, in nanoseconds, usually in hardware.</div>
+      <div class="callout key"><b>Routing (control plane)</b>A <em>network-wide</em> process that decides the <b>path</b> packets take from source to destination. Routing algorithms and protocols (Week 11) compute and fill in the forwarding tables. It works on a timescale of seconds and is usually done in software.</div>
+    </div>
+    <p>Road-trip analogy: <em>forwarding</em> is choosing the right exit at one interchange; <em>routing</em> is planning the whole route from Bucharest to Vienna.</p>
+  </div>
+
+  <div class="lvl" data-level="i">
+    <h3 id="service">1.3 The service model: best-effort datagrams</h3>
+    <p>The Internet's network layer offers a single, very simple <b>best-effort</b> service. It makes no guarantees that packets arrive, that they arrive in order, about delay or about bandwidth. Each packet is a <b>datagram</b>, routed on its own using its destination address; no connection is set up beforehand. Reliability, if needed, is added above, by TCP.</p>
+    <table class="data">
+      <tr><th></th><th>Datagram network (IP)</th><th>Virtual-circuit network (ATM, X.25, Frame Relay; partially MPLS)</th></tr>
+      <tr><td>Connection setup</td><td>none</td><td>required before data flows</td></tr>
+      <tr><td>Router state</td><td>no per-flow state</td><td>per-circuit state in every router</td></tr>
+      <tr><td>Addressing</td><td>every packet carries the full destination address</td><td>packets carry a short VC identifier</td></tr>
+      <tr><td>Path</td><td>can differ per packet</td><td>fixed for the circuit's lifetime</td></tr>
+      <tr><td>Robustness</td><td>a router failure only loses packets in transit; routing reroutes</td><td>all circuits through a failed router are torn down</td></tr>
+      <tr><td>QoS</td><td>hard (best effort)</td><td>easier (resources reserved per circuit)</td></tr>
+    </table>
+    <p>Why the Internet chose datagrams: simplicity at the core (the "dumb network, smart end-hosts" principle, also called the <em>end-to-end argument</em>), robustness to failures, and easy interconnection of very different link technologies ("IP over everything").</p>
+  </div>
+
+  <div class="lvl" data-level="a">
+    <h3 id="sdn">1.4 Data plane, control plane and SDN</h3>
+    <p>In traditional routers the control plane is <b>distributed</b>: every router runs routing protocols (OSPF, BGP and others) and computes its own table. In <b>Software-Defined Networking (SDN)</b> the control plane is <b>logically centralised</b> in a controller, which installs flow tables into simple switches through a southbound API such as OpenFlow. OpenFlow generalises forwarding into <em>match + action</em>: a switch can match on many header fields (MAC, IP, ports, VLAN) and then forward, drop, rewrite or send the packet to the controller. Destination-based IP forwarding is the special case that matches only on the destination IP prefix.</p>
+    <p>Other network-layer services that exist in principle but are not part of Internet best effort: guaranteed delivery, bounded delay, in-order delivery, minimum bandwidth, security. IntServ/RSVP and DiffServ (the DSCP field, Week 10) add QoS on top of IP.</p>
+  </div>
+
+  <div class="lvl" data-level="b">
+    <h3 id="logical">1.5 Logical vs physical addressing</h3>
+    <table class="data">
+      <tr><th></th><th>MAC (physical / hardware) address</th><th>IP (logical) address</th></tr>
+      <tr><td>Layer</td><td>2 (data link)</td><td>3 (network)</td></tr>
+      <tr><td>Size</td><td>48 bits, e.g. <code>3C:52:82:1A:9F:07</code></td><td>IPv4: 32 bits, e.g. <code>192.168.1.10</code>; IPv6: 128 bits</td></tr>
+      <tr><td>Assigned by</td><td>manufacturer (burned into the NIC, although it can be changed)</td><td>network administrator, DHCP or autoconfiguration</td></tr>
+      <tr><td>Structure</td><td><b>flat</b>: OUI (vendor) + serial, says nothing about location</td><td><b>hierarchical</b>: network part + host part, so it encodes <em>where</em> the host is</td></tr>
+      <tr><td>Changes when the device moves?</td><td>no</td><td>yes (a new network means a new address)</td></tr>
+      <tr><td>Scope of use</td><td>within one link / broadcast domain</td><td>end-to-end, across the Internet</td></tr>
+    </table>
+    <p><b>Why both?</b> Routers cannot keep an entry for every MAC address in the world; flat addresses do not <em>aggregate</em>. Hierarchical IP addresses let one routing entry such as "all of 81.180.0.0/16 goes that way" cover thousands of hosts. Inside the final LAN, though, frames must still be delivered to a specific NIC, so the MAC is needed for the last hop. <b>ARP</b> (Week 10) maps IP addresses to MAC addresses.</p>
+    <div class="callout note"><b>Key fact</b>Along a path, the <b>source and destination IP addresses stay the same</b> (unless NAT intervenes). The <b>MAC addresses change at every hop</b>.</div>
+  </div>
+
+  <div class="lvl" data-level="b">
+    <h3 id="v4v6">1.6 IPv4 and IPv6 at a glance</h3>
+    <table class="data">
+      <tr><th></th><th>IPv4</th><th>IPv6</th></tr>
+      <tr><td>Address length</td><td>32 bits, about 4.3 × 10<sup>9</sup> addresses</td><td>128 bits, about 3.4 × 10<sup>38</sup> addresses</td></tr>
+      <tr><td>Notation</td><td>dotted decimal: <code>203.0.113.25</code></td><td>hexadecimal groups: <code>2001:db8::25</code></td></tr>
+      <tr><td>Standard</td><td>RFC 791 (1981)</td><td>RFC 8200 (2017; originally RFC 2460, 1998)</td></tr>
+      <tr><td>Broadcast</td><td>yes</td><td>no (multicast instead)</td></tr>
+      <tr><td>Configuration</td><td>manual or DHCP</td><td>manual, SLAAC, DHCPv6</td></tr>
+    </table>
+    <p>This week covers IPv4 addressing. IPv6 addressing and both protocols' headers come in Week 10.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="ipv4">2. The IPv4 address</h2>
+
+  <div class="lvl" data-level="b">
+    <h3 id="structure">2.1 Structure: 32 bits, 4 octets</h3>
+    <p>An IPv4 address is a <b>32-bit</b> number. For humans it is written in <b>dotted-decimal notation</b>: four <b>octets</b> (8-bit groups), each written in decimal from 0 to 255 and separated by dots.</p>
+    <pre class="code"><code>Binary : 11000000 10101000 00000001 00001010
+Decimal:   192   .  168   .   1    .  10      →  192.168.1.10</code></pre>
+    <p>The total number of IPv4 addresses is 2<sup>32</sup> = 4,294,967,296. The pool held by IANA was exhausted in February 2011, and the Regional Internet Registries (RIPE NCC for Europe, ARIN, APNIC, LACNIC, AFRINIC) have since run out of their ordinary pools. That shortage is the main driver of NAT, CIDR and IPv6.</p>
+  </div>
+
+  <div class="lvl" data-level="b">
+    <h3 id="binary">2.2 Binary refresher: positional weights</h3>
+    <p>Each bit position in an octet has a weight, a power of 2:</p>
+    <table class="data" style="max-width:560px;text-align:center"><tr><th>bit</th><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr><tr><th>weight</th><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr></table>
+    <p><b>Binary → decimal:</b> add the weights of the 1-bits: <code>10101000</code> = 128 + 32 + 8 = <b>168</b>.<br>
+    <b>Decimal → binary</b> (subtraction method): 200 ≥ 128, so write 1, leaving 72; 72 ≥ 64, 1, leaving 8; 8 &lt; 32, 0; 8 &lt; 16, 0; 8 ≥ 8, 1, leaving 0; then 0, 0, 0. Result: <code>11001000</code>.</p>
+    <div class="callout tip"><b>Patterns worth memorising (they appear in every mask)</b><code>10000000</code>=128, <code>11000000</code>=192, <code>11100000</code>=224, <code>11110000</code>=240, <code>11111000</code>=248, <code>11111100</code>=252, <code>11111110</code>=254, <code>11111111</code>=255.</div>
+    <div class="tool" id="tool-octet">
+      <div class="tt">Octet trainer: click bits or type a decimal value</div>
+      <div class="bitrow" id="octBits"></div>
+      <div class="row"><label>Decimal:</label><input type="number" id="octDec" min="0" max="255" value="168" style="width:90px"><span id="octSum" class="mono"></span></div>
+    </div>
+    <div class="tool" id="tool-conv">
+      <div class="tt">Full address converter (dotted decimal ⇄ binary)</div>
+      <div class="row"><label>Dotted decimal:</label><input type="text" id="cvDec" value="172.16.45.200" size="18"><button class="btn primary" id="cvGo1" type="button">→ binary</button></div>
+      <div class="row"><label>Binary (32 bits, dots and spaces optional):</label><input type="text" id="cvBin" size="42" value="00001010.00000001.00000010.00000011"><button class="btn primary" id="cvGo2" type="button">→ decimal</button></div>
+      <div class="out" id="cvOut"></div>
+    </div>
+  </div>
+
+  <div class="lvl" data-level="b">
+    <h3 id="nethost">2.3 Network part and host part</h3>
+    <p>Every IPv4 address is split into two parts:</p>
+    <ul>
+      <li><b>Network ID (prefix)</b>, the leftmost bits: identifies the network (the "street"). All hosts on the same network share it.</li>
+      <li><b>Host ID</b>, the remaining bits: identifies the interface within that network (the "house number").</li>
+    </ul>
+    <p>Where the split falls is given either by the <b>class</b> (historically) or by the <b>subnet mask / prefix length</b> (today). Note that an IP address identifies an <b>interface</b>, not a host: a router with three interfaces has three IP addresses, and a laptop with Wi-Fi and Ethernet has two.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="classes">3. Classful addressing (classes A–E)</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="classtable">3.1 The five classes</h3>
+    <p>The original IPv4 design (RFC 791, 1981) divided the address space into classes. The class is identified by the <b>first bits</b> of the first octet:</p>
+    <div class="scroll"><table class="data">
+      <tr><th>Class</th><th>Leading bits</th><th>First-octet range</th><th>Default mask (prefix)</th><th>Network / host bits</th><th>Number of networks</th><th>Hosts per network</th><th>Intended use</th></tr>
+      <tr><td><b>A</b></td><td><code>0</code></td><td>0–127 (1–126 usable)</td><td>255.0.0.0 (/8)</td><td>8 / 24</td><td>2<sup>7</sup> = 128 (126 usable)</td><td>2<sup>24</sup> − 2 = 16,777,214</td><td>very large organisations</td></tr>
+      <tr><td><b>B</b></td><td><code>10</code></td><td>128–191</td><td>255.255.0.0 (/16)</td><td>16 / 16</td><td>2<sup>14</sup> = 16,384</td><td>2<sup>16</sup> − 2 = 65,534</td><td>medium and large organisations</td></tr>
+      <tr><td><b>C</b></td><td><code>110</code></td><td>192–223</td><td>255.255.255.0 (/24)</td><td>24 / 8</td><td>2<sup>21</sup> = 2,097,152</td><td>2<sup>8</sup> − 2 = 254</td><td>small networks</td></tr>
+      <tr><td><b>D</b></td><td><code>1110</code></td><td>224–239</td><td>none</td><td>n/a</td><td>n/a</td><td>n/a</td><td>multicast groups</td></tr>
+      <tr><td><b>E</b></td><td><code>1111</code></td><td>240–255</td><td>none</td><td>n/a</td><td>n/a</td><td>n/a</td><td>reserved / experimental</td></tr>
+    </table></div>
+    <p>Why only 7 network bits in class A? The leading <code>0</code> is fixed, leaving 7 free bits. Likewise B has 16 − 2 = 14 free network bits and C has 24 − 3 = 21.</p>
+    <p>Networks 0.x.x.x and 127.x.x.x are reserved ("this network" and loopback), so class A has <b>126 usable</b> networks.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="analyzer">3.2 Identify class and type: interactive analyser</h3>
+    <div class="tool">
+      <div class="tt">IPv4 address analyser (classful view + special-purpose check)</div>
+      <div class="row"><label>IPv4 address:</label><input type="text" id="anIp" value="172.20.7.33" size="18"><button class="btn primary" type="button" id="anGo">Analyse</button>
+        <span class="small">Try: 10.5.5.5 · 127.0.0.1 · 169.254.3.4 · 192.0.2.10 · 224.0.0.5 · 8.8.8.8 · 100.70.1.1</span></div>
+      <div class="out" id="anOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="classlimits">3.3 Why classful addressing failed</h3>
+    <ul>
+      <li><b>Huge waste (granularity problem).</b> A company needing 2,000 addresses was too big for a C (254) and got a B (65,534), wasting about 97% of it. Class B was being exhausted by the early 1990s.</li>
+      <li><b>Routing-table explosion.</b> Organisations needing more than 254 addresses but too small for a B received several C networks, and each needed its own entry in every backbone router.</li>
+      <li><b>No internal structure.</b> A class B network of 65k hosts in one broadcast domain is unmanageable.</li>
+    </ul>
+    <p>Fixes, in historical order: <b>subnetting</b> (RFC 950, 1985), <b>VLSM</b> (RFC 1009, 1987), <b>CIDR</b> (RFC 1519, 1993; now RFC 4632), <b>private addresses + NAT</b> (RFC 1918, 1996), and in the long run <b>IPv6</b>. You will study subnetting, VLSM and CIDR in Week 09.</p>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="classtoday">3.4 What "class" still means today</h3>
+    <p>Since CIDR, Internet routing is <b>classless</b>: the prefix length travels with every route and the first octet means nothing to a modern router. Classes survive in vocabulary ("a class C-sized /24"), in a few legacy behaviours (some OS installers derive a default mask from the first octet, and RIPv1 and IGRP are classful protocols that do not send masks) and in exams. The class D range is still multicast (224.0.0.0/4) and class E (240.0.0.0/4) is still reserved; there were proposals to reclaim 240/4 for unicast, but many stacks refuse it.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="special">4. Special and reserved IPv4 addresses</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="nwbc">4.1 Network address and broadcast address</h3>
+    <p>Inside every network (or subnet), two host-ID values are reserved:</p>
+    <ul>
+      <li><b>Network address</b>: host bits <b>all 0</b>. It names the network itself and appears in routing tables. Example: <code>192.168.1.0</code> for 192.168.1.0/24.</li>
+      <li><b>Directed broadcast</b>: host bits <b>all 1</b>. A packet sent to it reaches all hosts on that network. Example: <code>192.168.1.255</code>. Routers do not forward directed broadcasts by default (RFC 2644), which defends against "smurf" amplification attacks.</li>
+    </ul>
+    <p>This is why the host count is <b>2<sup>h</sup> − 2</b>, where h is the number of host bits.</p>
+    <p>Other special forms:</p>
+    <ul>
+      <li><b>Limited broadcast</b> <code>255.255.255.255</code>: all hosts on <em>this</em> link, never forwarded by routers. DHCP uses it.</li>
+      <li><b>0.0.0.0</b>: "this host / unspecified". It is the source address used by a DHCP client that has no address yet; in a server socket it means "listen on all interfaces", and in a routing table 0.0.0.0/0 is the <b>default route</b>.</li>
+      <li><b>Loopback</b> <code>127.0.0.0/8</code>, usually <code>127.0.0.1</code> (<code>localhost</code>): packets never leave the host.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="private">4.2 Private addresses (RFC 1918)</h3>
+    <p>Three blocks are reserved for private networks. Anyone can use them internally without asking a registry, but they are <b>not routable on the public Internet</b>. To reach the Internet, a router performs <b>NAT</b> (Network Address Translation, Week 10).</p>
+    <table class="data">
+      <tr><th>Block</th><th>Range</th><th>Classful equivalent</th><th>Number of addresses</th></tr>
+      <tr><td><code>10.0.0.0/8</code></td><td>10.0.0.0 – 10.255.255.255</td><td>1 class A</td><td>16,777,216</td></tr>
+      <tr><td><code>172.16.0.0/12</code></td><td>172.16.0.0 – 172.31.255.255</td><td>16 class B</td><td>1,048,576</td></tr>
+      <tr><td><code>192.168.0.0/16</code></td><td>192.168.0.0 – 192.168.255.255</td><td>256 class C</td><td>65,536</td></tr>
+    </table>
+    <div class="callout warn"><b>Common mistake</b><code>172.32.0.1</code> is <b>not</b> private. The 172 private range ends at 172.31.255.255. Likewise <code>192.169.1.1</code> is public.</div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="otherspecial">4.3 Other special-purpose blocks (IANA registry, RFC 6890)</h3>
+    <div class="scroll"><table class="data">
+      <tr><th>Block</th><th>Purpose</th><th>Notes</th></tr>
+      <tr><td>0.0.0.0/8</td><td>"This network"</td><td>valid only as a source address</td></tr>
+      <tr><td>127.0.0.0/8</td><td>Loopback</td><td>the whole /8, not only .0.0.1</td></tr>
+      <tr><td>169.254.0.0/16</td><td>Link-local / APIPA</td><td>self-assigned when DHCP fails (Windows "Automatic Private IP Addressing"); a typical symptom of "no DHCP server"</td></tr>
+      <tr><td>100.64.0.0/10</td><td>Shared address space (CGNAT)</td><td>used between the customer router and an ISP's carrier-grade NAT (RFC 6598)</td></tr>
+      <tr><td>192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24</td><td>Documentation (TEST-NET-1/2/3)</td><td>use these in examples and books, never in production</td></tr>
+      <tr><td>198.18.0.0/15</td><td>Benchmark testing</td><td>RFC 2544</td></tr>
+      <tr><td>224.0.0.0/4</td><td>Multicast</td><td>224.0.0.0/24 is link-local multicast, e.g. 224.0.0.5 / .6 for OSPF and 224.0.0.9 for RIPv2</td></tr>
+      <tr><td>240.0.0.0/4</td><td>Reserved</td><td>except 255.255.255.255</td></tr>
+    </table></div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="specialadv">4.4 Subtleties</h3>
+    <ul>
+      <li><b>/31 point-to-point links (RFC 3021).</b> On a link with exactly two ends, a network and a broadcast address are useless. A /31 therefore gives <b>2 usable</b> addresses, saving half the space compared with /30. Most router operating systems support it.</li>
+      <li><b>/32 host routes.</b> A single address, used for loopback interfaces on routers (router IDs, BGP peering) and for host routes.</li>
+      <li><b>All-zeros and all-ones subnets.</b> Historically (RFC 950) the first and last subnet of a subnetted network were avoided because of ambiguity with the classful network and broadcast. RFC 1878 and modern practice allow them (Cisco: <code>ip subnet-zero</code>, the default since IOS 12.0).</li>
+      <li><b>Multicast addresses</b> map to MAC addresses <code>01:00:5E</code> + the low 23 bits of the IP address. That makes 32 IP groups share each MAC, a 5-bit ambiguity.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="mask">5. The subnet mask</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="maskdef">5.1 Definition and notations</h3>
+    <p>A <b>subnet mask</b> is a 32-bit value with <b>1s in the network-part positions</b> and <b>0s in the host-part positions</b>. The ones must be <b>contiguous</b> and on the left: <code>11111111.11111111.11110000.00000000</code> is valid; <code>11111111.00000000.11111111.00000000</code> is not.</p>
+    <p>There are two equivalent notations:</p>
+    <ul>
+      <li><b>Dotted decimal:</b> <code>255.255.240.0</code></li>
+      <li><b>Prefix length (slash / CIDR notation):</b> <code>/20</code>, the number of 1-bits. So <code>10.1.0.0 255.255.240.0</code> is the same as <code>10.1.0.0/20</code>.</li>
+    </ul>
+    <p>Default masks: class A <code>255.0.0.0</code> (/8), class B <code>255.255.0.0</code> (/16), class C <code>255.255.255.0</code> (/24).</p>
+    <p>Valid octet values in a mask: <b>0, 128, 192, 224, 240, 248, 252, 254, 255</b>, and an octet can be less than 255 only if every octet after it is 0.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="and">5.2 The bitwise AND: extracting the network address</h3>
+    <p>A device finds the network an address belongs to by applying a <b>bitwise AND</b> between the address and the mask: 1 AND 1 = 1; every other combination gives 0. The mask "keeps" the network bits and "zeroes" the host bits.</p>
+    <pre class="code"><code>IP     172.16.45.200   10101100.00010000.00101101.11001000
+Mask   255.255.240.0   11111111.11111111.11110000.00000000
+AND    ─────────────   ───────────────────────────────────
+Network 172.16.32.0    10101100.00010000.00100000.00000000
+Broadcast = network OR (NOT mask) = 172.16.47.255</code></pre>
+    <div class="tool">
+      <div class="tt">AND visualiser: network, broadcast and host range</div>
+      <div class="row"><label>IP:</label><input type="text" id="andIp" value="172.16.45.200" size="16"><label>Mask (dotted or /prefix):</label><input type="text" id="andMask" value="255.255.240.0" size="16"><button class="btn primary" type="button" id="andGo">Compute</button></div>
+      <div class="out" id="andOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="hostcount">5.3 Counting hosts, and the "interesting octet" shortcut</h3>
+    <p>With prefix length <i>p</i>, the number of host bits is <i>h</i> = 32 − <i>p</i>:</p>
+    <ul>
+      <li>Total addresses in the block: <b>2<sup>h</sup></b></li>
+      <li>Usable host addresses: <b>2<sup>h</sup> − 2</b> (minus the network and broadcast addresses). Exceptions: /31 has 2 and /32 has 1.</li>
+      <li>First usable host = network + 1; last usable host = broadcast − 1.</li>
+    </ul>
+    <p><b>Mental shortcut.</b> Find the <em>interesting octet</em>, the one where the mask is neither 255 nor 0. The <b>block size</b> is 256 − (mask octet). Network boundaries in that octet are multiples of the block size.<br>
+    Example: 172.16.45.200 /20 has mask octet 240 in octet 3, so block = 16. Multiples of 16: …, 32, 48, … and 45 falls in [32, 48). Network = 172.16.<b>32</b>.0; broadcast = 172.16.<b>47</b>.255.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="samenet">5.4 Same network or not? How a host decides</h3>
+    <p>Before sending, a host ANDs <b>its own address</b> with its mask and the <b>destination address</b> with the same mask:</p>
+    <ul>
+      <li>If the results are equal, the destination is <b>on-link</b>. The host ARPs for the destination's MAC and delivers the frame directly.</li>
+      <li>If not, the destination is <b>remote</b>. The host sends the frame to the <b>default gateway</b> (router) MAC; the IP destination remains the final host.</li>
+    </ul>
+    <div class="tool">
+      <div class="tt">Direct delivery or default gateway?</div>
+      <div class="row"><label>Host A IP:</label><input type="text" id="snA" value="192.168.10.70" size="15"><label>A's mask:</label><input type="text" id="snM" value="/26" size="15"><label>Destination B:</label><input type="text" id="snB" value="192.168.10.130" size="15"><button class="btn primary" type="button" id="snGo">Decide</button></div>
+      <div class="out" id="snOut"></div>
+    </div>
+    <div class="callout warn"><b>Mask mismatch</b>If two hosts on the same LAN are configured with different masks, communication can become one-directional: A thinks B is local, B thinks A is remote and sends to the gateway. This is a classic troubleshooting case.</div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="wildcard">5.5 Wildcard (inverse) masks and non-contiguous masks</h3>
+    <p>A <b>wildcard mask</b> is the bitwise NOT of a subnet mask: <code>255.255.240.0</code> ↔ <code>0.0.15.255</code>. Here 0 means "must match" and 1 means "don't care". Cisco ACLs and the OSPF <code>network</code> command use wildcards, e.g. <code>network 10.1.32.0 0.0.15.255 area 0</code>. Unlike subnet masks, wildcards in ACLs <em>may</em> be non-contiguous; <code>0.0.0.254</code> matches all odd or all even hosts. Non-contiguous <em>subnet</em> masks were technically allowed by early RFCs but are forbidden in CIDR practice because they break longest-prefix matching.</p>
+    <p>Wildcard = 255.255.255.255 − mask, octet by octet. Broadcast = network OR wildcard.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="inet">6. The Java <code>InetAddress</code> class</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="inetover">6.1 Overview</h3>
+    <p><code>java.net.InetAddress</code> represents an IP address, optionally with an associated hostname. It is the building block for sockets (<code>Socket</code>, <code>ServerSocket</code>, <code>DatagramSocket</code>), which all take an <code>InetAddress</code> or a hostname that is resolved into one.</p>
+    <ul>
+      <li>It has <b>no public constructor</b>. Instances come from <b>static factory methods</b> such as <code>getByName</code>, which may perform DNS look-ups.</li>
+      <li>It has two subclasses: <code>Inet4Address</code> (32 bits) and <code>Inet6Address</code> (128 bits). The factory returns the right one.</li>
+      <li>Objects are <b>immutable</b> and can be compared with <code>equals()</code>, which compares the address bytes and not the hostname.</li>
+      <li>Methods that look up names throw <code>UnknownHostException</code>, a subclass of <code>IOException</code>.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="inetmethods">6.2 The most important methods</h3>
+    <div class="scroll"><table class="data">
+      <tr><th>Method</th><th>Kind</th><th>Purpose</th></tr>
+      <tr><td><code>static InetAddress getByName(String host)</code></td><td>factory</td><td>Resolves a hostname through DNS, or parses an IP literal without any look-up.</td></tr>
+      <tr><td><code>static InetAddress[] getAllByName(String host)</code></td><td>factory</td><td>All addresses of a host (IPv4 and IPv6; load-balanced names return several).</td></tr>
+      <tr><td><code>static InetAddress getByAddress(byte[] addr)</code></td><td>factory</td><td>From raw bytes (4 or 16), with no DNS.</td></tr>
+      <tr><td><code>static InetAddress getByAddress(String host, byte[] addr)</code></td><td>factory</td><td>Bytes plus a chosen hostname, with no DNS.</td></tr>
+      <tr><td><code>static InetAddress getLocalHost()</code></td><td>factory</td><td>This machine's hostname and one of its addresses.</td></tr>
+      <tr><td><code>static InetAddress getLoopbackAddress()</code></td><td>factory</td><td>127.0.0.1 or ::1 (Java 7+).</td></tr>
+      <tr><td><code>static InetAddress ofLiteral(String ipLiteral)</code></td><td>factory</td><td>Strictly parses a literal and never queries DNS (Java 22+).</td></tr>
+      <tr><td><code>String getHostAddress()</code></td><td>getter</td><td>The address as text, e.g. "93.184.215.14".</td></tr>
+      <tr><td><code>String getHostName()</code></td><td>getter</td><td>The hostname. If the object was created from a literal, this triggers a <em>reverse</em> DNS look-up.</td></tr>
+      <tr><td><code>String getCanonicalHostName()</code></td><td>getter</td><td>The fully qualified domain name (always does a reverse look-up).</td></tr>
+      <tr><td><code>byte[] getAddress()</code></td><td>getter</td><td>Raw bytes in network byte order (big-endian).</td></tr>
+      <tr><td><code>boolean isReachable(int timeoutMs)</code></td><td>test</td><td>Tries ICMP echo (with privileges) or a TCP connection to port 7.</td></tr>
+      <tr><td><code>isLoopbackAddress()</code>, <code>isSiteLocalAddress()</code>, <code>isLinkLocalAddress()</code>, <code>isMulticastAddress()</code>, <code>isAnyLocalAddress()</code></td><td>predicates</td><td>Classify the address: 127/8; RFC 1918 private; 169.254/16; 224/4; 0.0.0.0 wildcard.</td></tr>
+    </table></div>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="inetcode1">6.3 Example 1: resolving names</h3>
+<pre class="code"><code><span class="c-k">import</span> java.net.*;
+
+<span class="c-k">public class</span> Lookup {
+    <span class="c-k">public static void</span> main(String[] args) {
+        String host = args.length &gt; 0 ? args[0] : <span class="c-s">"www.example.com"</span>;
+        <span class="c-k">try</span> {
+            InetAddress a = InetAddress.getByName(host);          <span class="c-c">// one address (DNS A/AAAA)</span>
+            System.out.println(<span class="c-s">"Name   : "</span> + a.getHostName());
+            System.out.println(<span class="c-s">"Address: "</span> + a.getHostAddress());
+            System.out.println(<span class="c-s">"Type   : "</span> + (a <span class="c-k">instanceof</span> Inet4Address ? <span class="c-s">"IPv4"</span> : <span class="c-s">"IPv6"</span>));
+
+            <span class="c-k">for</span> (InetAddress x : InetAddress.getAllByName(host))      <span class="c-c">// all addresses</span>
+                System.out.println(<span class="c-s">"  -&gt; "</span> + x);                 <span class="c-c">// prints "hostname/literal"</span>
+
+            InetAddress me = InetAddress.getLocalHost();
+            System.out.println(<span class="c-s">"Local host: "</span> + me);
+            System.out.println(<span class="c-s">"Loopback  : "</span> + InetAddress.getLoopbackAddress());
+        } <span class="c-k">catch</span> (UnknownHostException e) {
+            System.err.println(<span class="c-s">"Cannot resolve "</span> + host + <span class="c-s">": "</span> + e.getMessage());
+        }
+    }
+}</code></pre>
+    <p>Compile and run: <code>javac Lookup.java &amp;&amp; java Lookup www.google.com</code>. Note that <code>toString()</code> prints <code>hostname/literal</code>; the hostname part is empty if none is known.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="inetcode2">6.4 Example 2: classifying addresses and computing the network address</h3>
+<pre class="code"><code><span class="c-k">import</span> java.net.*;
+
+<span class="c-k">public class</span> AddrInfo {
+    <span class="c-c">// Java bytes are SIGNED (-128..127): mask with 0xFF to get 0..255</span>
+    <span class="c-k">static int</span> toInt(<span class="c-k">byte</span>[] b) {
+        <span class="c-k">return</span> ((b[0] &amp; 0xFF) &lt;&lt; 24) | ((b[1] &amp; 0xFF) &lt;&lt; 16) | ((b[2] &amp; 0xFF) &lt;&lt; 8) | (b[3] &amp; 0xFF);
+    }
+    <span class="c-k">static</span> String toDotted(<span class="c-k">int</span> v) {
+        <span class="c-k">return</span> ((v &gt;&gt;&gt; 24) &amp; 255) + <span class="c-s">"."</span> + ((v &gt;&gt;&gt; 16) &amp; 255) + <span class="c-s">"."</span> + ((v &gt;&gt;&gt; 8) &amp; 255) + <span class="c-s">"."</span> + (v &amp; 255);
+    }
+    <span class="c-k">static char</span> classOf(<span class="c-k">int</span> firstOctet) {
+        <span class="c-k">if</span> (firstOctet &lt; 128) <span class="c-k">return</span> <span class="c-s">'A'</span>; <span class="c-k">if</span> (firstOctet &lt; 192) <span class="c-k">return</span> <span class="c-s">'B'</span>;
+        <span class="c-k">if</span> (firstOctet &lt; 224) <span class="c-k">return</span> <span class="c-s">'C'</span>; <span class="c-k">if</span> (firstOctet &lt; 240) <span class="c-k">return</span> <span class="c-s">'D'</span>; <span class="c-k">return</span> <span class="c-s">'E'</span>;
+    }
+    <span class="c-k">public static void</span> main(String[] args) <span class="c-k">throws</span> Exception {
+        InetAddress a = InetAddress.getByName(<span class="c-s">"172.16.45.200"</span>);  <span class="c-c">// literal: no DNS query</span>
+        <span class="c-k">int</span> prefix = 20;
+        <span class="c-k">int</span> ip   = toInt(a.getAddress());
+        <span class="c-k">int</span> mask = prefix == 0 ? 0 : 0xFFFFFFFF &lt;&lt; (32 - prefix);   <span class="c-c">// careful: shift by 32 is a no-op in Java!</span>
+        <span class="c-k">int</span> net  = ip &amp; mask, bc = net | ~mask;
+        System.out.println(<span class="c-s">"Class      : "</span> + classOf(a.getAddress()[0] &amp; 0xFF));
+        System.out.println(<span class="c-s">"Private?   : "</span> + a.isSiteLocalAddress());
+        System.out.println(<span class="c-s">"Loopback?  : "</span> + a.isLoopbackAddress());
+        System.out.println(<span class="c-s">"Mask       : "</span> + toDotted(mask));
+        System.out.println(<span class="c-s">"Network    : "</span> + toDotted(net));
+        System.out.println(<span class="c-s">"Broadcast  : "</span> + toDotted(bc));
+        System.out.println(<span class="c-s">"Hosts      : "</span> + ((1L &lt;&lt; (32 - prefix)) - 2));
+
+        <span class="c-c">// Building an address from bytes (values &gt; 127 need a cast)</span>
+        <span class="c-k">byte</span>[] raw = { (<span class="c-k">byte</span>) 192, (<span class="c-k">byte</span>) 168, 1, 10 };
+        InetAddress b = InetAddress.getByAddress(raw);
+        System.out.println(b.getHostAddress() + <span class="c-s">"  same as literal? "</span> + b.equals(InetAddress.getByName(<span class="c-s">"192.168.1.10"</span>)));
+    }
+}</code></pre>
+<pre class="code"><code>Class      : B
+Private?   : true
+Loopback?  : false
+Mask       : 255.255.240.0
+Network    : 172.16.32.0
+Broadcast  : 172.16.47.255
+Hosts      : 4094
+192.168.1.10  same as literal? true</code></pre>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="inetexplorer">6.5 Interactive <code>InetAddress</code> explorer (simulated for IP literals)</h3>
+    <p>The tool below imitates what the Java methods return for an <b>IPv4 literal</b>. DNS look-ups cannot run inside this page, so <code>getHostName()</code> is shown as a "reverse look-up would be performed" note.</p>
+    <div class="tool">
+      <div class="tt">InetAddress method explorer</div>
+      <div class="row"><label>InetAddress.getByName(</label><input type="text" id="ieIp" value="192.168.1.10" size="16"><label>)</label><button class="btn primary" type="button" id="ieGo">Run</button>
+      <span class="small">Try 127.0.0.1, 0.0.0.0, 169.254.10.1, 239.1.1.1, 10.0.0.300</span></div>
+      <div class="out" id="ieOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="inetadv">6.6 Advanced: caching, interfaces and pitfalls</h3>
+    <ul>
+      <li><b>DNS caching.</b> The JVM caches successful look-ups (security property <code>networkaddress.cache.ttl</code>; the default is 30 s without a security manager) and failed ones (<code>networkaddress.cache.negative.ttl</code>, 10 s by default). Long-running services may need to tune this when DNS records change, e.g. in cloud failover.</li>
+      <li><b>Blocking look-ups.</b> <code>getByName</code> blocks the calling thread. In GUI or high-concurrency code, call it off the main thread. Since Java 18 the resolver is pluggable (<code>InetAddressResolverProvider</code>, JEP 418).</li>
+      <li><b>Literal vs name.</b> <code>getByName("10.0.0.300")</code> is not a valid literal, so Java tries DNS and fails with <code>UnknownHostException</code>. <code>ofLiteral</code> (Java 22) fails fast with <code>IllegalArgumentException</code> instead.</li>
+      <li><b><code>isSiteLocalAddress()</code></b> covers exactly 10/8, 172.16/12 and 192.168/16 for IPv4 (and the deprecated fec0::/10 for IPv6). It does <em>not</em> include 100.64/10 or the IPv6 ULAs fc00::/7.</li>
+      <li><b><code>isReachable()</code></b> is unreliable through firewalls; a <code>false</code> result does not prove the host is down.</li>
+      <li><b>Preferring IPv4 or IPv6</b>: the system properties <code>java.net.preferIPv4Stack</code> and <code>java.net.preferIPv6Addresses</code>.</li>
+    </ul>
+<pre class="code"><code><span class="c-c">// List all interfaces with their IP addresses and prefix lengths (= masks)</span>
+<span class="c-k">import</span> java.net.*; <span class="c-k">import</span> java.util.*;
+<span class="c-k">public class</span> Interfaces {
+    <span class="c-k">public static void</span> main(String[] a) <span class="c-k">throws</span> SocketException {
+        <span class="c-k">for</span> (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+            <span class="c-k">if</span> (!ni.isUp()) <span class="c-k">continue</span>;
+            System.out.printf(<span class="c-s">"%s (%s) loopback=%b MTU=%d%n"</span>, ni.getName(), ni.getDisplayName(), ni.isLoopback(), ni.getMTU());
+            <span class="c-k">for</span> (InterfaceAddress ia : ni.getInterfaceAddresses())
+                System.out.printf(<span class="c-s">"   %s/%d  broadcast=%s%n"</span>,
+                    ia.getAddress().getHostAddress(), ia.getNetworkPrefixLength(), ia.getBroadcast());
+        }
+    }
+}</code></pre>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="seminar">7. Seminar: worked problems</h2>
+  <p class="small">Try each problem on paper first, then open the solution. The level badge shows the expected difficulty.</p>
+
+  <div class="problem lvl plain" data-level="b"><div class="ph">S1. Conversions</div>
+    Convert to binary: (a) 10.200.3.129 (b) 223.255.0.64. Convert to decimal: (c) 10101100.00011111.11111111.00000001
+    <details class="sol"><summary>Show solution</summary>
+    (a) 00001010.11001000.00000011.10000001 (200 = 128+64+8; 129 = 128+1)<br>
+    (b) 11011111.11111111.00000000.01000000 (223 = 128+64+16+8+4+2+1)<br>
+    (c) 172.31.255.1, the last /16 block of the 172.16.0.0/12 private range.</details></div>
+
+  <div class="problem lvl plain" data-level="b"><div class="ph">S2. Classify</div>
+    For each address give the class, the default mask and whether it is public, private or special: 9.1.2.3 · 126.0.0.1 · 127.5.5.5 · 172.31.0.9 · 172.32.0.9 · 191.255.1.1 · 192.168.300.1 · 200.100.50.25 · 230.0.0.1 · 169.254.8.8
+    <details class="sol"><summary>Show solution</summary>
+    <table class="data"><tr><th>Address</th><th>Class</th><th>Default mask</th><th>Type</th></tr>
+    <tr><td>9.1.2.3</td><td>A</td><td>/8</td><td>public</td></tr>
+    <tr><td>126.0.0.1</td><td>A</td><td>/8</td><td>public (126 is the last usable class A network)</td></tr>
+    <tr><td>127.5.5.5</td><td>A range</td><td>-</td><td>loopback (all of 127/8)</td></tr>
+    <tr><td>172.31.0.9</td><td>B</td><td>/16</td><td>private</td></tr>
+    <tr><td>172.32.0.9</td><td>B</td><td>/16</td><td>public</td></tr>
+    <tr><td>191.255.1.1</td><td>B</td><td>/16</td><td>public</td></tr>
+    <tr><td>192.168.300.1</td><td colspan="3"><b>invalid</b>: 300 &gt; 255</td></tr>
+    <tr><td>200.100.50.25</td><td>C</td><td>/24</td><td>public</td></tr>
+    <tr><td>230.0.0.1</td><td>D</td><td>-</td><td>multicast</td></tr>
+    <tr><td>169.254.8.8</td><td>B range</td><td>/16</td><td>link-local (APIPA): DHCP probably failed</td></tr></table></details></div>
+
+  <div class="problem lvl plain" data-level="b"><div class="ph">S3. Valid masks?</div>
+    Which of these are valid subnet masks? 255.255.255.192 · 255.255.0.255 · 255.224.0.0 · 255.255.250.0 · 0.0.0.0 · 255.255.255.255
+    <details class="sol"><summary>Show solution</summary>
+    Valid: 255.255.255.192 (/26), 255.224.0.0 (/11), 0.0.0.0 (/0, the default route), 255.255.255.255 (/32, a host).<br>
+    Invalid: 255.255.0.255 (non-contiguous) and 255.255.250.0 (250 = 11111010 is not a valid mask octet).</details></div>
+
+  <div class="problem lvl plain" data-level="i"><div class="ph">S4. Network, broadcast, range</div>
+    For 10.45.170.33/19 find the mask, the network, the broadcast, the first and last host and the number of hosts.
+    <details class="sol"><summary>Show solution</summary>
+    /19 gives mask 255.255.224.0. The interesting octet is the third (224), so the block size is 32. Multiples of 32: 160, 192, and 170 lies in [160, 192).<br>
+    Network 10.45.160.0 · Broadcast 10.45.191.255 · First 10.45.160.1 · Last 10.45.191.254 · Hosts 2<sup>13</sup> − 2 = 8190.</details></div>
+
+  <div class="problem lvl plain" data-level="i"><div class="ph">S5. Same network?</div>
+    Host A = 192.168.5.62/27 and host B = 192.168.5.66/27. Can they talk directly? What if the mask is /25?
+    <details class="sol"><summary>Show solution</summary>
+    /27 has block 32. A is in 192.168.5.32–63; B is in 192.168.5.64–95. Different networks, so traffic goes through a router.<br>
+    /25 has block 128. Both are in 192.168.5.0–127, the same network, so delivery is direct (ARP).</details></div>
+
+  <div class="problem lvl plain" data-level="i"><div class="ph">S6. Troubleshooting</div>
+    A PC shows IP 169.254.77.12, mask 255.255.0.0 and no default gateway. It cannot browse. What happened and what do you check?
+    <details class="sol"><summary>Show solution</summary>
+    The PC self-assigned an APIPA address because it got no DHCP reply. Check: the cable or Wi-Fi association, the switch port or VLAN, that the DHCP server is up and its pool is not exhausted, and the DHCP relay (<code>ip helper-address</code>) if the server is on another subnet. Then run <code>ipconfig /renew</code> (Windows) or <code>sudo dhclient -r &amp;&amp; sudo dhclient</code> (Linux).</details></div>
+
+  <div class="problem lvl plain" data-level="a"><div class="ph">S7. Design reasoning</div>
+    An ISP has to number 1,000 customer point-to-point links. How many addresses does it need with /30 and with /31? Why do some engineers still prefer /30?
+    <details class="sol"><summary>Show solution</summary>
+    /30: 4 addresses per link, 4000 in total (a /20 holds 4096). /31: 2 per link, 2000 in total (fits in a /21 = 2048), a 50% saving.<br>
+    Some prefer /30 because a few legacy devices and operating systems do not support RFC 3021, and some monitoring tools treat .0 or .255-like addresses specially.</details></div>
+
+  <div class="problem lvl plain" data-level="a"><div class="ph">S8. Java signed-byte bug</div>
+    A student writes <code>int first = addr.getAddress()[0];</code> and for 192.168.1.1 gets −64. Explain and fix. Also explain why <code>0xFFFFFFFF &lt;&lt; (32 - prefix)</code> fails for prefix = 0.
+    <details class="sol"><summary>Show solution</summary>
+    Java <code>byte</code> is signed. 192 = 0xC0, which as a signed byte is −64. Fix: <code>int first = addr.getAddress()[0] &amp; 0xFF;</code>.<br>
+    In Java (and JavaScript), shift distances on <code>int</code> are taken modulo 32, so <code>x &lt;&lt; 32</code> equals <code>x</code>. For /0 the expression gives 0xFFFFFFFF instead of 0. Handle /0 as a special case, or use <code>long</code> arithmetic.</details></div>
+</section>
+
+<section class="chapter">
+  <h2 id="lab">8. Laboratory</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="lab1">Lab 1: Inspect your own configuration (10 min)</h3>
+    <table class="data">
+      <tr><th>Task</th><th>Windows</th><th>Linux / macOS</th></tr>
+      <tr><td>Show IP addresses and masks</td><td><code>ipconfig /all</code></td><td><code>ip addr show</code> (Linux) · <code>ifconfig</code> (macOS)</td></tr>
+      <tr><td>Show default gateway</td><td><code>ipconfig</code> · <code>route print</code></td><td><code>ip route show</code> · <code>netstat -rn</code></td></tr>
+      <tr><td>Show MAC addresses</td><td><code>getmac</code> · <code>ipconfig /all</code></td><td><code>ip link show</code></td></tr>
+      <tr><td>Test loopback</td><td colspan="2"><code>ping 127.0.0.1</code> (also try 127.10.20.30: the whole /8 is loopback)</td></tr>
+      <tr><td>Resolve a name</td><td colspan="2"><code>nslookup www.google.com</code> · <code>dig www.google.com A</code> / <code>AAAA</code></td></tr>
+    </table>
+    <p><b>Deliverable:</b> write down your IP, mask, prefix length, network address, broadcast address, class, private or public status, and gateway. Explain why your laptop's address is (probably) private while <a href="https://ifconfig.me" target="_blank" rel="noopener">your public address</a> is different: that is NAT.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab2">Lab 2: Java InetAddress programs (15 min)</h3>
+    <ol>
+      <li>Compile and run <code>Lookup.java</code> (§6.3) for <code>localhost</code>, <code>www.google.com</code>, your university's domain and an invalid name. Which names return several addresses? Which return IPv6 addresses?</li>
+      <li>Extend <code>AddrInfo.java</code> (§6.4) to read <code>IP/prefix</code> from the command line (e.g. <code>java AddrInfo 10.45.170.33/19</code>) and print the network, broadcast, first and last host, host count, class and private flag. Check it against the AND visualiser.</li>
+      <li>Write <code>SameNet.java</code>: given two IPs and a mask, print "direct" or "via gateway".</li>
+      <li>Run <code>Interfaces.java</code> (§6.6). Compare the prefix lengths with <code>ipconfig</code> / <code>ip addr</code>.</li>
+    </ol>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab3">Lab 3: Packet Tracer / GNS3: same network vs different networks (10 min)</h3>
+    <ol>
+      <li>Connect PC0 and PC1 to one switch. Give them 192.168.1.10/24 and 192.168.1.20/24 and ping: it succeeds.</li>
+      <li>Change PC1 to 192.168.2.20/24 and ping again: it fails, because the networks differ and there is no router.</li>
+      <li>Set PC0 to 192.168.1.10/16 and PC1 to 192.168.2.20/24 (mask mismatch). Observe in simulation mode which side sends ARP requests and which one tries to reach a gateway.</li>
+      <li>Add a router with two interfaces (192.168.1.1/24 and 192.168.2.1/24), set the PCs' gateways and verify the ping. In simulation mode, check that the MAC addresses change at the router while the IP addresses do not.</li>
+    </ol>
+<pre class="code"><code>Router&gt; enable
+Router# configure terminal
+Router(config)# interface g0/0
+Router(config-if)# ip address 192.168.1.1 255.255.255.0
+Router(config-if)# no shutdown
+Router(config-if)# interface g0/1
+Router(config-if)# ip address 192.168.2.1 255.255.255.0
+Router(config-if)# no shutdown
+Router(config-if)# end
+Router# show ip interface brief</code></pre>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="lab4">Lab 4 (challenge): Wireshark</h3>
+    <p>Capture while running <code>ping</code> to a host on your LAN and to 8.8.8.8. Filter on <code>arp || icmp</code>. Show that for the LAN host the destination MAC is the host's own MAC, while for 8.8.8.8 it is the <b>gateway's</b> MAC, even though the IP destination is 8.8.8.8. Then filter on <code>ip.dst == 255.255.255.255</code> while running <code>ipconfig /renew</code> to see DHCP broadcasts sent from 0.0.0.0.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="drill">9. Speed drill: classify random addresses</h2>
+  <div class="tool">
+    <div class="tt">Random address drill</div>
+    <div class="row"><b id="drIp" class="mono" style="font-size:1.3rem"></b><button class="btn" type="button" id="drNew">New address</button></div>
+    <div class="row"><label>Class:</label><select id="drCls"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select>
+    <label>Type:</label><select id="drType"><option value="">?</option><option value="public">public</option><option value="private">private (RFC 1918)</option><option value="loopback">loopback</option><option value="apipa">link-local (APIPA)</option><option value="multicast">multicast</option><option value="other">other special</option></select>
+    <label>Default mask (/8, /16, /24 or none):</label><input type="text" id="drMask" size="6"><button class="btn primary" type="button" id="drCheck">Check</button></div>
+    <div class="out" id="drOut"></div>
+    <div class="small" id="drScore"></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="quiz">10. Self-assessment quiz</h2>
+  <p class="small">Questions are tagged by level; the learning-track filter applies to them too.</p>
+  <div id="quiz08"></div>
+</section>
+
+<section class="chapter">
+  <h2 id="summary">11. Summary, glossary and further reading</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="takeaways">Key takeaways</h3>
+    <ul>
+      <li>The network layer moves packets host-to-host across networks. <b>Forwarding</b> is local and per packet; <b>routing</b> is network-wide and computes the paths.</li>
+      <li>IP addresses are <b>logical and hierarchical</b> (network + host); MAC addresses are physical and flat. The IPs stay the same end-to-end while the MACs change at every hop.</li>
+      <li>IPv4 = 32 bits = 4 octets in dotted decimal. Classes A (0…), B (10…), C (110…), D multicast, E reserved.</li>
+      <li>The mask marks the network bits. Network = IP AND mask; broadcast = network OR NOT mask; hosts = 2<sup>h</sup> − 2.</li>
+      <li>Private: 10/8, 172.16/12, 192.168/16. Loopback: 127/8. APIPA: 169.254/16.</li>
+      <li>Java <code>InetAddress</code>: factory methods, DNS resolution, address predicates.</li>
+    </ul>
+  </div>
+  <h3 id="glossary">Glossary</h3>
+  <dl class="glossary">
+    <dt>Octet</dt><dd>A group of 8 bits; an IPv4 address has four.</dd>
+    <dt>Prefix length</dt><dd>The number of leading 1-bits in the mask, written /n.</dd>
+    <dt>Network address</dt><dd>The address with all host bits 0; it identifies the network.</dd>
+    <dt>Directed broadcast</dt><dd>The address with all host bits 1; it reaches all hosts of that network.</dd>
+    <dt>Default gateway</dt><dd>The router to which a host sends packets for off-link destinations.</dd>
+    <dt>APIPA</dt><dd>Automatic Private IP Addressing: a self-assigned 169.254.x.x address.</dd>
+    <dt>NAT</dt><dd>Network Address Translation: rewriting private addresses into public ones at the network edge.</dd>
+    <dt>Data plane / control plane</dt><dd>Per-packet forwarding vs. the computation of routes.</dd>
+    <dt>Wildcard mask</dt><dd>The inverse of a mask; used in ACLs and OSPF.</dd>
+  </dl>
+  <h3 id="checklist">Self-check: I can…</h3>
+  <div class="checklist">
+    <label><input type="checkbox"> explain forwarding vs routing with an example</label>
+    <label><input type="checkbox"> convert any octet in under 10 seconds</label>
+    <label><input type="checkbox"> name the class and private status of any address</label>
+    <label><input type="checkbox"> compute network, broadcast and host range for any IP/prefix</label>
+    <label><input type="checkbox"> decide direct delivery vs gateway</label>
+    <label><input type="checkbox"> write a Java program that resolves names and classifies addresses</label>
+  </div>
+  <h3 id="reading">Further reading</h3>
+  <ul class="small">
+    <li>RFC 791: Internet Protocol · RFC 950: Internet Standard Subnetting Procedure · RFC 1918: Address Allocation for Private Internets · RFC 6890: Special-Purpose IP Address Registries · RFC 3021: Using 31-bit Prefixes.</li>
+    <li>J. F. Kurose, K. W. Ross: <i>Computer Networking: A Top-Down Approach</i>, chapter "The Network Layer: Data Plane".</li>
+    <li>A. S. Tanenbaum, N. Feamster, D. Wetherall: <i>Computer Networks</i>, chapter "The Network Layer".</li>
+    <li>Oracle Java SE API: <code>java.net.InetAddress</code>, <code>java.net.NetworkInterface</code>.</li>
+  </ul>
+  <p><b>Next week (Week 09):</b> borrowing host bits to create subnets, variable-length masks (VLSM), CIDR and route aggregation (supernetting).</p>
+</section>
+
+</main>
+</div>
+<div class="footer">Computer Networks — Chapter 4 (The Network Layer) — Week 08. Self-contained interactive lesson: course notes, worked seminar problems, laboratory tasks and self-assessment.</div>
+<script>
+/* ===== Common page engine: TOC, tracks, theme, quiz, IPv4 utilities ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const IP = {
+  parse(s) {
+    const m = String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (!m) return null;
+    const p = m.slice(1).map(Number);
+    if (p.some(x => x > 255)) return null;
+    return (((p[0] << 24) >>> 0) + (p[1] << 16) + (p[2] << 8) + p[3]) >>> 0;
+  },
+  str(n) { n >>>= 0; return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); },
+  mask(p) { return p <= 0 ? 0 : (p >= 32 ? 0xFFFFFFFF : ((0xFFFFFFFF << (32 - p)) >>> 0)); },
+  wild(p) { return (~IP.mask(p)) >>> 0; },
+  net(a, p) { return (a & IP.mask(p)) >>> 0; },
+  bcast(a, p) { return (IP.net(a, p) | IP.wild(p)) >>> 0; },
+  bin(n, dots = true) { const s = (n >>> 0).toString(2).padStart(32, '0'); return dots ? s.match(/.{8}/g).join('.') : s; },
+  prefixFromMask(m) {
+    m >>>= 0; const inv = (~m) >>> 0;
+    if (((inv + 1) & inv) !== 0) return -1;
+    let c = 0; for (let i = 31; i >= 0; i--) { if ((m >>> i) & 1) c++; else break; }
+    return c;
+  },
+  parseCidr(s) {
+    const t = String(s).trim().split('/');
+    if (t.length !== 2) return null;
+    const a = IP.parse(t[0]);
+    let p;
+    if (/^\d{1,2}$/.test(t[1])) p = Number(t[1]);
+    else { const m = IP.parse(t[1]); if (m === null) return null; p = IP.prefixFromMask(m); }
+    if (a === null || p < 0 || p > 32) return null;
+    return { addr: a, prefix: p };
+  },
+  cls(a) {
+    const f = a >>> 24;
+    if (f < 128) return 'A'; if (f < 192) return 'B'; if (f < 224) return 'C'; if (f < 240) return 'D'; return 'E';
+  },
+  hosts(p) { if (p === 32) return 1; if (p === 31) return 2; return Math.pow(2, 32 - p) - 2; },
+  inRange(a, cidr) { const c = IP.parseCidr(cidr); return IP.net(a, c.prefix) === IP.net(c.addr, c.prefix); },
+  special(a) {
+    const L = [
+      ['0.0.0.0/8', '"This network" (0.0.0.0 = unspecified / any address)', 'RFC 1122'],
+      ['10.0.0.0/8', 'Private (RFC 1918)', 'RFC 1918'],
+      ['100.64.0.0/10', 'Shared address space for Carrier-Grade NAT', 'RFC 6598'],
+      ['127.0.0.0/8', 'Loopback', 'RFC 1122'],
+      ['169.254.0.0/16', 'Link-local (APIPA)', 'RFC 3927'],
+      ['172.16.0.0/12', 'Private (RFC 1918)', 'RFC 1918'],
+      ['192.0.0.0/24', 'IETF protocol assignments', 'RFC 6890'],
+      ['192.0.2.0/24', 'Documentation (TEST-NET-1)', 'RFC 5737'],
+      ['192.88.99.0/24', 'Deprecated 6to4 relay anycast', 'RFC 7526'],
+      ['192.168.0.0/16', 'Private (RFC 1918)', 'RFC 1918'],
+      ['198.18.0.0/15', 'Benchmarking', 'RFC 2544'],
+      ['198.51.100.0/24', 'Documentation (TEST-NET-2)', 'RFC 5737'],
+      ['203.0.113.0/24', 'Documentation (TEST-NET-3)', 'RFC 5737'],
+      ['224.0.0.0/4', 'Multicast (class D)', 'RFC 5771'],
+      ['255.255.255.255/32', 'Limited broadcast', 'RFC 919'],
+      ['240.0.0.0/4', 'Reserved for future use (class E)', 'RFC 1112']
+    ];
+    for (const [c, d, r] of L) if (IP.inRange(a, c)) return { block: c, desc: d, rfc: r };
+    return { block: '-', desc: 'Public (globally routable) unicast', rfc: '' };
+  },
+  colorBin(a, p, sub) { // sub: number of borrowed bits after default/base prefix (optional {base})
+    const b = IP.bin(a, false); let out = '';
+    for (let i = 0; i < 32; i++) {
+      if (i && i % 8 === 0) out += '.';
+      let cl = i < p ? 'n' : 'h';
+      if (sub && i >= sub.base && i < p) cl = 's';
+      out += `<span class="${cl}">${b[i]}</span>`;
+    }
+    return `<span class="binline">${out}</span>`;
+  }
+};
+
+const NetUI = {
+  track: 'a',
+  setTrack(t) {
+    this.track = t;
+    const order = { b: 1, i: 2, a: 3 };
+    $$('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === t));
+    $$('.lvl').forEach(el => el.classList.toggle('hidden-lvl', order[el.dataset.level] > order[t]));
+    $$('nav#toc a').forEach(a => {
+      const h = document.getElementById(a.getAttribute('href').slice(1));
+      a.classList.toggle('gone', !!(h && h.closest('.hidden-lvl')));
+    });
+  },
+  buildToc() {
+    const toc = $('#toc'); if (!toc) return;
+    let n = 0;
+    $$('main h2, main h3').forEach(h => {
+      if (h.closest('.q') || h.dataset.notoc !== undefined) return;
+      if (!h.id) h.id = 'sec' + (++n);
+      const a = document.createElement('a');
+      a.href = '#' + h.id; a.textContent = h.textContent;
+      if (h.tagName === 'H3') a.className = 'sub';
+      toc.appendChild(a);
+    });
+    const links = $$('nav#toc a');
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    $$('main h2, main h3').forEach(h => h.id && obs.observe(h));
+  },
+  copyButtons() {
+    $$('pre.code').forEach(pre => {
+      const b = document.createElement('button'); b.className = 'copy'; b.textContent = 'copy';
+      b.onclick = () => {
+        const txt = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+        const done = () => { b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); };
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => {});
+      };
+      pre.appendChild(b);
+    });
+  },
+  init() {
+    this.buildToc();
+    this.copyButtons();
+    $$('[data-track]').forEach(btn => btn.addEventListener('click', () => this.setTrack(btn.dataset.track)));
+    const th = $('#themeBtn');
+    if (th) th.onclick = () => document.body.classList.toggle('dark');
+    const pb = $('#progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      pb.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) + '%';
+    });
+    this.setTrack('a');
+  }
+};
+
+function Quiz(id, qs) {
+  const root = document.getElementById(id); if (!root) return;
+  let score = 0, answered = 0;
+  const sc = document.createElement('div'); sc.className = 'qscore';
+  function upd() {
+    sc.innerHTML = `<span>Score: ${score} correct / ${answered} answered (total ${qs.length} questions)</span><button type="button">Reset</button>`;
+    sc.querySelector('button').onclick = () => { root.innerHTML = ''; Quiz(id, qs); NetUI.setTrack(NetUI.track); };
+  }
+  qs.forEach((q, qi) => {
+    const box = document.createElement('div');
+    box.className = 'q lvl plain'; box.dataset.level = q.l || 'b';
+    box.innerHTML = `<div class="qhead"><span class="qnum">Q${qi + 1}</span> ${q.q}</div>`;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    q.o.forEach((o, oi) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = 1; answered++;
+        if (oi === q.a) { score++; b.classList.add('right'); }
+        else { b.classList.add('wrong'); opts.children[q.a].classList.add('right'); }
+        const e = document.createElement('div'); e.className = 'exp';
+        e.innerHTML = (oi === q.a ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.e;
+        box.appendChild(e); upd();
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); root.appendChild(box);
+  });
+  root.appendChild(sc); upd();
+}
+
+</script>
+<script>
+/* ---------- Octet trainer ---------- */
+(function () {
+  const row = $('#octBits'), dec = $('#octDec'), sum = $('#octSum');
+  const bits = [];
+  for (let i = 7; i >= 0; i--) {
+    const b = document.createElement('div'); b.className = 'bit'; b.dataset.w = 1 << i;
+    b.innerHTML = `<span>0</span><small>${1 << i}</small>`;
+    b.onclick = () => { b.classList.toggle('on'); fromBits(); };
+    row.appendChild(b); bits.push(b);
+  }
+  function fromBits() {
+    let v = 0, parts = [];
+    bits.forEach(b => { const on = b.classList.contains('on'); b.firstChild.textContent = on ? '1' : '0'; if (on) { v += +b.dataset.w; parts.push(b.dataset.w); } });
+    dec.value = v; sum.textContent = `= ${parts.join(' + ') || '0'} = ${v}  ·  binary ${v.toString(2).padStart(8, '0')}  ·  hex 0x${v.toString(16).toUpperCase().padStart(2, '0')}`;
+  }
+  function fromDec() {
+    let v = Math.max(0, Math.min(255, parseInt(dec.value || '0', 10)));
+    bits.forEach(b => b.classList.toggle('on', (v & +b.dataset.w) !== 0));
+    fromBits();
+  }
+  dec.oninput = fromDec; fromDec();
+})();
+
+/* ---------- Address converter ---------- */
+(function () {
+  const out = $('#cvOut');
+  $('#cvGo1').onclick = () => {
+    const a = IP.parse($('#cvDec').value);
+    if (a === null) { out.innerHTML = '<span class="err">Invalid dotted-decimal address (4 octets, each 0–255).</span>'; return; }
+    const oct = IP.str(a).split('.').map(Number);
+    out.innerHTML = `<div class="kv"><div>Binary</div><div>${IP.bin(a)}</div><div>Per octet</div><div>${oct.map(o => `${o} = ${o.toString(2).padStart(8, '0')}`).join(' · ')}</div><div>Hex</div><div>0x${a.toString(16).toUpperCase().padStart(8, '0')}</div><div>As 32-bit unsigned integer</div><div>${a}</div></div>`;
+    $('#cvBin').value = IP.bin(a);
+  };
+  $('#cvGo2').onclick = () => {
+    const s = $('#cvBin').value.replace(/[\s.]/g, '');
+    if (!/^[01]{32}$/.test(s)) { out.innerHTML = '<span class="err">Enter exactly 32 binary digits.</span>'; return; }
+    const a = parseInt(s, 2) >>> 0;
+    out.innerHTML = `<div class="kv"><div>Dotted decimal</div><div>${IP.str(a)}</div><div>Integer</div><div>${a}</div></div>`;
+    $('#cvDec').value = IP.str(a);
+  };
+})();
+
+/* ---------- Analyser ---------- */
+(function () {
+  const out = $('#anOut');
+  function run() {
+    const a = IP.parse($('#anIp').value);
+    if (a === null) { out.innerHTML = '<span class="err">Invalid IPv4 address.</span>'; return; }
+    const c = IP.cls(a), sp = IP.special(a), f = a >>> 24;
+    const lead = { A: '0', B: '10', C: '110', D: '1110', E: '1111' }[c];
+    const dp = { A: 8, B: 16, C: 24 }[c];
+    let rows = `<div>Class</div><div><b>${c}</b> (first octet ${f}, leading bits <b>${lead}</b>)</div>
+      <div>Binary</div><div>${dp ? IP.colorBin(a, dp) : IP.bin(a)}</div>`;
+    if (dp) {
+      rows += `<div>Default mask</div><div>${IP.str(IP.mask(dp))} (/${dp})</div>
+        <div>Classful network</div><div>${IP.str(IP.net(a, dp))}</div>
+        <div>Classful broadcast</div><div>${IP.str(IP.bcast(a, dp))}</div>
+        <div>Hosts in classful net</div><div>${IP.hosts(dp).toLocaleString('en')}</div>
+        <div>Network / host part</div><div><span style="color:var(--b)">green = network</span>, <span style="color:var(--i)">amber = host</span> (classful view)</div>`;
+    } else rows += `<div>Default mask</div><div>none: class ${c} is ${c === 'D' ? 'multicast' : 'reserved'}</div>`;
+    rows += `<div>Special-purpose</div><div><b>${sp.desc}</b>${sp.block !== '-' ? ` · block ${sp.block} · ${sp.rfc}` : ''}</div>`;
+    out.innerHTML = `<div class="kv">${rows}</div>`;
+  }
+  $('#anGo').onclick = run; $('#anIp').addEventListener('keydown', e => e.key === 'Enter' && run()); run();
+})();
+
+/* ---------- AND visualiser ---------- */
+function parseMaskInput(s) {
+  s = String(s).trim();
+  if (/^\/?\d{1,2}$/.test(s)) { const p = Number(s.replace('/', '')); return p <= 32 ? p : -1; }
+  const m = IP.parse(s); if (m === null) return -1; return IP.prefixFromMask(m);
+}
+(function () {
+  const out = $('#andOut');
+  function run() {
+    const a = IP.parse($('#andIp').value), p = parseMaskInput($('#andMask').value);
+    if (a === null) { out.innerHTML = '<span class="err">Invalid IP address.</span>'; return; }
+    if (p < 0) { out.innerHTML = '<span class="err">Invalid mask: it must be contiguous 1s followed by 0s (or /0–/32).</span>'; return; }
+    const m = IP.mask(p), n = IP.net(a, p), b = IP.bcast(a, p);
+    const first = p >= 31 ? n : n + 1, last = p >= 31 ? b : b - 1;
+    out.innerHTML = `<pre class="code"><code>IP        ${IP.str(a).padEnd(16)} ${IP.bin(a)}
+Mask (/${String(p).padEnd(2)}) ${IP.str(m).padEnd(16)} ${IP.bin(m)}
+          ${''.padEnd(16)} ${'-'.repeat(35)}  AND
+Network   ${IP.str(n).padEnd(16)} ${IP.bin(n)}
+Wildcard  ${IP.str(IP.wild(p)).padEnd(16)} ${IP.bin(IP.wild(p))}
+Broadcast ${IP.str(b).padEnd(16)} ${IP.bin(b)}   (network OR wildcard)</code></pre>
+    <div class="kv"><div>Coloured</div><div>${IP.colorBin(a, p)}</div>
+    <div>Host bits h</div><div>${32 - p}</div>
+    <div>Total addresses</div><div>2^${32 - p} = ${Math.pow(2, 32 - p).toLocaleString('en')}</div>
+    <div>Usable hosts</div><div>${IP.hosts(p).toLocaleString('en')}${p === 31 ? ' (RFC 3021 point-to-point)' : p === 32 ? ' (host route)' : ''}</div>
+    <div>Host range</div><div>${IP.str(first)} – ${IP.str(last)}</div>
+    <div>This address is</div><div>${a === n && p < 31 ? '<span class="err">the NETWORK address (not assignable to a host)</span>' : a === b && p < 31 ? '<span class="err">the BROADCAST address (not assignable)</span>' : '<span class="ok">a valid host address</span>'}</div></div>`;
+  }
+  $('#andGo').onclick = run; run();
+})();
+
+/* ---------- Same network ---------- */
+(function () {
+  const out = $('#snOut');
+  $('#snGo').onclick = run;
+  function run() {
+    const a = IP.parse($('#snA').value), b = IP.parse($('#snB').value), p = parseMaskInput($('#snM').value);
+    if (a === null || b === null || p < 0) { out.innerHTML = '<span class="err">Check the inputs.</span>'; return; }
+    const na = IP.net(a, p), nb = IP.net(b, p);
+    out.innerHTML = `<div class="kv"><div>A AND mask</div><div>${IP.str(na)} &nbsp; ${IP.colorBin(a, p)}</div>
+      <div>B AND mask</div><div>${IP.str(nb)} &nbsp; ${IP.colorBin(b, p)}</div>
+      <div>Decision</div><div>${na === nb ? '<span class="ok">Same network: A sends an ARP request for B\'s MAC and delivers directly.</span>' : '<span class="err">Different networks: A sends the frame to its DEFAULT GATEWAY\'s MAC (destination IP is still B).</span>'}</div></div>`;
+  }
+  run();
+})();
+
+/* ---------- InetAddress explorer ---------- */
+(function () {
+  const out = $('#ieOut');
+  function run() {
+    const s = $('#ieIp').value.trim(), a = IP.parse(s);
+    if (a === null) {
+      out.innerHTML = `<pre class="code"><code>"${esc(s)}" is not a valid IPv4 literal → Java treats it as a HOSTNAME and queries DNS.
+If DNS has no such name:
+java.net.UnknownHostException: ${esc(s)}: Name or service not known
+(With Java 22+, InetAddress.ofLiteral("${esc(s)}") throws IllegalArgumentException immediately.)</code></pre>`;
+      return;
+    }
+    const L = IP.str(a), o = L.split('.').map(Number);
+    const signed = o.map(x => x > 127 ? x - 256 : x);
+    const loop = IP.inRange(a, '127.0.0.0/8'), site = IP.inRange(a, '10.0.0.0/8') || IP.inRange(a, '172.16.0.0/12') || IP.inRange(a, '192.168.0.0/16');
+    const link = IP.inRange(a, '169.254.0.0/16'), mc = IP.inRange(a, '224.0.0.0/4'), any = a === 0;
+    const mcType = mc ? (IP.inRange(a, '224.0.0.0/24') ? 'isMCLinkLocal() = true' : IP.inRange(a, '239.0.0.0/8') ? 'isMCOrgLocal() = true (administratively scoped)' : 'isMCGlobal() = true') : '';
+    out.innerHTML = `<pre class="code"><code>InetAddress a = InetAddress.getByName("${L}");   // literal → no DNS query
+a.getClass()            → java.net.Inet4Address
+a.toString()            → "/${L}"         (hostname unknown yet)
+a.getHostAddress()      → "${L}"
+a.getAddress()          → [${signed.join(', ')}]   (signed Java bytes!)
+a.getHostName()         → (performs a REVERSE DNS lookup for ${L}; returns "${L}" if none)
+a.isAnyLocalAddress()   → ${any}
+a.isLoopbackAddress()   → ${loop}
+a.isLinkLocalAddress()  → ${link}
+a.isSiteLocalAddress()  → ${site}
+a.isMulticastAddress()  → ${mc}${mcType ? '\n' + ''.padEnd(24) + '  ' + mcType : ''}
+a.hashCode()            → ${a | 0}   (the address as an int)</code></pre>`;
+  }
+  $('#ieGo').onclick = run; run();
+})();
+
+/* ---------- Drill ---------- */
+(function () {
+  let cur = 0, ok = 0, tot = 0;
+  const pools = [
+    () => (Math.floor(Math.random() * 223) + 1) * 16777216 + Math.floor(Math.random() * 16777216),
+    () => IP.parse('10.0.0.0') + Math.floor(Math.random() * 16777216),
+    () => IP.parse('172.16.0.0') + Math.floor(Math.random() * 1048576 * 2), // includes 172.32+ traps
+    () => IP.parse('192.168.0.0') + Math.floor(Math.random() * 65536),
+    () => IP.parse('127.0.0.0') + Math.floor(Math.random() * 16777216),
+    () => IP.parse('169.254.0.0') + Math.floor(Math.random() * 65536),
+    () => IP.parse('224.0.0.0') + Math.floor(Math.random() * 268435456)
+  ];
+  function truth(a) {
+    const c = IP.cls(a);
+    let t = 'public';
+    const sp = IP.special(a).desc;
+    if (/Private/.test(sp)) t = 'private'; else if (/Loopback/.test(sp)) t = 'loopback'; else if (/APIPA/.test(sp)) t = 'apipa';
+    else if (/Multicast/.test(sp)) t = 'multicast'; else if (!/Public/.test(sp)) t = 'other';
+    const m = { A: '/8', B: '/16', C: '/24' }[c] || 'none';
+    return { c, t, m };
+  }
+  function nw() { cur = pools[Math.floor(Math.random() * pools.length)]() >>> 0; $('#drIp').textContent = IP.str(cur); $('#drOut').innerHTML = ''; $('#drCls').value = ''; $('#drType').value = ''; $('#drMask').value = ''; }
+  $('#drNew').onclick = nw;
+  $('#drCheck').onclick = () => {
+    const t = truth(cur); let m = $('#drMask').value.trim().toLowerCase(); if (m && m[0] !== '/' && m !== 'none') m = '/' + m;
+    const r = [$('#drCls').value === t.c, $('#drType').value === t.t, m === t.m];
+    tot++; if (r.every(Boolean)) ok++;
+    $('#drOut').innerHTML = `${r[0] ? '✔' : '✘'} class <b>${t.c}</b> · ${r[1] ? '✔' : '✘'} type <b>${t.t}</b> (${IP.special(cur).desc}) · ${r[2] ? '✔' : '✘'} default mask <b>${t.m}</b>`;
+    $('#drScore').textContent = `Fully correct: ${ok} / ${tot}`;
+  };
+  nw();
+})();
+
+/* ---------- Quiz ---------- */
+Quiz('quiz08', [
+  { l: 'b', q: 'Which function of the network layer is a local, per-packet action inside a single router?', o: ['Routing', 'Forwarding', 'Address resolution', 'Congestion control'], a: 1, e: 'Forwarding moves a packet from an input to an output interface using the forwarding table. Routing is the network-wide computation of paths.' },
+  { l: 'b', q: 'Along the path from source to destination (no NAT), which addresses change at every hop?', o: ['Source and destination IP', 'Source and destination MAC', 'Both IP and MAC', 'Neither'], a: 1, e: 'IP addresses are end-to-end. Each link uses new frame headers with the MACs of that link\'s endpoints.' },
+  { l: 'b', q: 'What class is 191.12.0.4?', o: ['A', 'B', 'C', 'D'], a: 1, e: '128–191 is class B (leading bits 10).' },
+  { l: 'b', q: 'Which address is NOT private?', o: ['10.255.0.1', '172.20.1.1', '172.33.1.1', '192.168.255.254'], a: 2, e: 'The 172 private block is 172.16.0.0/12, i.e. 172.16.x.x – 172.31.x.x. 172.33 is public.' },
+  { l: 'b', q: '11100000 in decimal is:', o: ['192', '224', '240', '248'], a: 1, e: '128 + 64 + 32 = 224.' },
+  { l: 'b', q: 'A Windows PC shows 169.254.12.7. The most likely cause is:', o: ['It is behind NAT', 'It obtained no DHCP lease (APIPA)', 'It uses IPv6', 'It is a loopback interface'], a: 1, e: '169.254.0.0/16 is self-assigned link-local addressing, used when DHCP fails.' },
+  { l: 'i', q: 'Network address of 10.45.170.33/19?', o: ['10.45.128.0', '10.45.160.0', '10.45.168.0', '10.45.170.0'], a: 1, e: '/19 has mask 255.255.224.0, so the block in octet 3 is 32; 170 lies in [160, 192).' },
+  { l: 'i', q: 'How many usable hosts in a /22?', o: ['510', '1022', '1024', '2046'], a: 1, e: 'h = 10, and 2^10 − 2 = 1022.' },
+  { l: 'i', q: 'Host 192.168.5.62/27 wants to send to 192.168.5.66. It will:', o: ['ARP for 192.168.5.66 directly', 'Send to its default gateway', 'Broadcast the packet', 'Drop the packet'], a: 1, e: 'With /27 (block 32) the hosts are in .32–.63 and .64–.95, different subnets.' },
+  { l: 'i', q: 'Which is a valid subnet mask?', o: ['255.255.0.255', '255.255.250.0', '255.254.0.0', '255.0.255.0'], a: 2, e: '254 = 11111110 followed by zeros: contiguous. The others are non-contiguous or use invalid octet values.' },
+  { l: 'i', q: 'In Java, which call never performs a DNS query?', o: ['InetAddress.getByName("www.x.org")', 'InetAddress.getByAddress(new byte[]{10,0,0,1})', 'a.getCanonicalHostName()', 'InetAddress.getLocalHost()'], a: 1, e: 'getByAddress builds the object from raw bytes. getCanonicalHostName performs a reverse look-up, and getLocalHost may resolve the local hostname.' },
+  { l: 'a', q: 'For addr = 192.168.1.1, <code>byte b = addr.getAddress()[0]; System.out.println(b);</code> prints:', o: ['192', '-64', '64', '-192'], a: 1, e: 'Java bytes are signed: 0xC0 = −64. Use b & 0xFF to get 192.' },
+  { l: 'a', q: 'Why is a /31 acceptable on point-to-point links?', o: ['Because broadcast is replaced by multicast', 'With only two endpoints, network/broadcast addresses are unnecessary (RFC 3021)', 'Because routers ignore the host bits', 'It is not acceptable'], a: 1, e: 'RFC 3021 lets both addresses of a /31 be used on point-to-point links.' },
+  { l: 'a', q: 'Wildcard mask corresponding to /21?', o: ['0.0.3.255', '0.0.7.255', '0.0.15.255', '255.255.248.0'], a: 1, e: 'The /21 mask is 255.255.248.0, and 255 − 248 = 7, so the wildcard is 0.0.7.255.' },
+  { l: 'a', q: 'Which block is used between customer equipment and an ISP\'s carrier-grade NAT?', o: ['192.0.2.0/24', '100.64.0.0/10', '198.18.0.0/15', '240.0.0.0/4'], a: 1, e: 'RFC 6598 shared address space.' }
+]);
+
+NetUI.init();
+</script>
+</body>
+</html>

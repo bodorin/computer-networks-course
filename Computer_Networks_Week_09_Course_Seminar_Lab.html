@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Networks · Week 09 · Subnetting, VLSM, CIDR and Supernetting</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#ffffff;--ink:#1b2233;--muted:#5a6478;--line:#dde2ec;
+  --accent:#2952e3;--accent-soft:#e9eeff;
+  --b:#16884a;--b-soft:#e5f5ec;--i:#b86e00;--i-soft:#fff3dd;--a:#7f33c9;--a-soft:#f2e7ff;
+  --code-bg:#111827;--code-ink:#e5e7eb;--warn:#b42318;--warn-soft:#fdeceb;--ok:#127a3f;--ok-soft:#e3f4ea;
+  --hl:#ffe58a;--shadow:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.05);
+}
+body.dark{
+  --bg:#0e1320;--panel:#161d2e;--ink:#e6e9f2;--muted:#9aa4ba;--line:#2a3349;
+  --accent:#7d9bff;--accent-soft:#1d2848;
+  --b:#4cc985;--b-soft:#12301f;--i:#f0b252;--i-soft:#3a2a0e;--a:#c18cff;--a-soft:#2c1a45;
+  --code-bg:#0a0f1a;--warn:#ff8a7a;--warn-soft:#3b1612;--ok:#5ed492;--ok-soft:#10301d;--hl:#6b5a12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,.mono{font-family:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;font-size:.92em}
+code{background:var(--accent-soft);padding:.05em .35em;border-radius:4px}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:100}
+header.top{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+header.top .inner{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;max-width:1500px;margin:0 auto}
+header.top .brand{font-weight:700;font-size:1rem}
+header.top .brand small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.tracks{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.tracks span{font-size:.8rem;color:var(--muted);margin-right:.2rem}
+.tracks button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:.35rem .75rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.85rem}
+.tracks button.on[data-track=b]{background:var(--b);color:#fff;border-color:var(--b)}
+.tracks button.on[data-track=i]{background:var(--i);color:#fff;border-color:var(--i)}
+.tracks button.on[data-track=a]{background:var(--a);color:#fff;border-color:var(--a)}
+.btn{border-radius:8px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:hover{filter:brightness(.96)}
+.btn:disabled{opacity:.5;cursor:default}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:1.5rem;max-width:1500px;margin:0 auto;padding:1.2rem}
+nav#toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;font-size:.86rem;padding:.8rem;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+nav#toc b{display:block;margin-bottom:.4rem}
+nav#toc a{display:block;text-decoration:none;color:var(--ink);padding:.18rem .4rem;border-radius:6px}
+nav#toc a.sub{padding-left:1.2rem;color:var(--muted);font-size:.82rem}
+nav#toc a.active{background:var(--accent-soft);color:var(--accent)}
+nav#toc a.gone{display:none}
+main{min-width:0}
+main section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow)}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .4rem}
+h2{font-size:1.5rem;margin:.2rem 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--line);scroll-margin-top:80px}
+h3{font-size:1.18rem;margin:1.4rem 0 .5rem;scroll-margin-top:80px}
+h4{margin:1rem 0 .4rem}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel));border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem}
+.hero .meta{color:var(--muted);font-size:.92rem}
+.lvl{position:relative;border-left:4px solid var(--line);padding:.6rem .9rem .6rem 1rem;margin:.9rem 0;border-radius:0 10px 10px 0}
+.lvl::before{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;padding:.08rem .5rem;border-radius:999px;margin-bottom:.35rem;color:#fff}
+.lvl[data-level=b]{border-color:var(--b);background:var(--b-soft)}
+.lvl[data-level=b]::before{content:"BEGINNER";background:var(--b)}
+.lvl[data-level=i]{border-color:var(--i);background:var(--i-soft)}
+.lvl[data-level=i]::before{content:"INTERMEDIATE";background:var(--i)}
+.lvl[data-level=a]{border-color:var(--a);background:var(--a-soft)}
+.lvl[data-level=a]::before{content:"ADVANCED";background:var(--a)}
+.lvl.plain{background:transparent}
+.hidden-lvl{display:none!important}
+.callout{border:1px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin:.9rem 0;background:var(--panel)}
+.callout.note{border-left:5px solid var(--accent)}
+.callout.tip{border-left:5px solid var(--ok);background:var(--ok-soft)}
+.callout.warn{border-left:5px solid var(--warn);background:var(--warn-soft)}
+.callout.key{border-left:5px solid var(--i);background:var(--i-soft)}
+.callout > b:first-child{display:block;margin-bottom:.2rem}
+table.data{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.92rem;background:var(--panel)}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--accent-soft)}
+table.data tr:nth-child(even) td{background:rgba(127,127,127,.04)}
+.scroll{overflow-x:auto}
+pre.code{position:relative;background:var(--code-bg);color:var(--code-ink);padding:.9rem 1rem;border-radius:10px;overflow:auto;font-size:.85rem;line-height:1.5}
+pre.code code{background:none;padding:0;color:inherit}
+pre.code .copy{position:absolute;top:.4rem;right:.4rem;font-size:.72rem;padding:.15rem .5rem;border-radius:6px;border:1px solid #475569;background:#1f2937;color:#e5e7eb;cursor:pointer}
+.c-k{color:#93c5fd}.c-s{color:#fca5a5}.c-c{color:#94a3b8;font-style:italic}.c-n{color:#fcd34d}
+.tool{border:2px solid var(--accent);border-radius:14px;padding:1rem 1.2rem;margin:1.1rem 0;background:var(--panel)}
+.tool > .tt{font-weight:700;color:var(--accent);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:center}
+.tool > .tt::before{content:"⚙";font-size:1.1rem}
+.tool label{font-size:.88rem;color:var(--muted);margin-right:.3rem}
+.tool input[type=text],.tool input[type=number],.tool select,.tool textarea{font:inherit;font-family:"JetBrains Mono",Consolas,monospace;font-size:.92rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tool textarea{width:100%;min-height:90px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.4rem 0}
+.out{margin-top:.6rem;font-size:.92rem}
+.out .err{color:var(--warn);font-weight:600}
+.out .ok{color:var(--ok);font-weight:600}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.92rem}
+.kv div:nth-child(odd){color:var(--muted)}
+.kv div:nth-child(even){font-family:"JetBrains Mono",Consolas,monospace}
+.bitrow{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:.3rem 0}
+.bit{width:30px;height:34px;border-radius:6px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;cursor:pointer;user-select:none;background:var(--bg)}
+.bit.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bit small{font-size:.55rem;opacity:.75}
+.bits-net{background:var(--b-soft)!important;color:var(--b)!important}
+.bits-host{background:var(--i-soft)!important;color:var(--i)!important}
+.binline{font-family:monospace;letter-spacing:.04em}
+.binline .n{color:var(--b);font-weight:700}
+.binline .h{color:var(--i);font-weight:700}
+.binline .s{color:var(--a);font-weight:700}
+details.sol{border:1px dashed var(--line);border-radius:10px;padding:.45rem .8rem;margin:.6rem 0;background:var(--panel)}
+details.sol summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.sol[open]{background:var(--bg)}
+.problem{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.9rem 0;background:var(--panel)}
+.problem > .ph{font-weight:700;margin-bottom:.3rem}
+.q{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.8rem 0;background:var(--panel)}
+.q.lvl{border-left-width:4px}
+.qhead{font-weight:600;margin-bottom:.5rem}
+.qnum{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 .45rem;margin-right:.3rem;font-size:.85rem}
+.opts{display:grid;gap:.35rem}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:.45rem .7rem;border-radius:8px;cursor:pointer;font:inherit}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.exp{margin-top:.5rem;font-size:.92rem;padding:.5rem .7rem;background:var(--accent-soft);border-radius:8px}
+.qscore{position:sticky;bottom:10px;margin-top:1rem;background:var(--accent);color:#fff;padding:.5rem 1rem;border-radius:10px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.qscore button{background:#fff;color:var(--accent);border:0;border-radius:6px;padding:.2rem .6rem;cursor:pointer}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:.8rem 0}
+.roadmap .wk{border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;background:var(--panel);font-size:.86rem}
+.roadmap .wk b{display:block;font-size:.95rem;margin-bottom:.2rem}
+.roadmap .wk.cur{border:2px solid var(--accent);background:var(--accent-soft)}
+.roadmap .wk ul{margin:.3rem 0 0;padding-left:1.1rem}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.obj > div{border-radius:12px;padding:.7rem .9rem;font-size:.9rem}
+.obj .ob{background:var(--b-soft);border:1px solid var(--b)}
+.obj .oi{background:var(--i-soft);border:1px solid var(--i)}
+.obj .oa{background:var(--a-soft);border:1px solid var(--a)}
+.obj h4{margin:.1rem 0 .3rem}
+.obj ul{margin:0;padding-left:1.1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.pill{display:inline-block;padding:.05rem .5rem;border-radius:999px;font-size:.78rem;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.bar{display:flex;height:42px;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:.5rem 0;font-size:.7rem}
+.bar > div{display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;white-space:nowrap;border-right:1px solid rgba(255,255,255,.5)}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;font-size:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.3rem}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.hdr-grid{display:grid;grid-template-columns:repeat(32,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.74rem;margin:.6rem 0}
+.hdr-grid .bitscale{background:var(--bg);text-align:center;color:var(--muted);font-size:.62rem;border-right:1px solid var(--line)}
+.hdr-grid .f{border:1px solid var(--line);padding:.45rem .2rem;text-align:center;cursor:pointer;background:var(--accent-soft);transition:background .15s}
+.hdr-grid .f:hover,.hdr-grid .f.sel{background:var(--hl)}
+.checklist label{display:block;padding:.2rem 0}
+.glossary dt{font-weight:700;margin-top:.5rem}
+.glossary dd{margin:0 0 .3rem 1rem;color:var(--muted)}
+svg text{font-family:"Segoe UI",system-ui,sans-serif}
+.small{font-size:.85rem;color:var(--muted)}
+.tag-b,.tag-i,.tag-a{font-size:.7rem;font-weight:700;padding:.05rem .4rem;border-radius:999px;color:#fff}
+.tag-b{background:var(--b)}.tag-i{background:var(--i)}.tag-a{background:var(--a)}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1rem}
+.drill-ok{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.drill-bad{background:var(--warn-soft)!important;border-color:var(--warn)!important}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}nav#toc{position:relative;top:0;max-height:none}.roadmap,.obj{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:600px){.roadmap,.obj{grid-template-columns:1fr}main section.chapter{padding:1rem}}
+@media print{header.top,nav#toc,#progress,.tool{display:none}.layout{display:block}details.sol{display:block}details.sol>*{display:block}.hidden-lvl{display:block!important}}
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="top"><div class="inner">
+<div class="brand">Computer Networks · Week 09 · Course + Seminar + Lab<small>Chapter 4 — The Network Layer: Addressing, the Internet Protocol and Routing</small></div>
+<div class="tracks"><span>Learning track:</span>
+<button type="button" data-track="b" title="Show only beginner material">Beginner</button>
+<button type="button" data-track="i" title="Beginner + intermediate material">Intermediate</button>
+<button type="button" data-track="a" title="Everything: beginner + intermediate + advanced">Advanced (all)</button>
+<button type="button" class="btn" id="themeBtn" title="Toggle dark / light theme">◐ Theme</button>
+</div></div></header>
+<div class="layout">
+<nav id="toc"><b>Contents</b></nav>
+<main>
+<div class="hero">
+  <div class="meta">Chapter 4 · The Network Layer · Part 2 of 4 · 2 hours (course 50' + seminar 35' + lab 35')</div>
+  <h1>Subnetting, VLSM, CIDR and Supernetting</h1>
+  <p>Last week a mask simply told us where the network part ends. This week we <em>move</em> that boundary deliberately. Moving it to the right (borrowing host bits) splits one network into <b>subnets</b>. Using different masks inside one network (<b>VLSM</b>) fits each subnet to its real size. Abandoning classes altogether gives <b>CIDR</b>. Moving the boundary to the left combines many networks into one route (<b>supernetting / aggregation</b>). These four techniques are how real IPv4 networks are designed and how the global routing table stays manageable.</p>
+  <p class="small">Level filter: <span class="tag-b">BEGINNER</span> essentials · <span class="tag-i">INTERMEDIATE</span> design methods · <span class="tag-a">ADVANCED</span> edge cases, standards and operational practice.</p>
+</div>
+
+<section class="chapter">
+  <h2 id="roadmap">0. Roadmap, outcomes and recap</h2>
+  <div class="roadmap"><div class="wk"><b>Week 08 · Network layer & IPv4 addressing</b><ul><li>Role of the network layer: forwarding vs routing</li><li>Logical vs physical addressing</li><li>IPv4 structure, binary, classes A–E</li><li>Special & private addresses</li><li>Subnet mask, AND, host count</li><li>Java InetAddress class</li></ul></div><div class="wk cur"><b>Week 09 · Subnetting, VLSM, CIDR, supernetting <span class="pill">you are here</span></b><ul><li>FLSM subnetting & magic number</li><li>Sizing by hosts / by subnets</li><li>VLSM design (largest first)</li><li>CIDR notation & allocation</li><li>Supernetting / route summarization</li><li>Longest prefix match</li></ul></div><div class="wk"><b>Week 10 · The Internet Protocol: IPv4 & IPv6</b><ul><li>IPv4 header, checksum, TTL</li><li>Fragmentation, MTU, PMTUD</li><li>ICMP, ARP, DHCP, NAT</li><li>IPv6 addresses, types, EUI-64</li><li>IPv6 header, NDP, SLAAC</li><li>IPv4→IPv6 transition</li></ul></div><div class="wk"><b>Week 11 · Routing in IP networks</b><ul><li>Routing table, LPM, AD, metric</li><li>Static & default routing</li><li>Algorithm classification</li><li>Dijkstra & Bellman-Ford</li><li>Distance-vector (RIP) vs link-state (OSPF)</li><li>IGP vs EGP, BGP</li></ul></div></div>
+  <div class="obj">
+    <div class="ob"><h4>Beginner</h4><ul>
+      <li>Explain why networks are subnetted.</li>
+      <li>Split a /24 into equal subnets and list their addresses.</li>
+      <li>Read CIDR notation such as 10.0.0.0/13.</li></ul></div>
+    <div class="oi"><h4>Intermediate</h4><ul>
+      <li>Choose the prefix from host or subnet requirements.</li>
+      <li>Find which subnet any address belongs to, quickly.</li>
+      <li>Design a VLSM addressing plan without overlaps.</li>
+      <li>Summarise contiguous networks into a single route.</li></ul></div>
+    <div class="oa"><h4>Advanced</h4><ul>
+      <li>Handle non-aligned blocks and exact vs. over-inclusive summaries.</li>
+      <li>Explain longest prefix match and black-holing.</li>
+      <li>Discuss CIDR's effect on the BGP table, deaggregation and RIR policy.</li></ul></div>
+  </div>
+  <div class="callout note"><b>Recap from Week 08</b>Network = IP AND mask. Broadcast = network OR wildcard. Usable hosts = 2<sup>h</sup> − 2. Block size in the interesting octet = 256 − mask octet.</div>
+</section>
+
+<section class="chapter">
+  <h2 id="why">1. Why subnet?</h2>
+  <div class="lvl" data-level="b">
+    <p>Suppose a company owns 172.16.0.0/16: 65,534 hosts in <b>one</b> network. That is unworkable:</p>
+    <ul>
+      <li><b>Broadcast domains.</b> ARP, DHCP and other broadcasts reach every host. With thousands of hosts, broadcast traffic and CPU interruptions grow.</li>
+      <li><b>Organisation.</b> Separate networks for departments, floors, buildings, servers, VoIP and guests make management easier.</li>
+      <li><b>Security.</b> Traffic between subnets passes a router or firewall, where it can be filtered with ACLs.</li>
+      <li><b>Fault isolation.</b> A broadcast storm or misconfiguration stays inside one subnet.</li>
+      <li><b>Address efficiency.</b> Right-size each segment instead of wasting whole classful networks.</li>
+    </ul>
+    <p><b>Subnetting</b> (RFC 950) means taking some <b>host bits</b> and using them as a <b>subnet ID</b>. The address then has three parts:</p>
+    <pre class="code"><code>| network prefix (given) | subnet ID (borrowed bits) | host ID (remaining) |
+  172.16                 . 0000                       0000.00000000     (/16 → /20)</code></pre>
+    <p>Outside the organisation the world still sees one network, 172.16.0.0/16. Inside, routers know the subnets.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="flsm">2. Fixed-length subnetting (FLSM)</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="formulas">2.1 The two formulas</h3>
+    <p>Borrowing <b>s</b> bits from the host part of a network with prefix <b>p</b> gives a new prefix p' = p + s, and with h = 32 − p':</p>
+    <div class="grid2">
+      <div class="callout key"><b>Number of subnets</b>2<sup>s</sup></div>
+      <div class="callout key"><b>Usable hosts per subnet</b>2<sup>h</sup> − 2</div>
+    </div>
+    <p>Every bit you borrow <b>doubles</b> the number of subnets and roughly <b>halves</b> the hosts per subnet. All subnets have the same size, hence "fixed length".</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="ex1">2.2 Worked example: 192.168.10.0/24 into 4 subnets</h3>
+    <ol>
+      <li>We need 4 subnets, and 2<sup>s</sup> ≥ 4 gives s = 2, so the new prefix is /26 (mask 255.255.255.<b>192</b>).</li>
+      <li>Host bits h = 6, so 2<sup>6</sup> − 2 = <b>62 hosts</b> per subnet.</li>
+      <li>Block size = 256 − 192 = <b>64</b>, so subnets start at .0, .64, .128 and .192.</li>
+    </ol>
+    <table class="data">
+      <tr><th>#</th><th>Subnet ID bits</th><th>Network</th><th>First host</th><th>Last host</th><th>Broadcast</th></tr>
+      <tr><td>0</td><td><code>00</code>xxxxxx</td><td>192.168.10.0/26</td><td>.1</td><td>.62</td><td>.63</td></tr>
+      <tr><td>1</td><td><code>01</code>xxxxxx</td><td>192.168.10.64/26</td><td>.65</td><td>.126</td><td>.127</td></tr>
+      <tr><td>2</td><td><code>10</code>xxxxxx</td><td>192.168.10.128/26</td><td>.129</td><td>.190</td><td>.191</td></tr>
+      <tr><td>3</td><td><code>11</code>xxxxxx</td><td>192.168.10.192/26</td><td>.193</td><td>.254</td><td>.255</td></tr>
+    </table>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="magic">2.3 The "magic number" (block size) method</h3>
+    <ol>
+      <li>Find the <b>interesting octet</b>, the one where the mask is neither 255 nor 0.</li>
+      <li>Magic number = <b>256 − mask value in that octet</b>.</li>
+      <li>Subnets start at multiples of the magic number in that octet. Octets to the right of it are 0 for the network address and 255 for the broadcast address.</li>
+    </ol>
+    <p>Example: 172.16.0.0/20. The mask is 255.255.<b>240</b>.0, so the magic number is 16 in the 3rd octet. Subnets: 172.16.0.0, 172.16.16.0, 172.16.32.0, …, 172.16.240.0 (16 subnets). Each has 2<sup>12</sup> − 2 = 4094 hosts; for example 172.16.16.0/20 runs from 172.16.16.1 to 172.16.31.254, with broadcast 172.16.31.255.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <div class="tool">
+      <div class="tt">FLSM splitter: divide a network into 2<sup>s</sup> equal subnets</div>
+      <div class="row"><label>Network:</label><input type="text" id="flNet" value="192.168.10.0/24" size="18">
+        <label>Split by:</label><select id="flMode"><option value="sub">number of subnets needed</option><option value="host">hosts needed per subnet</option></select>
+        <input type="number" id="flN" value="4" min="1" style="width:90px"><button class="btn primary" type="button" id="flGo">Split</button></div>
+      <div class="out" id="flOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="sizing">2.4 Choosing the prefix from requirements</h3>
+    <p><b>By number of subnets S:</b> the smallest s with 2<sup>s</sup> ≥ S. <b>By hosts per subnet H:</b> the smallest h with 2<sup>h</sup> − 2 ≥ H, so p' = 32 − h. If both are given, check that s + h ≤ 32 − p; otherwise the requirements cannot be met with that block.</p>
+    <table class="data">
+      <tr><th>Requirement</th><th>Calculation</th><th>Result</th></tr>
+      <tr><td>Class B 172.20.0.0/16, 50 subnets</td><td>2<sup>6</sup> = 64 ≥ 50, so s = 6</td><td>/22, 1022 hosts each</td></tr>
+      <tr><td>10.0.0.0/8, 500 hosts per subnet</td><td>2<sup>9</sup> − 2 = 510 ≥ 500, so h = 9</td><td>/23, 2<sup>15</sup> = 32,768 subnets</td></tr>
+      <tr><td>192.168.5.0/24, 6 subnets × 30 hosts</td><td>s = 3 (8 subnets), h = 5 (30 hosts); 3 + 5 = 8 ≤ 8 ✔</td><td>/27</td></tr>
+      <tr><td>192.168.5.0/24, 9 subnets × 20 hosts</td><td>s = 4, h = 5; 4 + 5 = 9 &gt; 8 ✘</td><td>impossible with FLSM; VLSM or more space needed</td></tr>
+    </table>
+    <div class="callout warn"><b>Careful with "−2"</b>30 hosts fit in /27 (30 usable), but 31 hosts need /26. Remember that the router's interface (the default gateway) also uses one host address.</div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="subnetzero">2.5 Subnet zero, the all-ones subnet and the old "2<sup>s</sup> − 2" formula</h3>
+    <p>RFC 950 (1985) advised against using the first subnet (all-zero subnet ID) and the last (all-ones subnet ID). Subnet zero had the same network address as the classful network, and the all-ones subnet's broadcast equalled the classful directed broadcast. Classful routing protocols could not tell them apart. That is why older textbooks use <b>2<sup>s</sup> − 2</b> subnets. RFC 1878 (1995) and every modern CIDR-aware device use all 2<sup>s</sup> subnets. On Cisco IOS, <code>ip subnet-zero</code> has been on by default since 12.0. In exams, read the wording: "assume subnet zero is not used" means 2<sup>s</sup> − 2.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="calc">3. Subnet calculator and quick-reference table</h2>
+  <div class="lvl" data-level="b">
+    <div class="tool">
+      <div class="tt">Subnet calculator: everything about IP/prefix</div>
+      <div class="row"><label>Address/prefix or address mask:</label><input type="text" id="scIn" value="10.45.170.33/19" size="24"><button class="btn primary" type="button" id="scGo">Calculate</button>
+        <label>Original (classful or allocated) prefix for subnet index:</label><input type="number" id="scBase" value="16" min="0" max="32" style="width:70px"></div>
+      <div class="out" id="scOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="cheatsheet">3.1 Quick-reference table</h3>
+    <p class="small">Memorise the last-octet rows (/24–/30); the others follow the same pattern shifted by 8 bits.</p>
+    <div class="scroll"><table class="data" id="refTable"></table></div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="reverse">3.2 Reverse problem: which subnet contains this address?</h3>
+    <p>Example: does 172.16.77.10/21 belong to the same subnet as 172.16.80.1/21? /21 has mask 255.255.248.0, so the block in octet 3 is 8. 77 is in [72, 80), giving network 172.16.72.0 and broadcast 172.16.79.255. 80 starts the next block, 172.16.80.0. They are <b>different</b> subnets, although the addresses look close.</p>
+    <p>Example in the 2nd octet: 10.130.4.4/10. The mask is 255.192.0.0 and the block is 64 in octet 2; 130 is in [128, 192), so the network is 10.128.0.0/10 and the broadcast 10.191.255.255.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <div class="tool">
+      <div class="tt">Speed drill: network, broadcast, hosts</div>
+      <div class="row"><b id="dqQ" class="mono" style="font-size:1.25rem"></b>
+        <label>Difficulty:</label><select id="dqLvl"><option value="b">/24–/30 (last octet)</option><option value="i" selected>/16–/30</option><option value="a">/8–/30</option></select>
+        <button class="btn" type="button" id="dqNew">New</button></div>
+      <div class="row"><label>Network:</label><input type="text" id="dqN" size="15"><label>Broadcast:</label><input type="text" id="dqB" size="15"><label>Usable hosts:</label><input type="text" id="dqH" size="9"><button class="btn primary" type="button" id="dqChk">Check</button></div>
+      <div class="out" id="dqOut"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="vlsm">4. VLSM: Variable Length Subnet Masking</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="vlsmwhy">4.1 Why VLSM?</h3>
+    <p>FLSM gives every subnet the same size. Real networks are uneven: one LAN with 100 PCs, another with 10 printers, and several router-to-router links that need exactly <b>2</b> addresses. With FLSM sized for the largest LAN, a point-to-point link would waste 124 of 126 addresses.</p>
+    <p><b>VLSM</b> (RFC 1009) lets different subnets of the same network use <b>different prefix lengths</b>. Conceptually it is "subnetting a subnet": take one block and split it further.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="vlsmalgo">4.2 The VLSM procedure: largest first</h3>
+    <ol>
+      <li>List the requirements and add the router interface to each host count if it is not already included.</li>
+      <li><b>Sort in descending order</b> of size.</li>
+      <li>For each requirement, choose the smallest block with 2<sup>h</sup> − 2 ≥ hosts (/30 or /31 for point-to-point links).</li>
+      <li>Allocate blocks one after another from the start of the address space. Sorting guarantees that each block starts on a <b>boundary that is a multiple of its size</b> (alignment), so there are no overlaps or gaps.</li>
+      <li>Record the network, mask, range and broadcast. Keep the unused space contiguous for growth.</li>
+    </ol>
+    <h4>Worked example: 192.168.1.0/24</h4>
+    <p>Requirements: LAN-A 100 hosts, LAN-B 50, LAN-C 25, LAN-D 10, plus three WAN point-to-point links.</p>
+    <table class="data">
+      <tr><th>Segment</th><th>Needed</th><th>Prefix (usable)</th><th>Network</th><th>Range</th><th>Broadcast</th></tr>
+      <tr><td>LAN-A</td><td>100</td><td>/25 (126)</td><td>192.168.1.0</td><td>.1 – .126</td><td>.127</td></tr>
+      <tr><td>LAN-B</td><td>50</td><td>/26 (62)</td><td>192.168.1.128</td><td>.129 – .190</td><td>.191</td></tr>
+      <tr><td>LAN-C</td><td>25</td><td>/27 (30)</td><td>192.168.1.192</td><td>.193 – .222</td><td>.223</td></tr>
+      <tr><td>LAN-D</td><td>10</td><td>/28 (14)</td><td>192.168.1.224</td><td>.225 – .238</td><td>.239</td></tr>
+      <tr><td>WAN-1</td><td>2</td><td>/30 (2)</td><td>192.168.1.240</td><td>.241 – .242</td><td>.243</td></tr>
+      <tr><td>WAN-2</td><td>2</td><td>/30 (2)</td><td>192.168.1.244</td><td>.245 – .246</td><td>.247</td></tr>
+      <tr><td>WAN-3</td><td>2</td><td>/30 (2)</td><td>192.168.1.248</td><td>.249 – .250</td><td>.251</td></tr>
+      <tr><td><i>free</i></td><td></td><td>/30</td><td>192.168.1.252</td><td colspan="2">reserve</td></tr>
+    </table>
+    <p>Everything fits in one /24. FLSM with /25 would give only 2 subnets, and with /26 the 100-host LAN would not fit.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <div class="tool">
+      <div class="tt">VLSM planner: enter the block and the requirements</div>
+      <div class="row"><label>Address block:</label><input type="text" id="vlNet" value="192.168.1.0/24" size="18">
+        <label><input type="checkbox" id="vl31"> use /31 for 2-host links</label>
+        <label><input type="checkbox" id="vlGw" checked> host counts already include the gateway</label></div>
+      <label>Requirements, one per line: <code>name hosts</code></label>
+      <textarea id="vlReq">LAN-A 100
+LAN-B 50
+LAN-C 25
+LAN-D 10
+WAN-1 2
+WAN-2 2
+WAN-3 2</textarea>
+      <div class="row"><button class="btn primary" type="button" id="vlGo">Plan</button><span class="small">Allocation uses the largest-first rule; the bar shows the address space from left (low) to right (high).</span></div>
+      <div class="out" id="vlOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="vlsmadv">4.3 VLSM design pitfalls and good practice</h3>
+    <ul>
+      <li><b>Overlaps</b> happen when blocks are allocated smallest-first or by hand without checking alignment. A /26 cannot start at .32; it must start at a multiple of 64.</li>
+      <li><b>Routing protocols must carry masks.</b> VLSM needs <em>classless</em> protocols (RIPv2, OSPF, EIGRP, IS-IS, BGP). RIPv1 and IGRP do not send masks and break VLSM and discontiguous networks.</li>
+      <li><b>Discontiguous networks.</b> If two subnets of 172.16.0.0/16 are separated by a different major network, automatic classful summarisation (old RIPv2/EIGRP defaults, <code>auto-summary</code>) advertises 172.16.0.0/16 from both sides and causes black holes. Use <code>no auto-summary</code>.</li>
+      <li><b>Plan for summarisation.</b> Give each site or building a contiguous, power-of-two-aligned block (e.g. 10.1.0.0/16 for site 1, split internally) so that one summary route represents the whole site (§6).</li>
+      <li><b>Growth.</b> Leave room next to each block so it can double without renumbering.</li>
+      <li><b>Point-to-point links:</b> a /30 (2 usable) or /31 (RFC 3021). Router loopbacks: /32.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="cidr">5. CIDR: Classless Inter-Domain Routing</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="cidrwhat">5.1 What CIDR is</h3>
+    <p><b>CIDR</b> (RFC 1517–1520, 1993; updated by RFC 4632) abolished classes for <em>allocation</em> and <em>routing</em>:</p>
+    <ul>
+      <li>An address block is described as <code>a.b.c.d/n</code>, where <b>n</b> (the prefix length) can be <em>any</em> value from 0 to 32. The first octet no longer implies anything.</li>
+      <li>Routers store and advertise <b>prefix + length</b> pairs, and routing protocols carry the mask.</li>
+      <li>Blocks can be allocated in any power-of-two size: an organisation needing 2,000 addresses receives a /21 (2,048) instead of a class B (65,536).</li>
+    </ul>
+    <table class="data">
+      <tr><th>CIDR block</th><th>Addresses</th><th>Classful equivalent</th></tr>
+      <tr><td>/8</td><td>16,777,216</td><td>1 class A</td></tr>
+      <tr><td>/16</td><td>65,536</td><td>1 class B = 256 C</td></tr>
+      <tr><td>/20</td><td>4,096</td><td>16 class C</td></tr>
+      <tr><td>/22</td><td>1,024</td><td>4 class C</td></tr>
+      <tr><td>/24</td><td>256</td><td>1 class C</td></tr>
+      <tr><td>/27</td><td>32</td><td>1/8 of a C</td></tr>
+    </table>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="hier">5.2 Hierarchical allocation</h3>
+    <p>Addresses are delegated hierarchically: <b>IANA → RIR</b> (e.g. RIPE NCC for Europe) <b>→ LIR/ISP → customer</b>. An ISP that receives 81.180.0.0/16 can hand out a /24 to company X, a /27 to company Y and so on, yet advertise only <b>81.180.0.0/16</b> to the rest of the Internet. This is "provider-aggregatable" (PA) space. "Provider-independent" (PI) space belongs to the customer and must be advertised separately.</p>
+    <pre class="code"><code>                 Internet  ←  "send me anything matching 81.180.0.0/16"
+                     │
+                 ISP (81.180.0.0/16)
+        ┌────────────┼──────────────┐
+  81.180.4.0/24   81.180.5.0/27   81.180.64.0/18
+   company X       company Y        large customer Z</code></pre>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="cidradv">5.3 CIDR and the global routing table</h3>
+    <p>Before CIDR the backbone table was growing exponentially and class B space was nearly exhausted. CIDR slowed both problems by letting providers aggregate customer routes. Today the IPv4 BGP table still holds roughly a million prefixes. Growth comes from multihoming, PI space and deliberate <b>deaggregation</b> for traffic engineering (advertising more specific prefixes to steer inbound traffic) and DDoS mitigation. Most operators filter announcements longer than <b>/24</b> for IPv4 (and /48 for IPv6), so /24 is the smallest globally routable block. Since IPv4 run-out, RIRs allocate tiny blocks (RIPE: a /24 from a waiting list), and a market transfers existing blocks.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="super">6. Supernetting and route aggregation (summarisation)</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="superwhat">6.1 Idea</h3>
+    <p><b>Supernetting</b> is the reverse of subnetting. Instead of borrowing host bits, you <b>give network bits back</b>, moving the mask boundary to the <b>left</b>, so that several contiguous networks are represented by <b>one shorter prefix</b>. In routing this is called <b>route aggregation</b> or <b>summarisation</b>. The benefits are smaller routing tables, less routing traffic, faster look-ups and stability: a flapping subnet inside the summary is invisible outside it.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="superex">6.2 Worked example: 4 × /24 → /22</h3>
+    <p>Networks: 200.1.0.0/24, 200.1.1.0/24, 200.1.2.0/24, 200.1.3.0/24. Write the differing octet in binary:</p>
+    <pre class="code"><code>200.1.000000|00.0     0
+200.1.000000|01.0     1
+200.1.000000|10.0     2
+200.1.000000|11.0     3
+       └─ common: 8+8+6 = 22 bits  →  summary 200.1.0.0/22  (mask 255.255.252.0)</code></pre>
+    <p>Method: count the <b>leading bits common to all networks</b>; that is the summary prefix length. The summary address is those common bits followed by zeros.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="superrules">6.3 Conditions for an exact aggregate</h3>
+    <ol>
+      <li>The networks are <b>contiguous</b>, with no gaps.</li>
+      <li>Their number is a <b>power of 2</b> (2, 4, 8, …), assuming equal sizes.</li>
+      <li>The first network is <b>aligned</b>: its relevant octet is a multiple of that count (for 4 × /24, the third octet is a multiple of 4).</li>
+    </ol>
+    <p>Example of a problem: 200.1.1.0/24 – 200.1.4.0/24 (4 networks, but starting at 1, not aligned). The smallest single summary containing all of them is 200.1.0.0/21, which <b>also includes</b> 200.1.0.0 and 200.1.5.0–200.1.7.0 that you might not own. The <b>exact</b> minimal set is 200.1.1.0/24 + 200.1.2.0/23 + 200.1.4.0/24.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <div class="tool">
+      <div class="tt">Route aggregator: single summary vs exact minimal set</div>
+      <label>Networks (one per line, CIDR):</label>
+      <textarea id="agIn">200.1.0.0/24
+200.1.1.0/24
+200.1.2.0/24
+200.1.3.0/24</textarea>
+      <div class="row"><button class="btn primary" type="button" id="agGo">Aggregate</button>
+      <button class="btn" type="button" id="agEx2">Load non-aligned example</button>
+      <button class="btn" type="button" id="agEx3">Load mixed-size example</button></div>
+      <div class="out" id="agOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lpm">6.4 Longest prefix match: why summaries and exceptions coexist</h3>
+    <p>When several routing entries match a destination, a router chooses the one with the <b>longest prefix</b>, the most specific. This lets an ISP advertise an aggregate while a more specific route overrides part of it.</p>
+    <p>Classic case: ISP A owns 200.23.16.0/20 and advertises it. A customer with 200.23.18.0/23 moves to ISP B but keeps its addresses. ISP B advertises 200.23.18.0/23. Routers on the Internet keep both entries; traffic for 200.23.19.7 matches both, and the /23 wins, so it goes to ISP B.</p>
+    <div class="tool">
+      <div class="tt">Longest-prefix-match tester</div>
+      <div class="grid2">
+        <div><label>Forwarding table (<code>prefix next-hop</code>):</label>
+<textarea id="lpTable">0.0.0.0/0 ISP-default
+200.23.16.0/20 ISP-A
+200.23.18.0/23 ISP-B
+200.23.18.128/25 Customer-LAN
+10.0.0.0/8 Core</textarea></div>
+        <div><div class="row"><label>Destination:</label><input type="text" id="lpDst" value="200.23.19.7" size="16"><button class="btn primary" type="button" id="lpGo">Look up</button></div>
+          <div class="small">Try 200.23.18.200, 200.23.20.1, 200.23.31.255, 8.8.8.8, 10.9.9.9</div>
+          <div class="out" id="lpOut"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="superadv">6.5 Operational aspects</h3>
+    <ul>
+      <li><b>Black-holing and the Null0 route.</b> A router advertising a summary may receive traffic for addresses inside it that do not exist. Without a matching more-specific route it would follow its own default route back toward the sender, creating a loop. Routers therefore install a discard route for the summary (<code>ip route 200.1.0.0 255.255.252.0 Null0</code>; OSPF and EIGRP do it automatically).</li>
+      <li><b>Where to summarise.</b> At hierarchy boundaries: OSPF area border routers (<code>area X range</code>), ASBRs (<code>summary-address</code>), BGP (<code>aggregate-address … summary-only</code>), EIGRP per interface (<code>ip summary-address eigrp</code>).</li>
+      <li><b>Cost of summarisation:</b> loss of detail and possibly sub-optimal paths. If a component subnet fails, the summary is still advertised, so traffic is drawn in and dropped.</li>
+      <li><b>Hijack risk.</b> A more specific announcement wins everywhere by LPM. Mis-announcements, such as the 2008 YouTube /24 incident, exploit exactly that. RPKI route-origin validation mitigates it.</li>
+      <li><b>Supernetting vs summarisation terminology.</b> Strictly, "supernet" means a prefix shorter than the classful mask, e.g. 200.1.0.0/22 built from class C networks. Summarisation within a classful network (10.1.0.0/16 from many 10.1.x.0/24) is aggregation but not supernetting in the classful sense.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="seminar">7. Seminar: worked problems</h2>
+  <div class="problem lvl plain" data-level="b"><div class="ph">S1. FLSM on a class C</div>
+    Divide 210.10.5.0/24 into 8 equal subnets. Give the mask, the hosts per subnet, and the network and broadcast of the 3rd and the last subnet.
+    <details class="sol"><summary>Show solution</summary>
+    s = 3, giving /27 (255.255.255.224), block 32, 30 hosts. Subnets .0, .32, .64, …, .224. The 3rd (index 2) is 210.10.5.64/27 with broadcast .95. The last is 210.10.5.224/27 with broadcast .255.</details></div>
+  <div class="problem lvl plain" data-level="b"><div class="ph">S2. Read the CIDR</div>
+    How many addresses and usable hosts are in (a) 10.0.0.0/13, (b) 172.16.4.0/22, (c) 192.168.7.96/28? Give the last usable host of each.
+    <details class="sol"><summary>Show solution</summary>
+    (a) 2<sup>19</sup> = 524,288 addresses, 524,286 hosts, last 10.7.255.254. (b) 1024 addresses, 1022 hosts, last 172.16.7.254. (c) 16 addresses, 14 hosts, last 192.168.7.110.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S3. Requirements to prefix</div>
+    Company: 172.30.0.0/16, needs 100 subnets with up to 300 hosts each. Is it possible? Which prefix? How much spare capacity?
+    <details class="sol"><summary>Show solution</summary>
+    Hosts: 2<sup>9</sup> − 2 = 510 ≥ 300, so h = 9 and the prefix is /23. Subnets available: 2<sup>(23−16)</sup> = 128 ≥ 100 ✔. Spare: 28 subnets; each subnet could grow to 510 hosts.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S4. VLSM by hand</div>
+    Block 10.10.8.0/22. Needs: Sales 300, Engineering 200, HR 60, Servers 28, Mgmt 12, 4 point-to-point links. Produce the plan.
+    <details class="sol"><summary>Show solution</summary>
+    Sorted: Sales 300 → /23 (510): 10.10.8.0/23 (8.1 – 9.254, bcast 9.255). Engineering 200 → /24 (254): 10.10.10.0/24. HR 60 → /26 (62): 10.10.11.0/26. Servers 28 → /27 (30): 10.10.11.64/27. Mgmt 12 → /28 (14): 10.10.11.96/28. Links /30: 10.10.11.112/30, .116/30, .120/30, .124/30. Free: 10.10.11.128/25. Verify with the VLSM planner.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S5. Summarise</div>
+    Summarise (a) 172.16.32.0/24 … 172.16.39.0/24 (8 networks); (b) 192.168.16.0/24, 192.168.17.0/24, 192.168.18.0/23; (c) 10.1.4.0/24, 10.1.5.0/24, 10.1.6.0/24.
+    <details class="sol"><summary>Show solution</summary>
+    (a) 32 = 00100<b>000</b>, …, 39 = 00100<b>111</b>; 21 common bits gives 172.16.32.0/21. (b) 16–19 contiguous and aligned (16 is a multiple of 4), giving 192.168.16.0/22. (c) Three networks is not a power of 2. A single summary 10.1.4.0/22 also covers 10.1.7.0 (over-inclusive). Exact: 10.1.4.0/23 + 10.1.6.0/24.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S6. Find the error</div>
+    An administrator configures R1 g0/0 = 192.168.1.65/26 and PC = 192.168.1.130/26 with gateway 192.168.1.65. The PC cannot reach anything outside its LAN. Why?
+    <details class="sol"><summary>Show solution</summary>
+    /26 blocks: .64–.127 and .128–.191. The PC (.130) is in 192.168.1.128/26 and the gateway (.65) in 192.168.1.64/26. The gateway is not on-link for the PC. Fix: put the PC in .66–.126, or give the router .129.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S7. Longest prefix match</div>
+    Table: 0.0.0.0/0 → A; 96.0.0.0/3 → B; 100.64.0.0/10 → C; 100.64.0.0/16 → D; 100.64.128.0/17 → E. Where do 100.64.200.1, 100.100.1.1, 101.0.0.1 and 128.1.1.1 go?
+    <details class="sol"><summary>Show solution</summary>
+    96/3 covers 96.0.0.0–127.255.255.255. 100.64/10 covers 100.64–100.127. 100.64.0.0/16 covers 100.64.x.x. 100.64.128.0/17 covers 100.64.128–100.64.255.<br>
+    100.64.200.1 → E (/17). 100.100.1.1 → C (/10). 101.0.0.1 → B (/3). 128.1.1.1 → A (default).</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S8. ISP design</div>
+    An ISP holds 81.180.0.0/18 and has three customers needing 4000, 1000 and 500 addresses, plus 64 point-to-point /31 links. Allocate aligned blocks, give the aggregate it announces, and explain what happens if the 1000-address customer leaves and takes its block to another ISP.
+    <details class="sol"><summary>Show solution</summary>
+    4000 → /20: 81.180.0.0/20. 1000 → /22: 81.180.16.0/22. 500 → /23: 81.180.20.0/23. 64 × /31 = 128 addresses = /25: 81.180.22.0/25. The aggregate announced stays 81.180.0.0/18. If the /22 customer moves, the new ISP announces 81.180.16.0/22. By longest prefix match the Internet sends that traffic to the new ISP while the /18 still attracts the rest. The table now holds one extra route; this is the cost of non-aggregatable "holes".</details></div>
+</section>
+
+<section class="chapter">
+  <h2 id="lab">8. Laboratory</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="lab1">Lab 1: Command-line calculators (5 min)</h3>
+    <p>Linux: <code>ipcalc 10.45.170.33/19</code> (package <code>ipcalc</code>) or <code>sipcalc</code>. Compare with the calculator on this page. On Windows use PowerShell or Python (Lab 2).</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab2">Lab 2: Python <code>ipaddress</code> module (15 min)</h3>
+<pre class="code"><code><span class="c-k">import</span> ipaddress <span class="c-k">as</span> ip
+
+net = ip.ip_network(<span class="c-s">"192.168.10.0/24"</span>)
+<span class="c-k">print</span>(net.netmask, net.num_addresses, net.broadcast_address)
+<span class="c-k">for</span> s <span class="c-k">in</span> net.subnets(new_prefix=26):            <span class="c-c"># FLSM</span>
+    hosts = <span class="c-k">list</span>(s.hosts())
+    <span class="c-k">print</span>(s, hosts[0], <span class="c-s">"-"</span>, hosts[-1], s.broadcast_address)
+
+<span class="c-c"># Which subnet contains an address?</span>
+<span class="c-k">print</span>(ip.ip_interface(<span class="c-s">"10.45.170.33/19"</span>).network)   <span class="c-c"># 10.45.160.0/19</span>
+
+<span class="c-c"># Aggregation (exact minimal set)</span>
+nets = [ip.ip_network(n) <span class="c-k">for</span> n <span class="c-k">in</span> [<span class="c-s">"200.1.1.0/24"</span>, <span class="c-s">"200.1.2.0/24"</span>, <span class="c-s">"200.1.3.0/24"</span>, <span class="c-s">"200.1.4.0/24"</span>]]
+<span class="c-k">print</span>(<span class="c-k">list</span>(ip.collapse_addresses(nets)))       <span class="c-c"># [200.1.1.0/24, 200.1.2.0/23, 200.1.4.0/24]</span>
+
+<span class="c-c"># Simple VLSM allocator (largest first)</span>
+<span class="c-k">def</span> vlsm(block, reqs):
+    free = ip.ip_network(block).network_address
+    <span class="c-k">for</span> name, h <span class="c-k">in</span> <span class="c-k">sorted</span>(reqs.items(), key=<span class="c-k">lambda</span> kv: -kv[1]):
+        bits = <span class="c-n">2</span>
+        <span class="c-k">while</span> <span class="c-n">2</span>**bits - <span class="c-n">2</span> &lt; h: bits += <span class="c-n">1</span>
+        sub = ip.ip_network(f<span class="c-s">"{free}/{32-bits}"</span>)
+        <span class="c-k">print</span>(f<span class="c-s">"{name:8} {h:4} -&gt; {sub}"</span>)
+        free = sub.broadcast_address + <span class="c-n">1</span>
+vlsm(<span class="c-s">"192.168.1.0/24"</span>, {<span class="c-s">"LAN-A"</span>:100, <span class="c-s">"LAN-B"</span>:50, <span class="c-s">"LAN-C"</span>:25, <span class="c-s">"LAN-D"</span>:10, <span class="c-s">"WAN-1"</span>:2})</code></pre>
+    <p><b>Tasks:</b> (1) Run the script. (2) Extend <code>vlsm()</code> to check that the plan fits inside the block and to print the free remainder. (3) Use <code>supernet()</code> and <code>collapse_addresses()</code> to solve S5.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab3">Lab 3: Packet Tracer: implement the VLSM plan (15 min)</h3>
+    <p>Topology: R1 (HQ) connected by serial or Ethernet links to R2 and R3. R1 has LAN-A (100 hosts) and LAN-B (50); R2 has LAN-C (25); R3 has LAN-D (10). Use the plan from §4.2.</p>
+<pre class="code"><code>R1(config)# interface g0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.128      ! LAN-A /25
+R1(config-if)# no shutdown
+R1(config)# interface g0/1
+R1(config-if)# ip address 192.168.1.129 255.255.255.192    ! LAN-B /26
+R1(config)# interface s0/0/0
+R1(config-if)# ip address 192.168.1.241 255.255.255.252    ! WAN-1 /30 to R2 (.242)
+R1(config)# interface s0/0/1
+R1(config-if)# ip address 192.168.1.245 255.255.255.252    ! WAN-2 /30 to R3 (.246)
+R2(config)# interface g0/0
+R2(config-if)# ip address 192.168.1.193 255.255.255.224    ! LAN-C /27
+R3(config)# interface g0/0
+R3(config-if)# ip address 192.168.1.225 255.255.255.240    ! LAN-D /28
+! Temporary static routes until Week 11 (dynamic routing):
+R2(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.241
+R3(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.245
+R1(config)# ip route 192.168.1.192 255.255.255.224 192.168.1.242
+R1(config)# ip route 192.168.1.224 255.255.255.240 192.168.1.246</code></pre>
+    <p>Verify with <code>show ip interface brief</code>, <code>show ip route</code> and pings between all LANs. Look in <code>show ip route</code> for the line "192.168.1.0/24 is variably subnetted, N subnets, M masks".</p>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="lab4">Lab 4 (challenge): summarisation</h3>
+    <p>Add four loopbacks on R3: 172.20.0.1/24, 172.20.1.1/24, 172.20.2.1/24, 172.20.3.1/24. On R1, replace four static routes with one summary <code>ip route 172.20.0.0 255.255.252.0 192.168.1.246</code>. On R3, add <code>ip route 172.20.0.0 255.255.252.0 Null0</code> and explain what it prevents when someone pings 172.20.3.200, which has no host.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="quiz">9. Self-assessment quiz</h2>
+  <div id="quiz09"></div>
+</section>
+
+<section class="chapter">
+  <h2 id="summary">10. Summary and glossary</h2>
+  <div class="lvl" data-level="b"><h3 id="takeaways">Key takeaways</h3>
+  <ul>
+    <li>Subnetting borrows host bits: 2<sup>s</sup> subnets of 2<sup>h</sup> − 2 hosts. Block size = 256 − interesting mask octet.</li>
+    <li>VLSM uses different masks inside one block. Allocate the largest first to keep blocks aligned and non-overlapping.</li>
+    <li>CIDR uses any prefix length; routes carry prefix + length; allocation is hierarchical.</li>
+    <li>Supernetting / aggregation combines contiguous, aligned, power-of-two groups into one shorter prefix.</li>
+    <li>Longest prefix match: the most specific route wins.</li>
+  </ul></div>
+  <dl class="glossary">
+    <dt>Subnet ID</dt><dd>The borrowed bits that number the subnets.</dd>
+    <dt>Block size / magic number</dt><dd>The distance between consecutive subnet addresses in the interesting octet.</dd>
+    <dt>FLSM / VLSM</dt><dd>Fixed / variable length subnet masks.</dd>
+    <dt>CIDR</dt><dd>Classless addressing and routing with arbitrary prefix lengths.</dd>
+    <dt>Aggregate / summary route</dt><dd>One prefix covering many more-specific prefixes.</dd>
+    <dt>Longest prefix match</dt><dd>The forwarding rule that picks the most specific matching entry.</dd>
+    <dt>Null0 / discard route</dt><dd>A route that drops traffic; protects against loops for summarised space.</dd>
+  </dl>
+  <h3 id="checklist">Self-check</h3>
+  <div class="checklist">
+    <label><input type="checkbox"> I can subnet any /8–/30 network without a calculator.</label>
+    <label><input type="checkbox"> I can design a VLSM plan and prove it has no overlaps.</label>
+    <label><input type="checkbox"> I can summarise routes and say whether the summary is exact.</label>
+    <label><input type="checkbox"> I can apply longest prefix match to a forwarding table.</label>
+  </div>
+  <p class="small">References: RFC 950, RFC 1009, RFC 1878, RFC 4632 (CIDR), RFC 3021; Kurose & Ross, "Network Layer: Data Plane"; Cisco Networking Academy, CCNA "Subnetting an IPv4 Network".</p>
+  <p><b>Next week (Week 10):</b> the Internet Protocol itself, with the IPv4 and IPv6 headers, fragmentation, ICMP/ARP/NAT, IPv6 addressing and the transition between them.</p>
+</section>
+
+</main>
+</div>
+<div class="footer">Computer Networks — Chapter 4 (The Network Layer) — Week 09. Self-contained interactive lesson: course notes, worked seminar problems, laboratory tasks and self-assessment.</div>
+<script>
+/* ===== Common page engine: TOC, tracks, theme, quiz, IPv4 utilities ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const IP = {
+  parse(s) {
+    const m = String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (!m) return null;
+    const p = m.slice(1).map(Number);
+    if (p.some(x => x > 255)) return null;
+    return (((p[0] << 24) >>> 0) + (p[1] << 16) + (p[2] << 8) + p[3]) >>> 0;
+  },
+  str(n) { n >>>= 0; return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); },
+  mask(p) { return p <= 0 ? 0 : (p >= 32 ? 0xFFFFFFFF : ((0xFFFFFFFF << (32 - p)) >>> 0)); },
+  wild(p) { return (~IP.mask(p)) >>> 0; },
+  net(a, p) { return (a & IP.mask(p)) >>> 0; },
+  bcast(a, p) { return (IP.net(a, p) | IP.wild(p)) >>> 0; },
+  bin(n, dots = true) { const s = (n >>> 0).toString(2).padStart(32, '0'); return dots ? s.match(/.{8}/g).join('.') : s; },
+  prefixFromMask(m) {
+    m >>>= 0; const inv = (~m) >>> 0;
+    if (((inv + 1) & inv) !== 0) return -1;
+    let c = 0; for (let i = 31; i >= 0; i--) { if ((m >>> i) & 1) c++; else break; }
+    return c;
+  },
+  parseCidr(s) {
+    const t = String(s).trim().split('/');
+    if (t.length !== 2) return null;
+    const a = IP.parse(t[0]);
+    let p;
+    if (/^\d{1,2}$/.test(t[1])) p = Number(t[1]);
+    else { const m = IP.parse(t[1]); if (m === null) return null; p = IP.prefixFromMask(m); }
+    if (a === null || p < 0 || p > 32) return null;
+    return { addr: a, prefix: p };
+  },
+  cls(a) {
+    const f = a >>> 24;
+    if (f < 128) return 'A'; if (f < 192) return 'B'; if (f < 224) return 'C'; if (f < 240) return 'D'; return 'E';
+  },
+  hosts(p) { if (p === 32) return 1; if (p === 31) return 2; return Math.pow(2, 32 - p) - 2; },
+  inRange(a, cidr) { const c = IP.parseCidr(cidr); return IP.net(a, c.prefix) === IP.net(c.addr, c.prefix); },
+  special(a) {
+    const L = [
+      ['0.0.0.0/8', '"This network" (0.0.0.0 = unspecified / any address)', 'RFC 1122'],
+      ['10.0.0.0/8', 'Private (RFC 1918)', 'RFC 1918'],
+      ['100.64.0.0/10', 'Shared address space for Carrier-Grade NAT', 'RFC 6598'],
+      ['127.0.0.0/8', 'Loopback', 'RFC 1122'],
+      ['169.254.0.0/16', 'Link-local (APIPA)', 'RFC 3927'],
+      ['172.16.0.0/12', 'Private (RFC 1918)', 'RFC 1918'],
+      ['192.0.0.0/24', 'IETF protocol assignments', 'RFC 6890'],
+      ['192.0.2.0/24', 'Documentation (TEST-NET-1)', 'RFC 5737'],
+      ['192.88.99.0/24', 'Deprecated 6to4 relay anycast', 'RFC 7526'],
+      ['192.168.0.0/16', 'Private (RFC 1918)', 'RFC 1918'],
+      ['198.18.0.0/15', 'Benchmarking', 'RFC 2544'],
+      ['198.51.100.0/24', 'Documentation (TEST-NET-2)', 'RFC 5737'],
+      ['203.0.113.0/24', 'Documentation (TEST-NET-3)', 'RFC 5737'],
+      ['224.0.0.0/4', 'Multicast (class D)', 'RFC 5771'],
+      ['255.255.255.255/32', 'Limited broadcast', 'RFC 919'],
+      ['240.0.0.0/4', 'Reserved for future use (class E)', 'RFC 1112']
+    ];
+    for (const [c, d, r] of L) if (IP.inRange(a, c)) return { block: c, desc: d, rfc: r };
+    return { block: '-', desc: 'Public (globally routable) unicast', rfc: '' };
+  },
+  colorBin(a, p, sub) { // sub: number of borrowed bits after default/base prefix (optional {base})
+    const b = IP.bin(a, false); let out = '';
+    for (let i = 0; i < 32; i++) {
+      if (i && i % 8 === 0) out += '.';
+      let cl = i < p ? 'n' : 'h';
+      if (sub && i >= sub.base && i < p) cl = 's';
+      out += `<span class="${cl}">${b[i]}</span>`;
+    }
+    return `<span class="binline">${out}</span>`;
+  }
+};
+
+const NetUI = {
+  track: 'a',
+  setTrack(t) {
+    this.track = t;
+    const order = { b: 1, i: 2, a: 3 };
+    $$('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === t));
+    $$('.lvl').forEach(el => el.classList.toggle('hidden-lvl', order[el.dataset.level] > order[t]));
+    $$('nav#toc a').forEach(a => {
+      const h = document.getElementById(a.getAttribute('href').slice(1));
+      a.classList.toggle('gone', !!(h && h.closest('.hidden-lvl')));
+    });
+  },
+  buildToc() {
+    const toc = $('#toc'); if (!toc) return;
+    let n = 0;
+    $$('main h2, main h3').forEach(h => {
+      if (h.closest('.q') || h.dataset.notoc !== undefined) return;
+      if (!h.id) h.id = 'sec' + (++n);
+      const a = document.createElement('a');
+      a.href = '#' + h.id; a.textContent = h.textContent;
+      if (h.tagName === 'H3') a.className = 'sub';
+      toc.appendChild(a);
+    });
+    const links = $$('nav#toc a');
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    $$('main h2, main h3').forEach(h => h.id && obs.observe(h));
+  },
+  copyButtons() {
+    $$('pre.code').forEach(pre => {
+      const b = document.createElement('button'); b.className = 'copy'; b.textContent = 'copy';
+      b.onclick = () => {
+        const txt = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+        const done = () => { b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); };
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => {});
+      };
+      pre.appendChild(b);
+    });
+  },
+  init() {
+    this.buildToc();
+    this.copyButtons();
+    $$('[data-track]').forEach(btn => btn.addEventListener('click', () => this.setTrack(btn.dataset.track)));
+    const th = $('#themeBtn');
+    if (th) th.onclick = () => document.body.classList.toggle('dark');
+    const pb = $('#progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      pb.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) + '%';
+    });
+    this.setTrack('a');
+  }
+};
+
+function Quiz(id, qs) {
+  const root = document.getElementById(id); if (!root) return;
+  let score = 0, answered = 0;
+  const sc = document.createElement('div'); sc.className = 'qscore';
+  function upd() {
+    sc.innerHTML = `<span>Score: ${score} correct / ${answered} answered (total ${qs.length} questions)</span><button type="button">Reset</button>`;
+    sc.querySelector('button').onclick = () => { root.innerHTML = ''; Quiz(id, qs); NetUI.setTrack(NetUI.track); };
+  }
+  qs.forEach((q, qi) => {
+    const box = document.createElement('div');
+    box.className = 'q lvl plain'; box.dataset.level = q.l || 'b';
+    box.innerHTML = `<div class="qhead"><span class="qnum">Q${qi + 1}</span> ${q.q}</div>`;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    q.o.forEach((o, oi) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = 1; answered++;
+        if (oi === q.a) { score++; b.classList.add('right'); }
+        else { b.classList.add('wrong'); opts.children[q.a].classList.add('right'); }
+        const e = document.createElement('div'); e.className = 'exp';
+        e.innerHTML = (oi === q.a ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.e;
+        box.appendChild(e); upd();
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); root.appendChild(box);
+  });
+  root.appendChild(sc); upd();
+}
+
+</script>
+<script>
+const P2 = n => Math.pow(2, n);
+function rangeToCidrs(start, end) { // numbers 0..2^32-1
+  const out = [];
+  while (start <= end) {
+    let size = 32;
+    while (size > 0) {
+      const blk = P2(32 - size + 1);
+      if (start % blk !== 0 || start + blk - 1 > end) break;
+      size--;
+    }
+    out.push({ addr: start, prefix: size });
+    start += P2(32 - size);
+  }
+  return out;
+}
+const COLORS = ['#2952e3', '#16884a', '#b86e00', '#7f33c9', '#c2185b', '#00838f', '#5d4037', '#6a1b9a', '#2e7d32', '#ef6c00', '#455a64', '#ad1457'];
+
+/* ---------- FLSM ---------- */
+(function () {
+  const out = $('#flOut');
+  function run() {
+    const c = IP.parseCidr($('#flNet').value), n = parseInt($('#flN').value, 10);
+    if (!c || !(n >= 1)) { out.innerHTML = '<span class="err">Enter a valid network (a.b.c.d/p) and a positive number.</span>'; return; }
+    const base = IP.net(c.addr, c.prefix); let np, s;
+    if ($('#flMode').value === 'sub') { s = Math.ceil(Math.log2(n)); np = c.prefix + s; }
+    else { let h = 2; while (P2(h) - 2 < n) h++; np = 32 - h; s = np - c.prefix; }
+    if (np > 30 && $('#flMode').value === 'sub' && np <= 32) { /* allow but warn */ }
+    if (np > 32 || s < 0) { out.innerHTML = `<span class="err">Impossible: needs prefix /${np}, but the block is /${c.prefix}.</span>`; return; }
+    const cnt = P2(s), step = P2(32 - np);
+    let note = base !== c.addr ? `<p class="small">Note: ${IP.str(c.addr)} normalised to network ${IP.str(base)}/${c.prefix}.</p>` : '';
+    let html = note + `<div class="kv"><div>Borrowed bits s</div><div>${s}</div><div>New prefix</div><div>/${np} = ${IP.str(IP.mask(np))}</div>
+      <div>Subnets</div><div>2^${s} = ${cnt.toLocaleString('en')}</div><div>Usable hosts / subnet</div><div>${IP.hosts(np).toLocaleString('en')}</div>
+      <div>Block size</div><div>${step.toLocaleString('en')} addresses</div></div>`;
+    html += '<div class="scroll"><table class="data"><tr><th>#</th><th>Subnet</th><th>First host</th><th>Last host</th><th>Broadcast</th><th>Subnet bits</th></tr>';
+    const show = cnt <= 64 ? [...Array(cnt).keys()] : [...Array(32).keys(), -1, ...Array.from({ length: 4 }, (_, i) => cnt - 4 + i)];
+    show.forEach(i => {
+      if (i === -1) { html += `<tr><td colspan="6">… ${(cnt - 36).toLocaleString('en')} more subnets …</td></tr>`; return; }
+      const nn = (base + i * step) >>> 0, bb = (nn + step - 1) >>> 0;
+      const f = np >= 31 ? nn : nn + 1, l = np >= 31 ? bb : bb - 1;
+      html += `<tr><td>${i}</td><td>${IP.str(nn)}/${np}</td><td>${IP.str(f)}</td><td>${IP.str(l)}</td><td>${IP.str(bb)}</td><td class="mono">${s ? i.toString(2).padStart(s, '0') : '-'}</td></tr>`;
+    });
+    out.innerHTML = html + '</table></div>';
+  }
+  $('#flGo').onclick = run; run();
+})();
+
+/* ---------- Calculator ---------- */
+(function () {
+  const out = $('#scOut');
+  function run() {
+    const raw = $('#scIn').value.trim().replace(/\s+/, '/');
+    const c = IP.parseCidr(raw);
+    if (!c) { out.innerHTML = '<span class="err">Use 10.1.2.3/19 or 10.1.2.3 255.255.224.0 (contiguous mask).</span>'; return; }
+    const a = c.addr, p = c.prefix, n = IP.net(a, p), b = IP.bcast(a, p);
+    const f = p >= 31 ? n : n + 1, l = p >= 31 ? b : b - 1;
+    const base = parseInt($('#scBase').value, 10);
+    let idx = '';
+    if (base >= 0 && base <= p) {
+      const bnet = IP.net(a, base), k = Math.floor((n - bnet) / P2(32 - p));
+      idx = `<div>Subnet index inside ${IP.str(bnet)}/${base}</div><div>#${k} of ${P2(p - base).toLocaleString('en')} (subnet bits ${p - base ? k.toString(2).padStart(p - base, '0') : '-'})</div>`;
+    }
+    const sp = IP.special(a);
+    out.innerHTML = `<div class="kv">
+      <div>Address</div><div>${IP.str(a)}</div>
+      <div>Prefix / mask</div><div>/${p} = ${IP.str(IP.mask(p))}</div>
+      <div>Wildcard</div><div>${IP.str(IP.wild(p))}</div>
+      <div>Network</div><div><b>${IP.str(n)}/${p}</b></div>
+      <div>Broadcast</div><div><b>${IP.str(b)}</b></div>
+      <div>Host range</div><div>${IP.str(f)} – ${IP.str(l)}</div>
+      <div>Total / usable</div><div>${P2(32 - p).toLocaleString('en')} / ${IP.hosts(p).toLocaleString('en')}</div>
+      <div>Binary</div><div>${IP.colorBin(a, p, base >= 0 && base < p ? { base } : null)}</div>
+      <div>Legend</div><div><span style="color:var(--b)">network (given)</span> · <span style="color:var(--a)">subnet (borrowed)</span> · <span style="color:var(--i)">host</span></div>
+      ${idx}
+      <div>Classful class</div><div>${IP.cls(a)}</div>
+      <div>Special-purpose</div><div>${sp.desc}</div></div>`;
+  }
+  $('#scGo').onclick = run; $('#scIn').addEventListener('keydown', e => e.key === 'Enter' && run()); run();
+})();
+
+/* ---------- Reference table ---------- */
+(function () {
+  let h = '<tr><th>Prefix</th><th>Mask</th><th>Wildcard</th><th>Block size (interesting octet)</th><th>Addresses</th><th>Usable hosts</th><th>Number of /24s</th></tr>';
+  for (let p = 8; p <= 32; p++) {
+    const m = IP.mask(p), oct = Math.ceil(p / 8), mv = (m >>> (8 * (4 - oct))) & 255;
+    const blk = `${256 - mv} in octet ${oct}`;
+    h += `<tr${p % 8 === 0 ? ' style="font-weight:700"' : ''}><td>/${p}</td><td class="mono">${IP.str(m)}</td><td class="mono">${IP.str(IP.wild(p))}</td><td>${blk}</td><td>${P2(32 - p).toLocaleString('en')}</td><td>${IP.hosts(p).toLocaleString('en')}</td><td>${p <= 24 ? P2(24 - p).toLocaleString('en') : '1/' + P2(p - 24)}</td></tr>`;
+  }
+  $('#refTable').innerHTML = h;
+})();
+
+/* ---------- Drill ---------- */
+(function () {
+  let a, p;
+  function nw() {
+    const lv = $('#dqLvl').value, lo = { b: 24, i: 16, a: 8 }[lv];
+    p = lo + Math.floor(Math.random() * (31 - lo));
+    a = (Math.floor(Math.random() * 223) + 1) * 16777216 + Math.floor(Math.random() * 16777216);
+    $('#dqQ').textContent = `${IP.str(a)}/${p}`;
+    ['#dqN', '#dqB', '#dqH'].forEach(s => { $(s).value = ''; $(s).classList.remove('drill-ok', 'drill-bad'); });
+    $('#dqOut').innerHTML = '';
+  }
+  $('#dqNew').onclick = nw; $('#dqLvl').onchange = nw;
+  $('#dqChk').onclick = () => {
+    const n = IP.str(IP.net(a, p)), b = IP.str(IP.bcast(a, p)), h = String(IP.hosts(p));
+    const r = [[$('#dqN'), n], [$('#dqB'), b], [$('#dqH'), h]];
+    r.forEach(([el, v]) => { const ok = el.value.trim().replace(/,/g, '') === v; el.classList.toggle('drill-ok', ok); el.classList.toggle('drill-bad', !ok); });
+    $('#dqOut').innerHTML = `Answer: network <b>${n}</b>, broadcast <b>${b}</b>, hosts <b>${Number(h).toLocaleString('en')}</b>. Mask ${IP.str(IP.mask(p))}.`;
+  };
+  nw();
+})();
+
+/* ---------- VLSM ---------- */
+(function () {
+  const out = $('#vlOut');
+  function run() {
+    const c = IP.parseCidr($('#vlNet').value);
+    if (!c) { out.innerHTML = '<span class="err">Invalid block.</span>'; return; }
+    const use31 = $('#vl31').checked, incl = $('#vlGw').checked;
+    const reqs = [];
+    for (const line of $('#vlReq').value.split('\n')) {
+      const t = line.trim(); if (!t) continue;
+      const m = t.match(/^(.*?)[\s,;:]+(\d+)$/);
+      if (!m) { out.innerHTML = `<span class="err">Cannot parse line: "${esc(t)}"</span>`; return; }
+      reqs.push({ name: m[1].trim() || 'net', hosts: Number(m[2]) + (incl ? 0 : 1) });
+    }
+    reqs.sort((x, y) => y.hosts - x.hosts);
+    const start = IP.net(c.addr, c.prefix), total = P2(32 - c.prefix);
+    let cur = start, rows = '', bar = '', used = 0, ok = true;
+    reqs.forEach((r, i) => {
+      let p;
+      if (r.hosts <= 2 && use31) p = 31; else if (r.hosts === 1) p = 32; else { let h = 2; while (P2(h) - 2 < r.hosts) h++; p = 32 - h; }
+      const sz = P2(32 - p);
+      if (cur % sz !== 0) cur = Math.ceil(cur / sz) * sz;
+      if (cur + sz > start + total) { ok = false; rows += `<tr><td>${esc(r.name)}</td><td>${r.hosts}</td><td>/${p}</td><td colspan="4" class="err">does not fit: out of space</td></tr>`; return; }
+      const n = cur, b = cur + sz - 1, f = p >= 31 ? n : n + 1, l = p >= 31 ? b : b - 1, us = IP.hosts(p);
+      rows += `<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${COLORS[i % COLORS.length]}"></span> ${esc(r.name)}</td><td>${r.hosts}</td><td>/${p} (${IP.str(IP.mask(p))})</td><td>${IP.str(n)}</td><td>${IP.str(f)} – ${IP.str(l)}</td><td>${IP.str(b)}</td><td>${us} usable, ${us - r.hosts} spare (${Math.round(100 * r.hosts / us)}% used)</td></tr>`;
+      bar += `<div title="${esc(r.name)} ${IP.str(n)}/${p}" style="width:${100 * sz / total}%;background:${COLORS[i % COLORS.length]}">${100 * sz / total > 6 ? esc(r.name) : ''}</div>`;
+      used += sz; cur += sz;
+    });
+    const freeTxt = rangeToCidrs(cur, start + total - 1).map(x => `${IP.str(x.addr)}/${x.prefix}`).join(', ');
+    if (start + total > cur) bar += `<div style="flex:1;background:#9aa4ba">free</div>`;
+    out.innerHTML = `<div class="bar">${bar}</div>
+      <div class="scroll"><table class="data"><tr><th>Segment</th><th>Hosts needed${incl ? '' : ' (+gw)'}</th><th>Prefix</th><th>Network</th><th>Usable range</th><th>Broadcast</th><th>Efficiency</th></tr>${rows}</table></div>
+      <div class="kv"><div>Status</div><div>${ok ? '<span class="ok">All segments allocated, no overlaps (aligned, largest first).</span>' : '<span class="err">Block too small: use a larger block or reduce the requirements.</span>'}</div>
+      <div>Space used</div><div>${used.toLocaleString('en')} of ${total.toLocaleString('en')} addresses (${(100 * used / total).toFixed(1)}%)</div>
+      <div>Free blocks</div><div>${freeTxt || 'none'}</div></div>`;
+  }
+  $('#vlGo').onclick = run; run();
+})();
+
+/* ---------- Aggregator ---------- */
+(function () {
+  const out = $('#agOut');
+  function run() {
+    const nets = [];
+    for (const line of $('#agIn').value.split('\n')) {
+      const t = line.trim(); if (!t) continue;
+      const c = IP.parseCidr(t);
+      if (!c) { out.innerHTML = `<span class="err">Invalid: ${esc(t)}</span>`; return; }
+      const n = IP.net(c.addr, c.prefix);
+      nets.push({ s: n, e: n + P2(32 - c.prefix) - 1, p: c.prefix, txt: `${IP.str(n)}/${c.prefix}` });
+    }
+    if (!nets.length) return;
+    const lo = Math.min(...nets.map(x => x.s)), hi = Math.max(...nets.map(x => x.e));
+    let p = 32; while (p > 0 && IP.net(lo, p) !== IP.net(hi >>> 0, p)) p--;
+    const sumNet = IP.net(lo, p), sumSize = P2(32 - p);
+    // merge
+    const sorted = nets.slice().sort((x, y) => x.s - y.s), merged = [];
+    sorted.forEach(r => { const L = merged[merged.length - 1]; if (L && r.s <= L.e + 1) L.e = Math.max(L.e, r.e); else merged.push({ s: r.s, e: r.e }); });
+    const covered = merged.reduce((t, r) => t + r.e - r.s + 1, 0);
+    const exact = []; merged.forEach(r => exact.push(...rangeToCidrs(r.s, r.e)));
+    // binary alignment view
+    let bin = '<pre class="code"><code>';
+    nets.forEach(x => { const b = IP.bin(x.s, false); bin += `${b.slice(0, p).match(/.{1,8}/g).join('.')}<span style="color:#fcd34d">|${b.slice(p)}</span>  ${x.txt}\n`; });
+    bin += `common prefix = ${p} bits</code></pre>`;
+    const extra = sumSize - covered;
+    out.innerHTML = bin + `<div class="kv">
+      <div>Single summary route</div><div><b>${IP.str(sumNet)}/${p}</b> (${IP.str(IP.mask(p))})</div>
+      <div>Summary covers</div><div>${sumSize.toLocaleString('en')} addresses; your networks cover ${covered.toLocaleString('en')}</div>
+      <div>Exact?</div><div>${extra === 0 ? '<span class="ok">Yes: the summary is exact (contiguous, aligned, power of 2).</span>' : `<span class="err">No: over-inclusive by ${extra.toLocaleString('en')} addresses not in your list.</span>`}</div>
+      <div>Exact minimal set</div><div>${exact.map(x => `${IP.str(x.addr)}/${x.prefix}`).join(', ')} (${exact.length} route${exact.length > 1 ? 's' : ''} instead of ${nets.length})</div></div>`;
+  }
+  $('#agGo').onclick = run;
+  $('#agEx2').onclick = () => { $('#agIn').value = '200.1.1.0/24\n200.1.2.0/24\n200.1.3.0/24\n200.1.4.0/24'; run(); };
+  $('#agEx3').onclick = () => { $('#agIn').value = '10.8.0.0/16\n10.9.0.0/17\n10.9.128.0/17\n10.10.0.0/15\n10.12.0.0/14'; run(); };
+  run();
+})();
+
+/* ---------- LPM ---------- */
+(function () {
+  const out = $('#lpOut');
+  function run() {
+    const d = IP.parse($('#lpDst').value);
+    if (d === null) { out.innerHTML = '<span class="err">Invalid destination.</span>'; return; }
+    const rows = [];
+    for (const line of $('#lpTable').value.split('\n')) {
+      const t = line.trim().split(/\s+/); if (!t[0]) continue;
+      const c = IP.parseCidr(t[0]); if (!c) continue;
+      rows.push({ c, nh: t.slice(1).join(' ') || '?', m: IP.net(d, c.prefix) === IP.net(c.addr, c.prefix) });
+    }
+    const matches = rows.filter(r => r.m).sort((x, y) => y.c.prefix - x.c.prefix);
+    let h = '<table class="data"><tr><th>Entry</th><th>Next hop</th><th>Match?</th></tr>';
+    rows.forEach(r => {
+      const win = matches[0] === r;
+      h += `<tr style="${win ? 'background:var(--ok-soft);font-weight:700' : ''}"><td>${IP.str(IP.net(r.c.addr, r.c.prefix))}/${r.c.prefix}</td><td>${esc(r.nh)}</td><td>${r.m ? (win ? '✔ longest match' : '✔ matches (shorter)') : '✘'}</td></tr>`;
+    });
+    h += '</table>';
+    h += matches.length ? `<div>Forward <b>${IP.str(d)}</b> to <b>${esc(matches[0].nh)}</b> (/${matches[0].c.prefix} is the most specific of ${matches.length} matching entr${matches.length > 1 ? 'ies' : 'y'}).</div>` : '<div class="err">No match and no default route: the packet is dropped (ICMP Destination Unreachable).</div>';
+    out.innerHTML = h;
+  }
+  $('#lpGo').onclick = run; run();
+})();
+
+Quiz('quiz09', [
+  { l: 'b', q: 'Borrowing 3 bits from a /24 gives:', o: ['3 subnets of /27', '8 subnets of /27', '8 subnets of /21', '6 subnets of /27'], a: 1, e: '2^3 = 8 subnets; 24 + 3 = /27 (30 hosts each).' },
+  { l: 'b', q: 'Block size for mask 255.255.255.240?', o: ['4', '8', '16', '240'], a: 2, e: '256 − 240 = 16.' },
+  { l: 'b', q: 'Which prefix gives exactly 62 usable hosts?', o: ['/25', '/26', '/27', '/28'], a: 1, e: '2^6 − 2 = 62, so h = 6 and the prefix is /26.' },
+  { l: 'b', q: 'CIDR means:', o: ['Addresses must follow classes', 'Prefix length can be any value and travels with the route', 'Only /8, /16, /24 are allowed', 'A routing protocol'], a: 1, e: 'Classless Inter-Domain Routing: arbitrary prefix lengths, carried in routing updates.' },
+  { l: 'i', q: 'Smallest prefix that supports 500 hosts?', o: ['/22', '/23', '/24', '/25'], a: 1, e: '/23 gives 510 usable; /24 gives only 254.' },
+  { l: 'i', q: 'Which subnet contains 172.16.77.10/21?', o: ['172.16.64.0', '172.16.72.0', '172.16.76.0', '172.16.77.0'], a: 1, e: 'Block 8 in octet 3: 72 ≤ 77 < 80.' },
+  { l: 'i', q: 'In VLSM, why allocate the largest subnets first?', o: ['Routers require it', 'It keeps every block aligned on a multiple of its size, avoiding overlaps and gaps', 'It saves CPU', 'Smaller ones get better addresses'], a: 1, e: 'Descending sizes guarantee alignment when allocating sequentially.' },
+  { l: 'i', q: 'Summary of 10.4.0.0/16, 10.5.0.0/16, 10.6.0.0/16, 10.7.0.0/16?', o: ['10.4.0.0/14', '10.0.0.0/13', '10.4.0.0/15', '10.4.0.0/22'], a: 0, e: '4–7 = 000001|00 … 000001|11: 8 + 6 = 14 common bits.' },
+  { l: 'i', q: 'Which routing protocol cannot support VLSM?', o: ['OSPF', 'RIPv1', 'EIGRP', 'RIPv2'], a: 1, e: 'RIPv1 is classful: it does not include masks in updates.' },
+  { l: 'a', q: 'Routes: 10.0.0.0/8 → A, 10.1.0.0/16 → B, 10.1.1.0/24 → C. Destination 10.1.2.3 goes to:', o: ['A', 'B', 'C', 'dropped'], a: 1, e: '10.1.1.0/24 does not match 10.1.2.3; /16 is the longest match.' },
+  { l: 'a', q: 'Why do routers install a Null0 route for a summary they advertise?', o: ['To speed up routing', 'To discard traffic for non-existent subnets inside the summary and prevent loops toward a default route', 'For multicast', 'To advertise it'], a: 1, e: 'Without it, unknown destinations inside the summary could bounce back along the default route.' },
+  { l: 'a', q: 'The single summary of 200.1.1.0/24–200.1.4.0/24 is 200.1.0.0/21. It is over-inclusive by:', o: ['0 addresses', '256 addresses', '1024 addresses', '2048 addresses'], a: 2, e: 'The /21 has 2048 addresses; the four /24s cover 1024, so 1024 extra.' },
+  { l: 'a', q: 'Typical maximum prefix length accepted in the global IPv4 BGP table:', o: ['/16', '/22', '/24', '/32'], a: 2, e: 'By convention, announcements longer than /24 are filtered.' }
+]);
+
+NetUI.init();
+</script>
+</body>
+</html>

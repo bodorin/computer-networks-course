@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Networks · Week 10 · The Internet Protocol: IPv4 and IPv6</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#ffffff;--ink:#1b2233;--muted:#5a6478;--line:#dde2ec;
+  --accent:#2952e3;--accent-soft:#e9eeff;
+  --b:#16884a;--b-soft:#e5f5ec;--i:#b86e00;--i-soft:#fff3dd;--a:#7f33c9;--a-soft:#f2e7ff;
+  --code-bg:#111827;--code-ink:#e5e7eb;--warn:#b42318;--warn-soft:#fdeceb;--ok:#127a3f;--ok-soft:#e3f4ea;
+  --hl:#ffe58a;--shadow:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.05);
+}
+body.dark{
+  --bg:#0e1320;--panel:#161d2e;--ink:#e6e9f2;--muted:#9aa4ba;--line:#2a3349;
+  --accent:#7d9bff;--accent-soft:#1d2848;
+  --b:#4cc985;--b-soft:#12301f;--i:#f0b252;--i-soft:#3a2a0e;--a:#c18cff;--a-soft:#2c1a45;
+  --code-bg:#0a0f1a;--warn:#ff8a7a;--warn-soft:#3b1612;--ok:#5ed492;--ok-soft:#10301d;--hl:#6b5a12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,.mono{font-family:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;font-size:.92em}
+code{background:var(--accent-soft);padding:.05em .35em;border-radius:4px}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:100}
+header.top{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+header.top .inner{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;max-width:1500px;margin:0 auto}
+header.top .brand{font-weight:700;font-size:1rem}
+header.top .brand small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.tracks{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.tracks span{font-size:.8rem;color:var(--muted);margin-right:.2rem}
+.tracks button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:.35rem .75rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.85rem}
+.tracks button.on[data-track=b]{background:var(--b);color:#fff;border-color:var(--b)}
+.tracks button.on[data-track=i]{background:var(--i);color:#fff;border-color:var(--i)}
+.tracks button.on[data-track=a]{background:var(--a);color:#fff;border-color:var(--a)}
+.btn{border-radius:8px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:hover{filter:brightness(.96)}
+.btn:disabled{opacity:.5;cursor:default}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:1.5rem;max-width:1500px;margin:0 auto;padding:1.2rem}
+nav#toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;font-size:.86rem;padding:.8rem;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+nav#toc b{display:block;margin-bottom:.4rem}
+nav#toc a{display:block;text-decoration:none;color:var(--ink);padding:.18rem .4rem;border-radius:6px}
+nav#toc a.sub{padding-left:1.2rem;color:var(--muted);font-size:.82rem}
+nav#toc a.active{background:var(--accent-soft);color:var(--accent)}
+nav#toc a.gone{display:none}
+main{min-width:0}
+main section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow)}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .4rem}
+h2{font-size:1.5rem;margin:.2rem 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--line);scroll-margin-top:80px}
+h3{font-size:1.18rem;margin:1.4rem 0 .5rem;scroll-margin-top:80px}
+h4{margin:1rem 0 .4rem}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel));border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem}
+.hero .meta{color:var(--muted);font-size:.92rem}
+.lvl{position:relative;border-left:4px solid var(--line);padding:.6rem .9rem .6rem 1rem;margin:.9rem 0;border-radius:0 10px 10px 0}
+.lvl::before{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;padding:.08rem .5rem;border-radius:999px;margin-bottom:.35rem;color:#fff}
+.lvl[data-level=b]{border-color:var(--b);background:var(--b-soft)}
+.lvl[data-level=b]::before{content:"BEGINNER";background:var(--b)}
+.lvl[data-level=i]{border-color:var(--i);background:var(--i-soft)}
+.lvl[data-level=i]::before{content:"INTERMEDIATE";background:var(--i)}
+.lvl[data-level=a]{border-color:var(--a);background:var(--a-soft)}
+.lvl[data-level=a]::before{content:"ADVANCED";background:var(--a)}
+.lvl.plain{background:transparent}
+.hidden-lvl{display:none!important}
+.callout{border:1px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin:.9rem 0;background:var(--panel)}
+.callout.note{border-left:5px solid var(--accent)}
+.callout.tip{border-left:5px solid var(--ok);background:var(--ok-soft)}
+.callout.warn{border-left:5px solid var(--warn);background:var(--warn-soft)}
+.callout.key{border-left:5px solid var(--i);background:var(--i-soft)}
+.callout > b:first-child{display:block;margin-bottom:.2rem}
+table.data{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.92rem;background:var(--panel)}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--accent-soft)}
+table.data tr:nth-child(even) td{background:rgba(127,127,127,.04)}
+.scroll{overflow-x:auto}
+pre.code{position:relative;background:var(--code-bg);color:var(--code-ink);padding:.9rem 1rem;border-radius:10px;overflow:auto;font-size:.85rem;line-height:1.5}
+pre.code code{background:none;padding:0;color:inherit}
+pre.code .copy{position:absolute;top:.4rem;right:.4rem;font-size:.72rem;padding:.15rem .5rem;border-radius:6px;border:1px solid #475569;background:#1f2937;color:#e5e7eb;cursor:pointer}
+.c-k{color:#93c5fd}.c-s{color:#fca5a5}.c-c{color:#94a3b8;font-style:italic}.c-n{color:#fcd34d}
+.tool{border:2px solid var(--accent);border-radius:14px;padding:1rem 1.2rem;margin:1.1rem 0;background:var(--panel)}
+.tool > .tt{font-weight:700;color:var(--accent);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:center}
+.tool > .tt::before{content:"⚙";font-size:1.1rem}
+.tool label{font-size:.88rem;color:var(--muted);margin-right:.3rem}
+.tool input[type=text],.tool input[type=number],.tool select,.tool textarea{font:inherit;font-family:"JetBrains Mono",Consolas,monospace;font-size:.92rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tool textarea{width:100%;min-height:90px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.4rem 0}
+.out{margin-top:.6rem;font-size:.92rem}
+.out .err{color:var(--warn);font-weight:600}
+.out .ok{color:var(--ok);font-weight:600}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.92rem}
+.kv div:nth-child(odd){color:var(--muted)}
+.kv div:nth-child(even){font-family:"JetBrains Mono",Consolas,monospace}
+.bitrow{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:.3rem 0}
+.bit{width:30px;height:34px;border-radius:6px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;cursor:pointer;user-select:none;background:var(--bg)}
+.bit.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bit small{font-size:.55rem;opacity:.75}
+.bits-net{background:var(--b-soft)!important;color:var(--b)!important}
+.bits-host{background:var(--i-soft)!important;color:var(--i)!important}
+.binline{font-family:monospace;letter-spacing:.04em}
+.binline .n{color:var(--b);font-weight:700}
+.binline .h{color:var(--i);font-weight:700}
+.binline .s{color:var(--a);font-weight:700}
+details.sol{border:1px dashed var(--line);border-radius:10px;padding:.45rem .8rem;margin:.6rem 0;background:var(--panel)}
+details.sol summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.sol[open]{background:var(--bg)}
+.problem{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.9rem 0;background:var(--panel)}
+.problem > .ph{font-weight:700;margin-bottom:.3rem}
+.q{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.8rem 0;background:var(--panel)}
+.q.lvl{border-left-width:4px}
+.qhead{font-weight:600;margin-bottom:.5rem}
+.qnum{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 .45rem;margin-right:.3rem;font-size:.85rem}
+.opts{display:grid;gap:.35rem}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:.45rem .7rem;border-radius:8px;cursor:pointer;font:inherit}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.exp{margin-top:.5rem;font-size:.92rem;padding:.5rem .7rem;background:var(--accent-soft);border-radius:8px}
+.qscore{position:sticky;bottom:10px;margin-top:1rem;background:var(--accent);color:#fff;padding:.5rem 1rem;border-radius:10px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.qscore button{background:#fff;color:var(--accent);border:0;border-radius:6px;padding:.2rem .6rem;cursor:pointer}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:.8rem 0}
+.roadmap .wk{border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;background:var(--panel);font-size:.86rem}
+.roadmap .wk b{display:block;font-size:.95rem;margin-bottom:.2rem}
+.roadmap .wk.cur{border:2px solid var(--accent);background:var(--accent-soft)}
+.roadmap .wk ul{margin:.3rem 0 0;padding-left:1.1rem}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.obj > div{border-radius:12px;padding:.7rem .9rem;font-size:.9rem}
+.obj .ob{background:var(--b-soft);border:1px solid var(--b)}
+.obj .oi{background:var(--i-soft);border:1px solid var(--i)}
+.obj .oa{background:var(--a-soft);border:1px solid var(--a)}
+.obj h4{margin:.1rem 0 .3rem}
+.obj ul{margin:0;padding-left:1.1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.pill{display:inline-block;padding:.05rem .5rem;border-radius:999px;font-size:.78rem;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.bar{display:flex;height:42px;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:.5rem 0;font-size:.7rem}
+.bar > div{display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;white-space:nowrap;border-right:1px solid rgba(255,255,255,.5)}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;font-size:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.3rem}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.hdr-grid{display:grid;grid-template-columns:repeat(32,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.74rem;margin:.6rem 0}
+.hdr-grid .bitscale{background:var(--bg);text-align:center;color:var(--muted);font-size:.62rem;border-right:1px solid var(--line)}
+.hdr-grid .f{border:1px solid var(--line);padding:.45rem .2rem;text-align:center;cursor:pointer;background:var(--accent-soft);transition:background .15s}
+.hdr-grid .f:hover,.hdr-grid .f.sel{background:var(--hl)}
+.checklist label{display:block;padding:.2rem 0}
+.glossary dt{font-weight:700;margin-top:.5rem}
+.glossary dd{margin:0 0 .3rem 1rem;color:var(--muted)}
+svg text{font-family:"Segoe UI",system-ui,sans-serif}
+.small{font-size:.85rem;color:var(--muted)}
+.tag-b,.tag-i,.tag-a{font-size:.7rem;font-weight:700;padding:.05rem .4rem;border-radius:999px;color:#fff}
+.tag-b{background:var(--b)}.tag-i{background:var(--i)}.tag-a{background:var(--a)}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1rem}
+.drill-ok{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.drill-bad{background:var(--warn-soft)!important;border-color:var(--warn)!important}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}nav#toc{position:relative;top:0;max-height:none}.roadmap,.obj{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:600px){.roadmap,.obj{grid-template-columns:1fr}main section.chapter{padding:1rem}}
+@media print{header.top,nav#toc,#progress,.tool{display:none}.layout{display:block}details.sol{display:block}details.sol>*{display:block}.hidden-lvl{display:block!important}}
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="top"><div class="inner">
+<div class="brand">Computer Networks · Week 10 · Course + Seminar + Lab<small>Chapter 4 — The Network Layer: Addressing, the Internet Protocol and Routing</small></div>
+<div class="tracks"><span>Learning track:</span>
+<button type="button" data-track="b" title="Show only beginner material">Beginner</button>
+<button type="button" data-track="i" title="Beginner + intermediate material">Intermediate</button>
+<button type="button" data-track="a" title="Everything: beginner + intermediate + advanced">Advanced (all)</button>
+<button type="button" class="btn" id="themeBtn" title="Toggle dark / light theme">◐ Theme</button>
+</div></div></header>
+<div class="layout">
+<nav id="toc"><b>Contents</b></nav>
+<main>
+<div class="hero">
+  <div class="meta">Chapter 4 · The Network Layer · Part 3 of 4 · 2 hours (course 55' + seminar 30' + lab 35')</div>
+  <h1>The Internet Protocol: IPv4 and IPv6</h1>
+  <p>So far we have treated IP addresses as numbers to compute with. This week we open the <b>IP packet</b> itself: what is in the header, how a datagram is fragmented when a link cannot carry it, and which helper protocols (ICMP, ARP, DHCP, NAT) make IPv4 work. Then we move to <b>IPv6</b>: why it exists, how its 128-bit addresses are written and structured, how hosts configure themselves, how its header differs, and how the Internet is transitioning from IPv4.</p>
+  <p class="small">Level filter: <span class="tag-b">BEGINNER</span> · <span class="tag-i">INTERMEDIATE</span> · <span class="tag-a">ADVANCED</span>. Each level includes the previous ones.</p>
+</div>
+
+<section class="chapter">
+  <h2 id="roadmap">0. Roadmap and learning outcomes</h2>
+  <div class="roadmap"><div class="wk"><b>Week 08 · Network layer & IPv4 addressing</b><ul><li>Role of the network layer: forwarding vs routing</li><li>Logical vs physical addressing</li><li>IPv4 structure, binary, classes A–E</li><li>Special & private addresses</li><li>Subnet mask, AND, host count</li><li>Java InetAddress class</li></ul></div><div class="wk"><b>Week 09 · Subnetting, VLSM, CIDR, supernetting</b><ul><li>FLSM subnetting & magic number</li><li>Sizing by hosts / by subnets</li><li>VLSM design (largest first)</li><li>CIDR notation & allocation</li><li>Supernetting / route summarization</li><li>Longest prefix match</li></ul></div><div class="wk cur"><b>Week 10 · The Internet Protocol: IPv4 & IPv6 <span class="pill">you are here</span></b><ul><li>IPv4 header, checksum, TTL</li><li>Fragmentation, MTU, PMTUD</li><li>ICMP, ARP, DHCP, NAT</li><li>IPv6 addresses, types, EUI-64</li><li>IPv6 header, NDP, SLAAC</li><li>IPv4→IPv6 transition</li></ul></div><div class="wk"><b>Week 11 · Routing in IP networks</b><ul><li>Routing table, LPM, AD, metric</li><li>Static & default routing</li><li>Algorithm classification</li><li>Dijkstra & Bellman-Ford</li><li>Distance-vector (RIP) vs link-state (OSPF)</li><li>IGP vs EGP, BGP</li></ul></div></div>
+  <div class="obj">
+    <div class="ob"><h4>Beginner</h4><ul>
+      <li>Name the main IPv4 header fields and their roles.</li>
+      <li>Explain TTL, ICMP (ping, traceroute) and ARP.</li>
+      <li>Write IPv6 addresses in full and compressed form.</li>
+      <li>Recognise link-local, global and multicast IPv6 addresses.</li></ul></div>
+    <div class="oi"><h4>Intermediate</h4><ul>
+      <li>Fragment a datagram for a given MTU (offsets, MF).</li>
+      <li>Explain NAT/PAT translation tables.</li>
+      <li>Build EUI-64 interface IDs and subnet an IPv6 /48.</li>
+      <li>Explain SLAAC and NDP messages.</li></ul></div>
+    <div class="oa"><h4>Advanced</h4><ul>
+      <li>Compute the header checksum; explain PMTUD and its failure modes.</li>
+      <li>Compare the IPv4 and IPv6 headers field by field; describe extension-header chains.</li>
+      <li>Evaluate transition techniques (dual stack, tunnels, NAT64/DNS64, 464XLAT).</li></ul></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="ipover">1. IP: the protocol in one page</h2>
+  <div class="lvl" data-level="b">
+    <p><b>IP (Internet Protocol)</b> is the only protocol that every Internet host and router must run, the "narrow waist" of the hourglass. Many applications and transports sit above it and many link technologies below it. Its properties:</p>
+    <ul>
+      <li><b>Connectionless:</b> each datagram is handled independently.</li>
+      <li><b>Unreliable / best effort:</b> datagrams can be lost, duplicated, delayed or reordered. IP gives no acknowledgements and no retransmissions.</li>
+      <li><b>Responsibilities:</b> addressing (source and destination IP), forwarding hop by hop, adapting to link MTUs (fragmentation in IPv4), loop protection (TTL / hop limit), header error detection (IPv4 checksum) and demultiplexing to the right upper protocol (Protocol / Next Header field).</li>
+    </ul>
+    <pre class="code"><code>      HTTP  DNS  SMTP  SSH  QUIC …
+          TCP      UDP     ICMP
+     ──────────── IP (v4 / v6) ────────────   ← narrow waist
+     Ethernet  Wi-Fi  4G/5G  fibre  DSL …</code></pre>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="v4hdr">2. The IPv4 header</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="v4grid">2.1 Header layout: click a field</h3>
+    <p>The IPv4 header is <b>20 bytes</b> without options and up to <b>60 bytes</b> with options. Each row below is 32 bits (4 bytes).</p>
+    <div id="v4Grid"></div>
+    <div class="callout note" id="v4Desc"><b>Click any field</b>A description appears here.</div>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="v4fields">2.2 Field summary</h3>
+    <div class="scroll"><table class="data">
+      <tr><th>Field</th><th>Bits</th><th>Meaning</th></tr>
+      <tr><td>Version</td><td>4</td><td>4 for IPv4.</td></tr>
+      <tr><td>IHL (Internet Header Length)</td><td>4</td><td>Header length in 32-bit words: 5 (20 B) to 15 (60 B).</td></tr>
+      <tr><td>DSCP + ECN (formerly ToS)</td><td>6 + 2</td><td>QoS class (e.g. EF = 46 for voice) and Explicit Congestion Notification.</td></tr>
+      <tr><td>Total Length</td><td>16</td><td>Header plus data in bytes, maximum 65,535.</td></tr>
+      <tr><td>Identification</td><td>16</td><td>Same value in all fragments of one datagram.</td></tr>
+      <tr><td>Flags</td><td>3</td><td>bit 0 reserved, <b>DF</b> (Don't Fragment), <b>MF</b> (More Fragments).</td></tr>
+      <tr><td>Fragment Offset</td><td>13</td><td>Position of this fragment's data, in units of <b>8 bytes</b>.</td></tr>
+      <tr><td>TTL (Time To Live)</td><td>8</td><td>Decremented by 1 at each router; at 0 the packet is discarded and an ICMP Time Exceeded is sent back. Prevents endless loops.</td></tr>
+      <tr><td>Protocol</td><td>8</td><td>Upper-layer protocol: 1 = ICMP, 2 = IGMP, 6 = TCP, 17 = UDP, 41 = IPv6 encapsulated, 47 = GRE, 50 = ESP, 89 = OSPF.</td></tr>
+      <tr><td>Header Checksum</td><td>16</td><td>One's-complement checksum of the header only. Recomputed at every hop because TTL changes.</td></tr>
+      <tr><td>Source / Destination Address</td><td>32 + 32</td><td>IPv4 addresses.</td></tr>
+      <tr><td>Options + padding</td><td>0–320</td><td>Rarely used (record route, timestamp, source routing); often filtered for security.</td></tr>
+    </table></div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="ttl">2.3 TTL in practice: traceroute</h3>
+    <p><b>traceroute</b> (<code>tracert</code> on Windows) exploits TTL. It sends probes with TTL = 1, 2, 3, … The router where TTL reaches 0 discards the probe and returns <b>ICMP Time Exceeded</b> (type 11), revealing its address. The destination finally answers with ICMP Echo Reply (Windows probes) or ICMP Port Unreachable (Unix UDP probes to high ports). Default initial TTLs differ by operating system (Linux/macOS 64, Windows 128, many routers 255), which is why a received TTL hints at the sender's OS and distance.</p>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="checksum">2.4 Computing the header checksum</h3>
+    <p>Algorithm (RFC 1071): set the checksum field to 0, add all 16-bit words of the header using <b>one's-complement addition</b> (add any carry out of bit 15 back into the sum), then invert all the bits. A receiver adds all words <em>including</em> the checksum; the result must be <code>0xFFFF</code>. Routers update it incrementally after decrementing the TTL (RFC 1624). IPv6 dropped the header checksum altogether: link layers (CRC) and transports already check for errors, and removing it speeds up forwarding.</p>
+    <div class="tool">
+      <div class="tt">IPv4 header checksum calculator / verifier</div>
+      <label>Header in hex (20+ bytes; spaces optional). The checksum field (bytes 10–11) is ignored when computing:</label>
+      <textarea id="ckIn">4500 0073 0000 4000 4011 b861 c0a8 0001 c0a8 00c7</textarea>
+      <div class="row"><button class="btn primary" type="button" id="ckGo">Compute and decode</button></div>
+      <div class="out" id="ckOut"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="frag">3. Fragmentation and reassembly (IPv4)</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="mtu">3.1 MTU</h3>
+    <p>Every link technology has a <b>Maximum Transmission Unit</b>, the largest IP packet a frame can carry: Ethernet 1500 bytes, PPPoE 1492, jumbo frames 9000, the IPv6 minimum 1280, and 576 bytes is the minimum every IPv4 host must accept. If a router must forward a datagram larger than the next link's MTU, IPv4 lets it <b>fragment</b> the datagram into smaller IP packets. They are reassembled <b>only at the destination host</b>, never by intermediate routers.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="fragrules">3.2 The rules</h3>
+    <ol>
+      <li>Each fragment gets a copy of the IP header (with possibly modified options) and the <b>same Identification</b> value.</li>
+      <li>Data per fragment (except the last) must be a <b>multiple of 8 bytes</b>: max data = ⌊(MTU − header) / 8⌋ × 8.</li>
+      <li><b>Fragment Offset</b> = position of the fragment's first data byte ÷ 8.</li>
+      <li><b>MF = 1</b> on every fragment except the last; the last has MF = 0 (and offset ≠ 0).</li>
+      <li>If <b>DF = 1</b> and fragmentation is needed, the router drops the packet and returns ICMP "Fragmentation Needed" (type 3, code 4) with the next-hop MTU.</li>
+    </ol>
+    <p><b>Example (Kurose):</b> a 4000-byte datagram (20 header + 3980 data) on a link with MTU 1500. Max data per fragment = 1480 (1480/8 = 185).</p>
+    <table class="data"><tr><th>Fragment</th><th>Data bytes</th><th>Total Length</th><th>Offset</th><th>MF</th></tr>
+      <tr><td>1</td><td>0–1479 (1480)</td><td>1500</td><td>0</td><td>1</td></tr>
+      <tr><td>2</td><td>1480–2959 (1480)</td><td>1500</td><td>185</td><td>1</td></tr>
+      <tr><td>3</td><td>2960–3979 (1020)</td><td>1040</td><td>370</td><td>0</td></tr></table>
+    <div class="tool">
+      <div class="tt">Fragmentation calculator</div>
+      <div class="row"><label>Original total length (bytes):</label><input type="number" id="frLen" value="4000" style="width:100px">
+        <label>IP header (bytes):</label><input type="number" id="frHdr" value="20" style="width:70px">
+        <label>Link MTU:</label><input type="number" id="frMtu" value="1500" style="width:90px">
+        <label>ID:</label><input type="number" id="frId" value="777" style="width:90px">
+        <label><input type="checkbox" id="frDf"> DF set</label>
+        <button class="btn primary" type="button" id="frGo">Fragment</button></div>
+      <div class="out" id="frOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="pmtud">3.3 Why fragmentation is avoided: PMTUD</h3>
+    <ul>
+      <li><b>Cost:</b> losing one fragment loses the whole datagram; reassembly consumes memory at the receiver (an attack surface: teardrop, fragment floods); firewalls and NAT cannot see port numbers in non-first fragments.</li>
+      <li><b>Path MTU Discovery</b> (RFC 1191): TCP sends with DF = 1. When a router returns "Fragmentation Needed, next-hop MTU = X", the sender lowers its segment size. <b>Black-hole problem:</b> if firewalls block that ICMP message, large packets silently vanish; connections hang after the handshake. Workarounds: <b>MSS clamping</b> on routers (<code>ip tcp adjust-mss 1452</code> on PPPoE) and PLPMTUD (RFC 4821 / 8899), which probes without relying on ICMP.</li>
+      <li><b>IPv6</b>: routers <b>never</b> fragment. Only the source may, using a Fragment extension header, so PMTUD (via ICMPv6 Packet Too Big) is mandatory, and the minimum link MTU is 1280.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="helpers">4. Helper protocols of IPv4: ICMP, ARP, DHCP, NAT</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="icmp">4.1 ICMP: Internet Control Message Protocol</h3>
+    <p>ICMP (RFC 792) carries error and diagnostic messages <b>inside IP packets</b> (Protocol = 1). It is considered part of IP.</p>
+    <table class="data"><tr><th>Type</th><th>Name</th><th>Used by / meaning</th></tr>
+      <tr><td>0 / 8</td><td>Echo Reply / Echo Request</td><td><code>ping</code></td></tr>
+      <tr><td>3</td><td>Destination Unreachable</td><td>codes: 0 net, 1 host, 3 port, 4 fragmentation needed with DF set, 13 administratively prohibited</td></tr>
+      <tr><td>5</td><td>Redirect</td><td>"use a better gateway on this link"</td></tr>
+      <tr><td>11</td><td>Time Exceeded</td><td>TTL reached 0 (traceroute) or reassembly timeout</td></tr>
+    </table>
+    <p>ICMP errors are never sent in response to ICMP errors, broadcasts or non-first fragments, which avoids storms.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="arp">4.2 ARP: Address Resolution Protocol</h3>
+    <p>To deliver an IP packet on an Ethernet LAN, the sender needs the next hop's <b>MAC address</b>. ARP (RFC 826) resolves IPv4 address to MAC:</p>
+    <ol>
+      <li>Host A checks its <b>ARP cache</b> (<code>arp -a</code>).</li>
+      <li>If there is no entry, it broadcasts (destination MAC <code>FF:FF:FF:FF:FF:FF</code>) an <b>ARP Request</b>: "Who has 192.168.1.20? Tell 192.168.1.10."</li>
+      <li>The owner replies with a <b>unicast ARP Reply</b>: "192.168.1.20 is at 3C:52:82:…".</li>
+      <li>A caches the mapping (typically for minutes) and sends the frame.</li>
+    </ol>
+    <p>For off-link destinations, A ARPs for the <b>default gateway</b>, not for the remote host. <span class="small">Advanced: gratuitous ARP (announcing one's own address, detecting duplicates, failover); ARP spoofing / poisoning as a man-in-the-middle attack, mitigated by Dynamic ARP Inspection. IPv6 replaces ARP with NDP (§9).</span></p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="dhcp">4.3 DHCP: automatic configuration</h3>
+    <p>DHCP (RFC 2131, UDP ports 67/68) gives a host its IP address, mask, default gateway, DNS servers and lease time. The four-message exchange is <b>DORA</b>: <b>D</b>iscover (broadcast from 0.0.0.0 to 255.255.255.255) → <b>O</b>ffer → <b>R</b>equest → <b>A</b>cknowledge. A router configured as a <b>DHCP relay</b> (<code>ip helper-address</code>) forwards these broadcasts to a server on another subnet.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="nat">4.4 NAT and PAT</h3>
+    <p><b>NAT</b> (RFC 3022) rewrites addresses at the boundary between a private network and the Internet. Its common form, <b>PAT / NAPT</b> ("NAT overload"), maps many private <i>(IP, port)</i> pairs onto <b>one public IP</b> with different ports, keeping a translation table. Static NAT maps one private address to one public address and is used to publish servers; dynamic NAT draws from a pool of public addresses.</p>
+    <div class="tool">
+      <div class="tt">PAT simulator: watch the translation table</div>
+      <div class="row"><label>Inside host:</label><select id="natHost"><option>192.168.1.10</option><option>192.168.1.11</option><option>192.168.1.12</option></select>
+        <label>src port:</label><input type="number" id="natSp" value="51000" style="width:90px">
+        <label>to server:</label><select id="natDst"><option>93.184.215.14:443</option><option>142.250.185.78:443</option><option>8.8.8.8:53</option></select>
+        <button class="btn primary" type="button" id="natSend">Send packet out</button><button class="btn" type="button" id="natReply">Server replies to last</button><button class="btn" type="button" id="natClr">Clear</button></div>
+      <div class="small">Public address of the NAT router: <b class="mono">203.0.113.5</b></div>
+      <div class="out" id="natOut"></div>
+    </div>
+    <div class="callout warn"><b>Side effects of NAT</b>It breaks the end-to-end principle: inbound connections need port forwarding; protocols that carry IP addresses in their payload (FTP active mode, SIP) need application-level gateways; it adds per-flow state. NAT is not a security mechanism in itself, although it hides internal addressing. CGNAT (100.64.0.0/10) adds a second NAT layer at the ISP.</div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="v6why">5. IPv6: motivation</h2>
+  <div class="lvl" data-level="b">
+    <ul>
+      <li><b>Address exhaustion:</b> 2<sup>32</sup> addresses are not enough for billions of phones, IoT devices and cloud services. IPv6 has 2<sup>128</sup> ≈ 3.4 × 10<sup>38</sup>.</li>
+      <li><b>No need for NAT:</b> every device can have a globally unique address, restoring end-to-end connectivity (firewalls still filter).</li>
+      <li><b>Simpler, fixed 40-byte header:</b> faster processing; no checksum; no fragmentation by routers.</li>
+      <li><b>Autoconfiguration (SLAAC)</b>, built-in multicast, no broadcast, better support for mobility and hierarchical aggregation.</li>
+      <li>IPsec was originally mandatory and is now recommended; it is available in both versions.</li>
+    </ul>
+    <p>Adoption: depending on the day, roughly 45–50% of users reaching Google do so over IPv6 (Google's public statistics), with large variation by country and network. Mobile networks and big content providers lead.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="v6addr">6. IPv6 address representation</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="v6format">6.1 Format</h3>
+    <p>128 bits are written as <b>8 groups ("hextets") of 4 hexadecimal digits</b> (16 bits each), separated by colons:</p>
+    <pre class="code"><code>2001:0db8:0000:0000:0000:ff00:0042:8329</code></pre>
+    <h4>Two compression rules</h4>
+    <ol>
+      <li><b>Leading zeros</b> in any group may be omitted: <code>0db8 → db8</code>, <code>0000 → 0</code>, <code>0042 → 42</code>.</li>
+      <li><b>One</b> run of consecutive all-zero groups may be replaced by <code>::</code>, <b>only once</b> per address (otherwise the length would be ambiguous).</li>
+    </ol>
+    <pre class="code"><code>2001:0db8:0000:0000:0000:ff00:0042:8329
+→ 2001:db8:0:0:0:ff00:42:8329          (rule 1)
+→ 2001:db8::ff00:42:8329               (rule 2)</code></pre>
+    <p>The prefix is written as in CIDR: <code>2001:db8:acad:1::/64</code>. With URLs and ports use brackets: <code>http://[2001:db8::1]:8080/</code>.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="rfc5952">6.2 Canonical form (RFC 5952)</h3>
+    <ul>
+      <li>Lowercase hex digits; leading zeros removed.</li>
+      <li><code>::</code> must replace the <b>longest</b> run of zero groups (if tied, the <b>first</b>) and must not be used for a single 0 group: <code>2001:db8:0:1:1:1:1:1</code>, not <code>2001:db8::1:1:1:1:1</code>.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="b">
+    <div class="tool">
+      <div class="tt">IPv6 expander / compressor (RFC 5952)</div>
+      <div class="row"><label>IPv6 address (any form):</label><input type="text" id="v6In" value="2001:0DB8:0000:0000:0008:0800:200C:417A" size="46"><button class="btn primary" type="button" id="v6Go">Convert</button></div>
+      <div class="small">Try: fe80::1 · ::1 · :: · 2001:db8:0:0:1:0:0:1 · ff02::1:ff3c:4d5e · ::ffff:192.0.2.128</div>
+      <div class="out" id="v6Out"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="v6types">7. IPv6 address types</h2>
+  <div class="lvl" data-level="b">
+    <p>IPv6 has three kinds of address: <b>unicast</b> (one interface), <b>multicast</b> (a group) and <b>anycast</b> (the nearest member of a group, using unicast format). There is <b>no broadcast</b>; the all-nodes multicast address ff02::1 plays that role. An IPv6 interface normally has <b>several addresses at once</b>: always a link-local, plus one or more global or ULA addresses, plus joined multicast groups.</p>
+    <div class="scroll"><table class="data">
+      <tr><th>Type</th><th>Prefix</th><th>Example</th><th>Notes</th></tr>
+      <tr><td><b>Global unicast (GUA)</b></td><td>2000::/3</td><td>2001:db8:acad:1::10</td><td>publicly routable; currently allocated from 2000::/3 (first hex digit 2 or 3)</td></tr>
+      <tr><td><b>Link-local</b></td><td>fe80::/10</td><td>fe80::21a:2bff:fe3c:4d5e</td><td>mandatory on every interface; valid on one link only; used by NDP and as the next hop in routing</td></tr>
+      <tr><td><b>Unique local (ULA)</b></td><td>fc00::/7 (fd00::/8 in practice)</td><td>fd12:3456:789a:1::1</td><td>private-like, not routed on the Internet; 40-bit random Global ID (RFC 4193)</td></tr>
+      <tr><td>Loopback</td><td>::1/128</td><td>::1</td><td>equivalent of 127.0.0.1</td></tr>
+      <tr><td>Unspecified</td><td>::/128</td><td>::</td><td>"no address yet" (source during DAD); equivalent of 0.0.0.0</td></tr>
+      <tr><td>Default route</td><td>::/0</td><td></td><td>equivalent of 0.0.0.0/0</td></tr>
+      <tr><td><b>Multicast</b></td><td>ff00::/8</td><td>ff02::1 all nodes · ff02::2 all routers · ff02::5 OSPFv3 · ff02::9 RIPng · ff02::1:2 DHCPv6</td><td>4th hex digit = scope: 1 interface, 2 link, 5 site, 8 organisation, e global</td></tr>
+      <tr><td>Solicited-node multicast</td><td>ff02::1:ff00:0/104</td><td>ff02::1:ff3c:4d5e</td><td>ff02::1:ff + last 24 bits of a unicast address; used by NDP instead of ARP broadcast</td></tr>
+      <tr><td>IPv4-mapped</td><td>::ffff:0:0/96</td><td>::ffff:192.0.2.128</td><td>IPv4 address represented inside dual-stack socket APIs</td></tr>
+      <tr><td>Documentation</td><td>2001:db8::/32</td><td>2001:db8::1</td><td>examples only</td></tr>
+      <tr><td>NAT64 well-known prefix</td><td>64:ff9b::/96</td><td>64:ff9b::c000:280</td><td>embeds an IPv4 address (§11)</td></tr>
+    </table></div>
+    <div class="tool">
+      <div class="tt">IPv6 address-type identifier and solicited-node calculator</div>
+      <div class="row"><label>IPv6 address:</label><input type="text" id="v6tIn" value="fe80::21a:2bff:fe3c:4d5e" size="42"><button class="btn primary" type="button" id="v6tGo">Identify</button></div>
+      <div class="out" id="v6tOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="gua">7.1 Structure of a global unicast address and IPv6 subnetting</h3>
+    <pre class="code"><code>|  Global routing prefix (48)  | Subnet ID (16) |      Interface ID (64)      |
+   2001:0db8:acad               :  0001          :  021a:2bff:fe3c:4d5e
+   assigned by RIR/ISP to a site   65,536 subnets   host part (always /64 LANs)</code></pre>
+    <ul>
+      <li>A typical site receives a <b>/48</b> (or a /56 for homes). Each LAN is a <b>/64</b>, which SLAAC requires.</li>
+      <li>Subnetting is usually done by counting in the 16-bit subnet ID, in hex: 2001:db8:acad:<b>0000</b>::/64, :<b>0001</b>::/64, …, :<b>ffff</b>::/64. No mask arithmetic on octets is needed; work on <b>nibble boundaries</b> (multiples of 4 bits) for readability.</li>
+      <li>There is no "−2": IPv6 has no broadcast address; the all-zeros interface ID is the Subnet-Router anycast address.</li>
+    </ul>
+    <div class="tool">
+      <div class="tt">IPv6 subnet generator</div>
+      <div class="row"><label>Site prefix:</label><input type="text" id="v6sP" value="2001:db8:acad::/48" size="24"><label>New prefix length:</label><input type="number" id="v6sL" value="64" min="1" max="128" style="width:70px"><label>Show subnets from #</label><input type="number" id="v6sF" value="0" min="0" style="width:90px"><button class="btn primary" type="button" id="v6sGo">Generate</button></div>
+      <div class="out" id="v6sOut"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="iid">8. Interface identifiers: EUI-64, privacy and stable addresses</h2>
+  <div class="lvl" data-level="i">
+    <h3 id="eui64">8.1 Modified EUI-64</h3>
+    <ol>
+      <li>Take the 48-bit MAC, e.g. <code>00:1A:2B:3C:4D:5E</code>.</li>
+      <li>Split it in half and insert <code>FF:FE</code> in the middle: <code>00:1A:2B:<b>FF:FE</b>:3C:4D:5E</code>.</li>
+      <li><b>Invert bit 7</b> (the universal/local "U/L" bit, value 0x02) of the first byte: 00 becomes <b>02</b>.</li>
+      <li>Result: interface ID <code>021a:2bff:fe3c:4d5e</code>, so the link-local address is <code>fe80::21a:2bff:fe3c:4d5e</code>.</li>
+    </ol>
+    <div class="tool">
+      <div class="tt">EUI-64 generator</div>
+      <div class="row"><label>MAC:</label><input type="text" id="euMac" value="00:1A:2B:3C:4D:5E" size="20"><label>Prefix (/64):</label><input type="text" id="euPre" value="2001:db8:acad:1::" size="22"><button class="btn primary" type="button" id="euGo">Build</button></div>
+      <div class="out" id="euOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="privacy">8.2 Why EUI-64 is no longer the default for hosts</h3>
+    <p>An EUI-64 interface ID embeds the MAC address, so the same device can be tracked across networks. Modern operating systems use <b>temporary (privacy) addresses</b> (RFC 8981, formerly RFC 4941), random IDs that change daily, for outgoing connections. For their stable address they use <b>semantically opaque stable IDs</b> (RFC 7217: a hash of the prefix, the interface and a secret). Routers and servers usually get manually configured or EUI-64 addresses.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="v6hdr">9. The IPv6 header, extension headers, ICMPv6 and NDP</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="v6grid">9.1 The fixed 40-byte header: click a field</h3>
+    <div id="v6Grid"></div>
+    <div class="callout note" id="v6Desc"><b>Click any field</b>A description appears here.</div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="compare">9.2 IPv4 vs IPv6 headers</h3>
+    <div class="scroll"><table class="data">
+      <tr><th>IPv4 field</th><th>Fate in IPv6</th></tr>
+      <tr><td>Version</td><td>kept (value 6)</td></tr>
+      <tr><td>IHL</td><td><b>removed</b>: fixed 40-byte header</td></tr>
+      <tr><td>ToS (DSCP/ECN)</td><td>renamed <b>Traffic Class</b></td></tr>
+      <tr><td>—</td><td><b>new: Flow Label</b> (20 bits) to identify flows for consistent treatment / ECMP hashing</td></tr>
+      <tr><td>Total Length</td><td>replaced by <b>Payload Length</b> (excludes the 40-byte base header)</td></tr>
+      <tr><td>Identification, Flags, Fragment Offset</td><td><b>removed</b>: moved to the Fragment extension header, used by the source only</td></tr>
+      <tr><td>TTL</td><td>renamed <b>Hop Limit</b></td></tr>
+      <tr><td>Protocol</td><td>replaced by <b>Next Header</b> (also chains extension headers)</td></tr>
+      <tr><td>Header Checksum</td><td><b>removed</b> (UDP checksum becomes mandatory)</td></tr>
+      <tr><td>Options</td><td>replaced by <b>extension headers</b></td></tr>
+      <tr><td>Addresses 32 + 32 bits</td><td>128 + 128 bits</td></tr>
+    </table></div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="ext">9.3 Extension-header chain</h3>
+    <p>Each header's <b>Next Header</b> field names the following header, forming a chain that ends with the transport header. The recommended order (RFC 8200): Hop-by-Hop Options (0), Destination Options (60), Routing (43), Fragment (44), Authentication Header (51), ESP (50), Destination Options, then upper layer (6 TCP, 17 UDP, 58 ICMPv6). Only Hop-by-Hop is examined by every router. In practice packets with extension headers are often dropped on the Internet (RFC 7872), which is a real deployment issue. Segment Routing over IPv6 (SRv6) uses the Routing header.</p>
+    <pre class="code"><code>[IPv6 hdr NH=43] → [Routing hdr NH=44] → [Fragment hdr NH=6] → [TCP segment]</code></pre>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="ndp">9.4 ICMPv6 and Neighbor Discovery (NDP)</h3>
+    <p>ICMPv6 (RFC 4443, Next Header 58) is <b>essential</b> in IPv6; blocking it breaks the network. It carries errors (Destination Unreachable, Packet Too Big, Time Exceeded), echo, and the <b>Neighbor Discovery Protocol</b> (RFC 4861):</p>
+    <table class="data"><tr><th>Message (type)</th><th>Purpose</th><th>Replaces in IPv4</th></tr>
+      <tr><td>Router Solicitation RS (133)</td><td>host to ff02::2: "routers, announce yourselves"</td><td>ICMP router discovery</td></tr>
+      <tr><td>Router Advertisement RA (134)</td><td>router to ff02::1: prefix(es), default gateway (its link-local), MTU, flags M/O</td><td>part of DHCP</td></tr>
+      <tr><td>Neighbor Solicitation NS (135)</td><td>to the solicited-node multicast: "who has X? what is your MAC?"; also DAD</td><td>ARP request</td></tr>
+      <tr><td>Neighbor Advertisement NA (136)</td><td>"X is at MAC Y"</td><td>ARP reply</td></tr>
+      <tr><td>Redirect (137)</td><td>better first hop</td><td>ICMP redirect</td></tr></table>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="slaac">9.5 Address configuration: SLAAC, stateless and stateful DHCPv6</h3>
+    <ol>
+      <li>The host builds its <b>link-local</b> address (fe80:: + interface ID) and runs <b>DAD</b> (Duplicate Address Detection): an NS from :: to the solicited-node group of its own address; silence means the address is unique.</li>
+      <li>It sends an <b>RS</b> and receives an <b>RA</b> with the prefix (e.g. 2001:db8:acad:1::/64) and flags.</li>
+      <li><b>SLAAC</b> (A flag): the host forms prefix + interface ID itself; the default gateway is the router's link-local address.</li>
+      <li><b>O flag</b> (stateless DHCPv6): the address comes from SLAAC, while extra information (DNS) comes from DHCPv6. DNS can also come from the RA itself (RDNSS option, RFC 8106).</li>
+      <li><b>M flag</b> (stateful DHCPv6): addresses come from a DHCPv6 server (UDP 546/547). Note that DHCPv6 does <b>not</b> provide a default gateway; that always comes from RAs.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="transition">10. Transition from IPv4 to IPv6</h2>
+  <div class="lvl" data-level="b">
+    <p>IPv4 and IPv6 are <b>not compatible on the wire</b>: an IPv4-only host cannot talk to an IPv6-only host directly. Three families of techniques exist:</p>
+    <ul>
+      <li><b>Dual stack:</b> devices run both protocols at once. This is the most common and simplest approach, but it still needs IPv4 addresses. With DNS, clients receive A and AAAA records and prefer IPv6 ("Happy Eyeballs", RFC 8305, races both).</li>
+      <li><b>Tunnelling:</b> IPv6 packets are carried inside IPv4 packets (Protocol 41) across IPv4-only parts of the network: manual 6in4, GRE, the obsolete automatic 6to4 and Teredo (over UDP for hosts behind NAT), and 6rd (ISP-operated).</li>
+      <li><b>Translation:</b> <b>NAT64 + DNS64</b> let IPv6-only clients reach IPv4-only servers. DNS64 synthesises AAAA records 64:ff9b::&lt;IPv4&gt; and NAT64 translates the packets. <b>464XLAT</b> (RFC 6877, used by many mobile operators) adds a client-side translator (CLAT) so IPv4-only apps still work on an IPv6-only network.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="transadv">10.1 Comparison and trends</h3>
+    <table class="data"><tr><th>Technique</th><th>Needs IPv4 addresses?</th><th>Pros</th><th>Cons</th></tr>
+      <tr><td>Dual stack</td><td>yes</td><td>native performance, simple</td><td>two protocols to operate and secure</td></tr>
+      <tr><td>Tunnels</td><td>yes (endpoints)</td><td>connect IPv6 islands quickly</td><td>MTU overhead, troubleshooting, security bypass</td></tr>
+      <tr><td>NAT64/DNS64, 464XLAT</td><td>only at the translator</td><td>IPv6-only access networks</td><td>breaks IPv4 literals (without CLAT), DNSSEC interactions</td></tr>
+      <tr><td>DS-Lite / MAP-E / MAP-T</td><td>shared at the ISP</td><td>IPv4-as-a-service over an IPv6 core</td><td>CGNAT-like limitations</td></tr></table>
+    <p>The trend is toward <b>IPv6-only</b> networks with IPv4 provided as a service. RFC 8925 (DHCP option 108) lets IPv6-capable hosts stop using IPv4 on networks that support it.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="seminar">11. Seminar: worked problems</h2>
+  <div class="problem lvl plain" data-level="b"><div class="ph">S1. Header reading</div>
+    An IPv4 header starts with <code>45 00 05 DC 1C 46 40 00 3F 06 …</code>. Find the version, header length, total length, DF/MF flags, offset, TTL and protocol.
+    <details class="sol"><summary>Show solution</summary>
+    45: version 4, IHL 5, so 20 bytes. 05DC = 1500 total. ID 0x1C46. 4000 = 0100 0000 0000 0000: DF = 1, MF = 0, offset 0. TTL 0x3F = 63. Protocol 06 = TCP.</details></div>
+  <div class="problem lvl plain" data-level="b"><div class="ph">S2. Compress / expand</div>
+    (a) Compress 2001:0db8:0000:0000:0000:0000:0000:0001 and fe80:0000:0000:0000:0202:b3ff:fe1e:8329. (b) Expand 2001:db8::8:800:200c:417a and ::1. (c) Is 2001:db8::1::2 valid?
+    <details class="sol"><summary>Show solution</summary>
+    (a) 2001:db8::1 · fe80::202:b3ff:fe1e:8329. (b) 2001:0db8:0000:0000:0008:0800:200c:417a · 0000:…:0001 (7 zero groups, then 0001). (c) Invalid: "::" may appear only once.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S3. Fragmentation</div>
+    A 2400-byte datagram (header 20) must cross a link with MTU 820. Give each fragment's total length, offset and MF. If it then crosses a link with MTU 500, what happens to the first fragment?
+    <details class="sol"><summary>Show solution</summary>
+    Max data = ⌊800/8⌋×8 = 800. Data 2380 = 800 + 800 + 780. Fragment 1: length 820, offset 0, MF 1. Fragment 2: 820, offset 100, MF 1. Fragment 3: 800, offset 200, MF 0.<br>
+    At MTU 500: max data 480. The first fragment's 800 bytes split into 480 (offset 0, MF 1) + 320 (offset 60, MF 1, because the original fragment had MF = 1). Reassembly still happens only at the destination.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S4. EUI-64 and solicited-node</div>
+    MAC 2C:54:91:88:C9:E3, prefix 2001:db8:cafe:10::/64. Give the global and link-local addresses and the solicited-node multicast group.
+    <details class="sol"><summary>Show solution</summary>
+    2C = 00101100, flipping bit 0x02 gives 00101110 = 2E. IID 2e54:91ff:fe88:c9e3. Global 2001:db8:cafe:10:2e54:91ff:fe88:c9e3; link-local fe80::2e54:91ff:fe88:c9e3; solicited-node ff02::1:ff88:c9e3.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S5. IPv6 subnetting</div>
+    A university receives 2001:db8:4400::/40 and wants a /48 per faculty and /64 LANs. How many faculties and LANs per faculty? Give the 3rd faculty's prefix and its 10th LAN.
+    <details class="sol"><summary>Show solution</summary>
+    /40 → /48 gives 2<sup>8</sup> = 256 faculties; /48 → /64 gives 65,536 LANs each. The faculties are 2001:db8:44<b>00</b>::/48, 44<b>01</b>, 44<b>02</b> …, so the 3rd (index 2) is 2001:db8:4402::/48. Its 10th LAN (index 9) is 2001:db8:4402:9::/64.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S6. Checksum by hand</div>
+    Verify that the checksum of header 4500 0073 0000 4000 4011 ???? c0a8 0001 c0a8 00c7 is b861.
+    <details class="sol"><summary>Show solution</summary>
+    Sum: 4500+0073+0000+4000+4011+c0a8+0001+c0a8+00c7 = 0x2479C. Fold the carry: 0x479C + 0x2 = 0x479E. One's complement: 0xFFFF − 0x479E = <b>0xB861</b> ✔. Check with the calculator in §2.4.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S7. PMTUD black hole</div>
+    Users behind a PPPoE link (MTU 1492) can open small web pages but large pages stall. ping with size 1472 + DF fails, while 1464 succeeds. Explain and give two fixes.
+    <details class="sol"><summary>Show solution</summary>
+    1472 + 28 (IP + ICMP headers) = 1500 &gt; 1492, while 1464 + 28 = 1492 fits. TCP uses MSS 1460 (for 1500), and the "Fragmentation Needed" ICMP is blocked somewhere, so large segments vanish: a PMTUD black hole. Fixes: MSS clamping to 1452 on the PPPoE router; allow ICMP type 3 code 4 through firewalls; or lower the client MTU.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S8. Transition design</div>
+    A mobile operator wants to stop allocating IPv4 to phones. Which mechanism lets an IPv4-only app (one that uses a hard-coded IPv4 literal) keep working? Sketch the packet path.
+    <details class="sol"><summary>Show solution</summary>
+    464XLAT. The CLAT on the phone translates IPv4 to IPv6 (stateless, RFC 7915) using the NAT64 prefix. The packet crosses the IPv6-only network to the operator's PLAT (a stateful NAT64), which translates it to IPv4 with a shared public address. Plain NAT64/DNS64 alone fails for literals because no DNS query happens.</details></div>
+</section>
+
+<section class="chapter">
+  <h2 id="lab">12. Laboratory</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="lab1">Lab 1: ping, traceroute and TTL (10 min)</h3>
+    <table class="data"><tr><th>Task</th><th>Windows</th><th>Linux</th></tr>
+      <tr><td>Observe the TTL of replies</td><td><code>ping 8.8.8.8</code></td><td><code>ping -c 4 8.8.8.8</code></td></tr>
+      <tr><td>Trace the route</td><td><code>tracert 8.8.8.8</code></td><td><code>traceroute 8.8.8.8</code> · <code>mtr 8.8.8.8</code></td></tr>
+      <tr><td>Find the path MTU</td><td><code>ping -f -l 1472 8.8.8.8</code></td><td><code>ping -M do -s 1472 8.8.8.8</code></td></tr>
+      <tr><td>ARP cache</td><td><code>arp -a</code></td><td><code>ip neigh</code></td></tr>
+      <tr><td>IPv6 test</td><td><code>ping -6 2001:4860:4860::8888</code></td><td><code>ping -6 google.com</code> · <code>ip -6 addr</code> · <code>ip -6 route</code></td></tr>
+      <tr><td>IPv6 neighbours</td><td><code>netsh interface ipv6 show neighbors</code></td><td><code>ip -6 neigh</code></td></tr></table>
+    <p><b>Deliverable:</b> the number of hops to 8.8.8.8; the largest unfragmented payload; your IPv6 addresses (link-local, global, temporary) and which interface ID method each uses.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab2">Lab 2: Wireshark dissection (15 min)</h3>
+    <ol>
+      <li>Capture <code>ping -l 4000 8.8.8.8</code> (Windows) or <code>ping -s 4000 8.8.8.8</code> (Linux). Filter <code>ip.flags.mf == 1 || ip.frag_offset &gt; 0</code>. Check the Identification, offsets and MF against the fragmentation calculator.</li>
+      <li>Filter <code>arp</code>: identify a request (broadcast) and a reply (unicast).</li>
+      <li>Filter <code>icmpv6</code>: find RS/RA/NS/NA. In an RA, read the prefix, the M/O flags and the router lifetime.</li>
+      <li>Filter <code>dhcp</code> while renewing a lease: observe DORA from 0.0.0.0.</li>
+    </ol>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab3">Lab 3: Packet Tracer: dual-stack network with SLAAC (10 min)</h3>
+<pre class="code"><code>R1(config)# ipv6 unicast-routing                     ! enables IPv6 forwarding and RAs
+R1(config)# interface g0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.0
+R1(config-if)# ipv6 address 2001:db8:acad:1::1/64
+R1(config-if)# ipv6 address fe80::1 link-local
+R1(config-if)# no shutdown
+R1(config)# interface g0/1
+R1(config-if)# ipv6 address 2001:db8:acad:2::1/64
+R1(config-if)# ipv6 address fe80::1 link-local
+R1(config-if)# no shutdown
+R1# show ipv6 interface brief
+R1# show ipv6 route
+! PCs: set IPv6 to "Automatic" (SLAAC) and verify with ipconfig /all
+! Optional NAT/PAT for IPv4:
+R1(config)# access-list 1 permit 192.168.1.0 0.0.0.255
+R1(config)# ip nat inside source list 1 interface g0/1 overload
+R1(config)# interface g0/0
+R1(config-if)# ip nat inside
+R1(config)# interface g0/1
+R1(config-if)# ip nat outside
+R1# show ip nat translations</code></pre>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="lab4">Lab 4 (challenge): build packets with Scapy</h3>
+<pre class="code"><code><span class="c-k">from</span> scapy.all <span class="c-k">import</span> *
+p = IP(dst=<span class="c-s">"192.0.2.1"</span>, ttl=<span class="c-n">3</span>, flags=<span class="c-s">"DF"</span>)/ICMP()/(<span class="c-s">"X"</span>*<span class="c-n">2000</span>)
+<span class="c-k">print</span>(<span class="c-k">len</span>(p))
+frags = fragment(p, fragsize=<span class="c-n">1480</span>)
+<span class="c-k">for</span> f <span class="c-k">in</span> frags: f.show2()                          <span class="c-c"># compare flags/offset/len</span>
+q = IPv6(dst=<span class="c-s">"2001:db8::1"</span>)/IPv6ExtHdrRouting()/IPv6ExtHdrFragment()/UDP()
+q.show2()                                         <span class="c-c"># observe the Next Header chain</span></code></pre>
+    <p>Run in a lab VM with root privileges. Do not send crafted packets to networks you do not control.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="quiz">13. Self-assessment quiz</h2>
+  <div id="quiz10"></div>
+</section>
+
+<section class="chapter">
+  <h2 id="summary">14. Summary and glossary</h2>
+  <div class="lvl" data-level="b"><h3 id="takeaways">Key takeaways</h3><ul>
+    <li>IPv4 header: 20–60 B; key fields TTL, Protocol, checksum, ID/flags/offset, addresses.</li>
+    <li>Fragmentation: data in multiples of 8, offset in 8-byte units, MF on all but the last; reassembly at the destination; avoided by PMTUD.</li>
+    <li>ICMP gives diagnostics, ARP maps IP to MAC, DHCP configures hosts, NAT/PAT maps private to public.</li>
+    <li>IPv6: 128 bits, 8 hextets, rules "drop leading zeros" and "one ::". Types: GUA 2000::/3, link-local fe80::/10, ULA fc00::/7, multicast ff00::/8; no broadcast.</li>
+    <li>Fixed 40-byte header, extension headers, no router fragmentation, no checksum. NDP replaces ARP; SLAAC/DHCPv6 configure hosts.</li>
+    <li>Transition: dual stack, tunnels, translation (NAT64/DNS64, 464XLAT).</li></ul></div>
+  <dl class="glossary">
+    <dt>MTU</dt><dd>Largest IP packet a link can carry.</dd>
+    <dt>PMTUD</dt><dd>Path MTU Discovery, using DF plus ICMP feedback.</dd>
+    <dt>PAT / NAPT</dt><dd>Many-to-one NAT distinguished by ports.</dd>
+    <dt>Hextet</dt><dd>A 16-bit group of an IPv6 address.</dd>
+    <dt>EUI-64</dt><dd>Interface ID derived from a MAC with FFFE inserted and the U/L bit flipped.</dd>
+    <dt>SLAAC</dt><dd>Stateless Address Autoconfiguration from router advertisements.</dd>
+    <dt>DAD</dt><dd>Duplicate Address Detection.</dd>
+    <dt>Dual stack</dt><dd>Running IPv4 and IPv6 simultaneously.</dd>
+  </dl>
+  <p class="small">References: RFC 791, 792, 826, 1071, 1191, 2131, 3022, 4193, 4291, 4443, 4861, 4862, 5952, 6146/6147, 6877, 8200, 8981; Kurose & Ross, "Network Layer: Data Plane"; Cisco CCNA "IPv6 Addressing".</p>
+  <p><b>Next week (Week 11):</b> how routers fill their forwarding tables: static routing, Dijkstra and Bellman-Ford, distance-vector and link-state protocols, and interior vs exterior routing (BGP).</p>
+</section>
+
+</main>
+</div>
+<div class="footer">Computer Networks — Chapter 4 (The Network Layer) — Week 10. Self-contained interactive lesson: course notes, worked seminar problems, laboratory tasks and self-assessment.</div>
+<script>
+/* ===== Common page engine: TOC, tracks, theme, quiz, IPv4 utilities ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const IP = {
+  parse(s) {
+    const m = String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (!m) return null;
+    const p = m.slice(1).map(Number);
+    if (p.some(x => x > 255)) return null;
+    return (((p[0] << 24) >>> 0) + (p[1] << 16) + (p[2] << 8) + p[3]) >>> 0;
+  },
+  str(n) { n >>>= 0; return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); },
+  mask(p) { return p <= 0 ? 0 : (p >= 32 ? 0xFFFFFFFF : ((0xFFFFFFFF << (32 - p)) >>> 0)); },
+  wild(p) { return (~IP.mask(p)) >>> 0; },
+  net(a, p) { return (a & IP.mask(p)) >>> 0; },
+  bcast(a, p) { return (IP.net(a, p) | IP.wild(p)) >>> 0; },
+  bin(n, dots = true) { const s = (n >>> 0).toString(2).padStart(32, '0'); return dots ? s.match(/.{8}/g).join('.') : s; },
+  prefixFromMask(m) {
+    m >>>= 0; const inv = (~m) >>> 0;
+    if (((inv + 1) & inv) !== 0) return -1;
+    let c = 0; for (let i = 31; i >= 0; i--) { if ((m >>> i) & 1) c++; else break; }
+    return c;
+  },
+  parseCidr(s) {
+    const t = String(s).trim().split('/');
+    if (t.length !== 2) return null;
+    const a = IP.parse(t[0]);
+    let p;
+    if (/^\d{1,2}$/.test(t[1])) p = Number(t[1]);
+    else { const m = IP.parse(t[1]); if (m === null) return null; p = IP.prefixFromMask(m); }
+    if (a === null || p < 0 || p > 32) return null;
+    return { addr: a, prefix: p };
+  },
+  cls(a) {
+    const f = a >>> 24;
+    if (f < 128) return 'A'; if (f < 192) return 'B'; if (f < 224) return 'C'; if (f < 240) return 'D'; return 'E';
+  },
+  hosts(p) { if (p === 32) return 1; if (p === 31) return 2; return Math.pow(2, 32 - p) - 2; },
+  inRange(a, cidr) { const c = IP.parseCidr(cidr); return IP.net(a, c.prefix) === IP.net(c.addr, c.prefix); },
+  special(a) {
+    const L = [
+      ['0.0.0.0/8', '"This network" (0.0.0.0 = unspecified / any address)', 'RFC 1122'],
+      ['10.0.0.0/8', 'Private (RFC 1918)', 'RFC 1918'],
+      ['100.64.0.0/10', 'Shared address space for Carrier-Grade NAT', 'RFC 6598'],
+      ['127.0.0.0/8', 'Loopback', 'RFC 1122'],
+      ['169.254.0.0/16', 'Link-local (APIPA)', 'RFC 3927'],
+      ['172.16.0.0/12', 'Private (RFC 1918)', 'RFC 1918'],
+      ['192.0.0.0/24', 'IETF protocol assignments', 'RFC 6890'],
+      ['192.0.2.0/24', 'Documentation (TEST-NET-1)', 'RFC 5737'],
+      ['192.88.99.0/24', 'Deprecated 6to4 relay anycast', 'RFC 7526'],
+      ['192.168.0.0/16', 'Private (RFC 1918)', 'RFC 1918'],
+      ['198.18.0.0/15', 'Benchmarking', 'RFC 2544'],
+      ['198.51.100.0/24', 'Documentation (TEST-NET-2)', 'RFC 5737'],
+      ['203.0.113.0/24', 'Documentation (TEST-NET-3)', 'RFC 5737'],
+      ['224.0.0.0/4', 'Multicast (class D)', 'RFC 5771'],
+      ['255.255.255.255/32', 'Limited broadcast', 'RFC 919'],
+      ['240.0.0.0/4', 'Reserved for future use (class E)', 'RFC 1112']
+    ];
+    for (const [c, d, r] of L) if (IP.inRange(a, c)) return { block: c, desc: d, rfc: r };
+    return { block: '-', desc: 'Public (globally routable) unicast', rfc: '' };
+  },
+  colorBin(a, p, sub) { // sub: number of borrowed bits after default/base prefix (optional {base})
+    const b = IP.bin(a, false); let out = '';
+    for (let i = 0; i < 32; i++) {
+      if (i && i % 8 === 0) out += '.';
+      let cl = i < p ? 'n' : 'h';
+      if (sub && i >= sub.base && i < p) cl = 's';
+      out += `<span class="${cl}">${b[i]}</span>`;
+    }
+    return `<span class="binline">${out}</span>`;
+  }
+};
+
+const NetUI = {
+  track: 'a',
+  setTrack(t) {
+    this.track = t;
+    const order = { b: 1, i: 2, a: 3 };
+    $$('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === t));
+    $$('.lvl').forEach(el => el.classList.toggle('hidden-lvl', order[el.dataset.level] > order[t]));
+    $$('nav#toc a').forEach(a => {
+      const h = document.getElementById(a.getAttribute('href').slice(1));
+      a.classList.toggle('gone', !!(h && h.closest('.hidden-lvl')));
+    });
+  },
+  buildToc() {
+    const toc = $('#toc'); if (!toc) return;
+    let n = 0;
+    $$('main h2, main h3').forEach(h => {
+      if (h.closest('.q') || h.dataset.notoc !== undefined) return;
+      if (!h.id) h.id = 'sec' + (++n);
+      const a = document.createElement('a');
+      a.href = '#' + h.id; a.textContent = h.textContent;
+      if (h.tagName === 'H3') a.className = 'sub';
+      toc.appendChild(a);
+    });
+    const links = $$('nav#toc a');
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    $$('main h2, main h3').forEach(h => h.id && obs.observe(h));
+  },
+  copyButtons() {
+    $$('pre.code').forEach(pre => {
+      const b = document.createElement('button'); b.className = 'copy'; b.textContent = 'copy';
+      b.onclick = () => {
+        const txt = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+        const done = () => { b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); };
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => {});
+      };
+      pre.appendChild(b);
+    });
+  },
+  init() {
+    this.buildToc();
+    this.copyButtons();
+    $$('[data-track]').forEach(btn => btn.addEventListener('click', () => this.setTrack(btn.dataset.track)));
+    const th = $('#themeBtn');
+    if (th) th.onclick = () => document.body.classList.toggle('dark');
+    const pb = $('#progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      pb.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) + '%';
+    });
+    this.setTrack('a');
+  }
+};
+
+function Quiz(id, qs) {
+  const root = document.getElementById(id); if (!root) return;
+  let score = 0, answered = 0;
+  const sc = document.createElement('div'); sc.className = 'qscore';
+  function upd() {
+    sc.innerHTML = `<span>Score: ${score} correct / ${answered} answered (total ${qs.length} questions)</span><button type="button">Reset</button>`;
+    sc.querySelector('button').onclick = () => { root.innerHTML = ''; Quiz(id, qs); NetUI.setTrack(NetUI.track); };
+  }
+  qs.forEach((q, qi) => {
+    const box = document.createElement('div');
+    box.className = 'q lvl plain'; box.dataset.level = q.l || 'b';
+    box.innerHTML = `<div class="qhead"><span class="qnum">Q${qi + 1}</span> ${q.q}</div>`;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    q.o.forEach((o, oi) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = 1; answered++;
+        if (oi === q.a) { score++; b.classList.add('right'); }
+        else { b.classList.add('wrong'); opts.children[q.a].classList.add('right'); }
+        const e = document.createElement('div'); e.className = 'exp';
+        e.innerHTML = (oi === q.a ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.e;
+        box.appendChild(e); upd();
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); root.appendChild(box);
+  });
+  root.appendChild(sc); upd();
+}
+
+</script>
+<script>
+/* ---------- Header grid renderer ---------- */
+function renderHdr(cont, rows, descEl) {
+  let h = '<div class="hdr-grid">';
+  for (let i = 0; i < 32; i++) h += `<div class="bitscale">${i}</div>`;
+  rows.forEach(r => r.forEach(([name, bits, desc], k) => {
+    h += `<div class="f" style="grid-column:span ${bits}" data-d="${esc(desc)}" data-n="${esc(name)}">${name}<br><small>${bits === 32 && /Address/.test(name) ? '' : bits + ' bits'}</small></div>`;
+  }));
+  h += '</div>';
+  cont.innerHTML = h;
+  $$('.f', cont).forEach(f => f.onclick = () => {
+    $$('.f', cont).forEach(x => x.classList.remove('sel')); f.classList.add('sel');
+    descEl.innerHTML = `<b>${f.dataset.n}</b>${f.dataset.d}`;
+  });
+}
+renderHdr($('#v4Grid'), [
+  [['Version', 4, 'Always 4 for IPv4. A router checks it first; IPv6 packets carry 6 here (and a different EtherType, 0x86DD vs 0x0800).'],
+   ['IHL', 4, 'Internet Header Length in 32-bit words. Minimum 5 (20 bytes, no options), maximum 15 (60 bytes). Needed because options make the header variable.'],
+   ['DSCP', 6, 'Differentiated Services Code Point: QoS class. Examples: 0 best effort, 46 EF (voice), AF classes 10–38, 48 CS6 (network control).'],
+   ['ECN', 2, 'Explicit Congestion Notification: routers can mark (11 = CE) instead of dropping; the receiver echoes it via TCP.'],
+   ['Total Length', 16, 'Length of the whole datagram (header + data) in bytes; max 65,535. Changes in each fragment.']],
+  [['Identification', 16, 'Set by the sender; all fragments of one datagram carry the same ID so the receiver can reassemble them.'],
+   ['Flags', 3, 'bit 0: reserved (0); bit 1: DF = Don\'t Fragment; bit 2: MF = More Fragments (1 on every fragment except the last).'],
+   ['Fragment Offset', 13, 'Offset of this fragment\'s data within the original datagram, in 8-byte units (so max 8191 × 8 = 65,528).']],
+  [['TTL', 8, 'Time To Live: decremented by every router; when it reaches 0 the packet is discarded and ICMP Time Exceeded (type 11) is returned. Prevents infinite loops; used by traceroute.'],
+   ['Protocol', 8, 'Which protocol is in the payload: 1 ICMP, 2 IGMP, 6 TCP, 17 UDP, 41 IPv6-in-IPv4, 47 GRE, 50 ESP, 51 AH, 89 OSPF, 132 SCTP.'],
+   ['Header Checksum', 16, 'One\'s-complement checksum of the header only (not the data). Verified and recomputed at every hop because TTL changes.']],
+  [['Source Address', 32, '32-bit IPv4 address of the original sender (rewritten by NAT).']],
+  [['Destination Address', 32, '32-bit IPv4 address of the final destination. Routers use it for longest-prefix-match forwarding.']],
+  [['Options (if IHL > 5) + padding', 32, 'Variable, up to 40 bytes: Record Route, Timestamp, Loose/Strict Source Route, Router Alert. Padded to a 32-bit boundary. Rare and often filtered.']]
+], $('#v4Desc'));
+renderHdr($('#v6Grid'), [
+  [['Version', 4, 'Value 6.'],
+   ['Traffic Class', 8, 'Same role as IPv4 DSCP (6 bits) + ECN (2 bits).'],
+   ['Flow Label', 20, 'Identifies a flow of packets that should get the same treatment (e.g. the same ECMP path). Set by the source; routers must not change it (RFC 6437).']],
+  [['Payload Length', 16, 'Length of everything after the 40-byte base header (extension headers + upper layer), in bytes. Larger payloads use the Jumbo Payload option.'],
+   ['Next Header', 8, 'Type of the next header: an extension header (0 Hop-by-Hop, 43 Routing, 44 Fragment, 50 ESP, 51 AH, 60 Destination Options) or the upper layer (6 TCP, 17 UDP, 58 ICMPv6). Same numbering as IPv4 Protocol.'],
+   ['Hop Limit', 8, 'Same as IPv4 TTL: decremented by each router; at 0 the packet is dropped with ICMPv6 Time Exceeded.']],
+  [['Source Address (128 bits = 4 rows)', 32, '128-bit address of the sender.']],
+  [['Destination Address (128 bits = 4 rows)', 32, '128-bit address of the destination (or of the next waypoint if a Routing header is present).']]
+], $('#v6Desc'));
+
+/* ---------- Checksum ---------- */
+(function () {
+  const out = $('#ckOut');
+  function run() {
+    const hex = $('#ckIn').value.replace(/[^0-9a-fA-F]/g, '');
+    if (hex.length < 40 || hex.length % 4) { out.innerHTML = '<span class="err">Need at least 20 bytes (40 hex digits), an even number of 16-bit words.</span>'; return; }
+    const w = []; for (let i = 0; i < hex.length; i += 4) w.push(parseInt(hex.substr(i, 4), 16));
+    const ihl = (w[0] >> 8) & 15, words = ihl * 2;
+    if (ihl < 5 || w.length < words) { out.innerHTML = `<span class="err">IHL = ${ihl}: header needs ${ihl * 4} bytes.</span>`; return; }
+    let s = 0, steps = [];
+    for (let i = 0; i < words; i++) if (i !== 5) { s += w[i]; }
+    let raw = s; while (s > 0xFFFF) s = (s & 0xFFFF) + (s >>> 16);
+    const ck = (~s) & 0xFFFF, given = w[5];
+    const b = i => w[i].toString(16).padStart(4, '0');
+    const ip = (x, y) => [w[x] >> 8, w[x] & 255, w[y] >> 8, w[y] & 255].join('.');
+    const proto = { 1: 'ICMP', 2: 'IGMP', 6: 'TCP', 17: 'UDP', 41: 'IPv6', 47: 'GRE', 50: 'ESP', 89: 'OSPF' }[w[4] & 255] || '?';
+    out.innerHTML = `<div class="kv">
+      <div>Version / IHL</div><div>${w[0] >> 12} / ${ihl} (${ihl * 4} bytes)</div>
+      <div>DSCP / ECN</div><div>${(w[0] & 255) >> 2} / ${w[0] & 3}</div>
+      <div>Total length</div><div>${w[1]} bytes</div>
+      <div>Identification</div><div>0x${b(2)} (${w[2]})</div>
+      <div>Flags</div><div>DF=${(w[3] >> 14) & 1}, MF=${(w[3] >> 13) & 1}</div>
+      <div>Fragment offset</div><div>${w[3] & 0x1FFF} (= byte ${(w[3] & 0x1FFF) * 8})</div>
+      <div>TTL / Protocol</div><div>${w[4] >> 8} / ${w[4] & 255} (${proto})</div>
+      <div>Source → Destination</div><div>${ip(6, 7)} → ${ip(8, 9)}</div>
+      <div>Sum of words (no checksum)</div><div>0x${raw.toString(16)} → folded 0x${s.toString(16).padStart(4, '0')}</div>
+      <div>Computed checksum</div><div><b>0x${ck.toString(16).padStart(4, '0')}</b></div>
+      <div>Checksum in header</div><div>0x${b(5)} ${given === ck ? '<span class="ok">✔ valid</span>' : given === 0 ? '(zero: fill in the computed value)' : '<span class="err">✘ mismatch: header corrupted (or checksum field wrong)</span>'}</div></div>`;
+  }
+  $('#ckGo').onclick = run; run();
+})();
+
+/* ---------- Fragmentation ---------- */
+(function () {
+  const out = $('#frOut');
+  function run() {
+    const L = +$('#frLen').value, H = +$('#frHdr').value, M = +$('#frMtu').value, id = +$('#frId').value;
+    if (!(L > H && H >= 20 && H <= 60 && M >= 68 && L <= 65535)) { out.innerHTML = '<span class="err">Check values: header 20–60, MTU ≥ 68, length ≤ 65,535.</span>'; return; }
+    if (L <= M) { out.innerHTML = `<span class="ok">No fragmentation needed (${L} ≤ MTU ${M}).</span>`; return; }
+    if ($('#frDf').checked) { out.innerHTML = `<span class="err">DF = 1 and ${L} &gt; ${M}: the router DROPS the datagram and returns ICMP type 3 code 4 "Fragmentation Needed" with next-hop MTU ${M}. This is the basis of Path MTU Discovery.</span>`; return; }
+    const data = L - H, max = Math.floor((M - H) / 8) * 8;
+    let off = 0, i = 1, rows = '', bar = '';
+    while (off < data) {
+      const d = Math.min(max, data - off), last = off + d >= data;
+      rows += `<tr><td>${i}</td><td>${off}–${off + d - 1}</td><td>${d}</td><td>${d + H}</td><td>${id}</td><td>${off / 8}</td><td>${last ? 0 : 1}</td></tr>`;
+      bar += `<div style="width:${100 * d / data}%;background:${['#2952e3', '#16884a', '#b86e00', '#7f33c9', '#c2185b'][(i - 1) % 5]}">#${i}</div>`;
+      off += d; i++;
+    }
+    out.innerHTML = `<div class="small">Data = ${L} − ${H} = ${data} bytes · max data per fragment = ⌊(${M} − ${H}) / 8⌋ × 8 = ${max}</div>
+      <div class="bar">${bar}</div>
+      <table class="data"><tr><th>#</th><th>Data bytes</th><th>Data length</th><th>Total Length</th><th>ID</th><th>Offset (×8)</th><th>MF</th></tr>${rows}</table>
+      <div class="small">Overhead: ${(i - 2) * H} extra header bytes. Losing any one fragment means the whole datagram is lost.</div>`;
+  }
+  $('#frGo').onclick = run; run();
+})();
+
+/* ---------- NAT ---------- */
+(function () {
+  const out = $('#natOut'), table = []; let next = 62000, log = [], last = null;
+  function render() {
+    let h = '<table class="data"><tr><th>Inside local (private)</th><th>Inside global (public)</th><th>Outside (server)</th><th>Proto</th></tr>';
+    table.forEach(t => h += `<tr><td>${t.il}</td><td>${t.ig}</td><td>${t.o}</td><td>${t.o.endsWith(':53') ? 'UDP' : 'TCP'}</td></tr>`);
+    if (!table.length) h += '<tr><td colspan="4" class="small">empty</td></tr>';
+    out.innerHTML = h + '</table><pre class="code"><code>' + (log.slice(-6).join('\n') || 'No packets yet.') + '</code></pre>';
+  }
+  $('#natSend').onclick = () => {
+    const il = `${$('#natHost').value}:${$('#natSp').value}`, o = $('#natDst').value;
+    let e = table.find(t => t.il === il && t.o === o);
+    if (!e) {
+      const sp = +$('#natSp').value;
+      const port = table.some(t => t.ig === `203.0.113.5:${sp}`) ? next++ : sp; // keep source port if free (port preservation)
+      e = { il, ig: `203.0.113.5:${port}`, o }; table.push(e);
+    }
+    last = e;
+    log.push(`OUT  src ${il.padEnd(20)} dst ${o.padEnd(20)} ⇒ rewritten src ${e.ig}`);
+    render();
+  };
+  $('#natReply').onclick = () => {
+    if (!last) return;
+    log.push(`IN   src ${last.o.padEnd(20)} dst ${last.ig.padEnd(20)} ⇒ table lookup ⇒ dst ${last.il}`);
+    render();
+  };
+  $('#natClr').onclick = () => { table.length = 0; log = []; last = null; next = 62000; render(); };
+  render();
+})();
+
+/* ---------- IPv6 helpers ---------- */
+const V6 = {
+  parse(s) {
+    s = String(s).trim().toLowerCase().replace(/%.*$/, '').replace(/\/\d+$/, '');
+    if (!s || !/^[0-9a-f:.]+$/.test(s)) return null;
+    let tail = [];
+    const m4 = s.match(/^(.*:)(\d+\.\d+\.\d+\.\d+)$/);
+    if (m4) { const a = IP.parse(m4[2]); if (a === null) return null; tail = [a >>> 16, a & 0xFFFF]; s = m4[1] + (m4[1].endsWith('::') ? '' : '') ; if (s.endsWith(':') && !s.endsWith('::')) s = s.slice(0, -1); }
+    const dbl = s.split('::');
+    if (dbl.length > 2) return null;
+    const part = x => x === '' ? [] : x.split(':');
+    const L = part(dbl[0]), R = dbl.length === 2 ? part(dbl[1]) : [];
+    if ([...L, ...R].some(g => !/^[0-9a-f]{1,4}$/.test(g))) return null;
+    const need = 8 - tail.length;
+    let groups;
+    if (dbl.length === 2) { const z = need - L.length - R.length; if (z < 1) return null; groups = [...L, ...Array(z).fill('0'), ...R]; }
+    else { if (L.length !== need) return null; groups = L; }
+    return [...groups.map(g => parseInt(g, 16)), ...tail];
+  },
+  full(a) { return a.map(x => x.toString(16).padStart(4, '0')).join(':'); },
+  compress(a) {
+    if (a.slice(0, 5).every(x => x === 0) && a[5] === 0xffff) return '::ffff:' + IP.str(((a[6] << 16) >>> 0) + a[7]);
+    let best = -1, bl = 0;
+    for (let i = 0; i < 8;) { if (a[i] === 0) { let j = i; while (j < 8 && a[j] === 0) j++; if (j - i > bl) { bl = j - i; best = i; } i = j; } else i++; }
+    const h = a.map(x => x.toString(16));
+    if (bl < 2) return h.join(':');
+    return (h.slice(0, best).join(':')) + '::' + (h.slice(best + bl).join(':'));
+  },
+  big(a) { return a.reduce((acc, x) => (acc << 16n) | BigInt(x), 0n); },
+  fromBig(b) { const r = []; for (let i = 7; i >= 0; i--) r.push(Number((b >> BigInt(16 * i)) & 0xFFFFn)); return r; },
+  match(a, pfx, len) { const p = V6.parse(pfx); const m = len === 0 ? 0n : ((1n << 128n) - 1n) ^ ((1n << BigInt(128 - len)) - 1n); return (V6.big(a) & m) === (V6.big(p) & m); }
+};
+
+/* ---------- expand / compress ---------- */
+(function () {
+  const out = $('#v6Out');
+  function run() {
+    const a = V6.parse($('#v6In').value);
+    if (!a) { out.innerHTML = '<span class="err">Invalid IPv6 address (check hex digits, number of groups, and that "::" appears at most once).</span>'; return; }
+    const bin = a.map(x => x.toString(2).padStart(16, '0')).join(' ');
+    out.innerHTML = `<div class="kv"><div>Full (expanded)</div><div>${V6.full(a)}</div>
+      <div>Leading zeros removed</div><div>${a.map(x => x.toString(16)).join(':')}</div>
+      <div>Canonical (RFC 5952)</div><div><b>${V6.compress(a)}</b></div>
+      <div>Binary (128 bits)</div><div style="word-break:break-all;font-size:.8rem">${bin}</div>
+      <div>Network /64 · Interface ID</div><div>${V6.compress([...a.slice(0, 4), 0, 0, 0, 0])}/64 · ${a.slice(4).map(x => x.toString(16)).join(':')}</div></div>`;
+  }
+  $('#v6Go').onclick = run; run();
+})();
+
+/* ---------- type identifier ---------- */
+(function () {
+  const out = $('#v6tOut');
+  const T = [
+    ['::/128', 128, 'Unspecified address (::), used as a source before an address is assigned (e.g. DAD)'],
+    ['::1/128', 128, 'Loopback (::1)'],
+    ['::ffff:0:0/96', 96, 'IPv4-mapped IPv6 address'],
+    ['64:ff9b::/96', 96, 'NAT64 well-known prefix (embeds an IPv4 address)'],
+    ['2001:db8::/32', 32, 'Documentation prefix (global unicast format, never routed)'],
+    ['2001::/32', 32, 'Teredo tunnelling'],
+    ['2002::/16', 16, '6to4 (deprecated tunnelling)'],
+    ['2000::/3', 3, 'Global unicast address (GUA): publicly routable'],
+    ['fc00::/7', 7, 'Unique local address (ULA): private, not routed on the Internet'],
+    ['fe80::/10', 10, 'Link-local unicast: valid only on this link; every interface has one'],
+    ['fec0::/10', 10, 'Site-local (deprecated by RFC 3879)'],
+    ['ff00::/8', 8, 'Multicast']
+  ];
+  function run() {
+    const a = V6.parse($('#v6tIn').value);
+    if (!a) { out.innerHTML = '<span class="err">Invalid IPv6 address.</span>'; return; }
+    const hit = T.find(([p, l]) => V6.match(a, p.split('/')[0], l));
+    let extra = '';
+    if (hit && hit[0] === 'ff00::/8') {
+      const flags = (a[0] >> 4) & 15, scope = a[0] & 15;
+      const sc = { 1: 'interface-local', 2: 'link-local', 4: 'admin-local', 5: 'site-local', 8: 'organisation-local', 14: 'global' }[scope] || 'reserved/unassigned';
+      const known = { 'ff02::1': 'all nodes', 'ff02::2': 'all routers', 'ff02::5': 'OSPFv3 all SPF routers', 'ff02::6': 'OSPFv3 DRs', 'ff02::9': 'RIPng routers', 'ff02::a': 'EIGRP routers', 'ff02::1:2': 'all DHCPv6 relay agents and servers', 'ff02::fb': 'mDNS' }[V6.compress(a)];
+      extra = `<div>Scope</div><div>${scope.toString(16)} = ${sc}</div><div>Flags</div><div>${flags.toString(2).padStart(4, '0')} ${flags & 1 ? '(T=1 transient / dynamically assigned)' : '(T=0 well-known)'}</div>`;
+      if (known) extra += `<div>Well-known group</div><div>${known}</div>`;
+      if (V6.match(a, 'ff02::1:ff00:0', 104)) extra += `<div>Solicited-node</div><div>yes: matches unicast addresses ending in ${(a[6] & 255).toString(16).padStart(2, '0')}:${a[7].toString(16).padStart(4, '0')}</div>`;
+    } else if (hit) {
+      const sn = [0xff02, 0, 0, 0, 0, 1, 0xff00 | (a[6] & 255), a[7]];
+      const mac = ['33', '33', ...[sn[6] >> 8, sn[6] & 255, sn[7] >> 8, sn[7] & 255].map(x => x.toString(16).padStart(2, '0'))].join(':');
+      extra = `<div>Solicited-node multicast</div><div>${V6.compress(sn)} (Ethernet MAC ${mac})</div>`;
+      const iid = a.slice(4);
+      if (((iid[1] & 255) === 0xff) && ((iid[2] >> 8) === 0xfe)) {
+        const b0 = (iid[0] >> 8) ^ 2;
+        const mc = [b0, iid[0] & 255, iid[1] >> 8, iid[2] & 255, iid[3] >> 8, iid[3] & 255].map(x => x.toString(16).padStart(2, '0')).join(':');
+        extra += `<div>Interface ID</div><div>looks like EUI-64 (contains ff:fe) → original MAC ${mc}</div>`;
+      } else extra += `<div>Interface ID</div><div>not EUI-64 (manual, random/privacy or stable-opaque)</div>`;
+    }
+    out.innerHTML = `<div class="kv"><div>Canonical</div><div>${V6.compress(a)}</div><div>Type</div><div><b>${hit ? hit[2] : 'Reserved / unassigned space'}</b>${hit ? ` (${hit[0]})` : ''}</div>${extra}</div>`;
+  }
+  $('#v6tGo').onclick = run; run();
+})();
+
+/* ---------- IPv6 subnet generator ---------- */
+(function () {
+  const out = $('#v6sOut');
+  function run() {
+    const raw = $('#v6sP').value.trim(), m = raw.match(/^(.*)\/(\d{1,3})$/);
+    const a = m && V6.parse(m[1]), L = m ? +m[2] : -1, N = +$('#v6sL').value;
+    if (!a || L < 0 || L > 128 || N < L || N > 128) { out.innerHTML = '<span class="err">Use prefix/len and a new length ≥ len (≤ 128).</span>'; return; }
+    const mask = L === 0 ? 0n : ((1n << 128n) - 1n) ^ ((1n << BigInt(128 - L)) - 1n);
+    const base = V6.big(a) & mask, s = N - L, count = 1n << BigInt(s), step = 1n << BigInt(128 - N);
+    let F = BigInt(Math.max(0, +$('#v6sF').value || 0)); if (F >= count) F = count - 1n;
+    let rows = '';
+    for (let i = 0n; i < 8n && F + i < count; i++) {
+      const n = base + (F + i) * step;
+      rows += `<tr><td>#${(F + i).toString()}</td><td class="mono">${V6.compress(V6.fromBig(n))}/${N}</td><td class="mono">${s ? (F + i).toString(16) : '-'}</td></tr>`;
+    }
+    out.innerHTML = `<div class="kv"><div>Network</div><div>${V6.compress(V6.fromBig(base))}/${L}</div><div>Borrowed bits</div><div>${s}</div>
+      <div>Number of /${N} subnets</div><div>2^${s} = ${count.toLocaleString('en')}</div><div>Addresses per subnet</div><div>2^${128 - N}${128 - N === 64 ? ' ≈ 1.8 × 10^19' : ''}</div></div>
+      <table class="data"><tr><th>Index</th><th>Subnet</th><th>Subnet ID (hex)</th></tr>${rows}</table>
+      ${s % 4 ? '<div class="small">Tip: the new length is not on a nibble (4-bit) boundary, so subnet IDs do not align with hex digits. Prefer multiples of 4.</div>' : ''}`;
+  }
+  $('#v6sGo').onclick = run; run();
+})();
+
+/* ---------- EUI-64 ---------- */
+(function () {
+  const out = $('#euOut');
+  function run() {
+    const hx = $('#euMac').value.replace(/[^0-9a-fA-F]/g, '').toLowerCase();
+    if (hx.length !== 12) { out.innerHTML = '<span class="err">MAC must have 12 hex digits.</span>'; return; }
+    const b = hx.match(/../g).map(x => parseInt(x, 16));
+    const f = b[0] ^ 2;
+    const e = [f, b[1], b[2], 0xff, 0xfe, b[3], b[4], b[5]];
+    const iid = [0, 2, 4, 6].map(i => ((e[i] << 8) | e[i + 1]));
+    const pre = V6.parse($('#euPre').value.replace(/\/\d+$/, ''));
+    const ll = [0xfe80, 0, 0, 0, ...iid];
+    let g = '';
+    if (pre) g = `<div>Global address</div><div><b>${V6.compress([...pre.slice(0, 4), ...iid])}</b>/64</div>`;
+    out.innerHTML = `<div class="kv">
+      <div>1. MAC</div><div>${b.map(x => x.toString(16).padStart(2, '0')).join(':')}</div>
+      <div>2. Insert FF:FE</div><div>${[b[0], b[1], b[2]].map(x => x.toString(16).padStart(2, '0')).join(':')}:<b>ff:fe</b>:${[b[3], b[4], b[5]].map(x => x.toString(16).padStart(2, '0')).join(':')}</div>
+      <div>3. Flip U/L bit</div><div>${b[0].toString(2).padStart(8, '0')} → ${f.toString(2).padStart(8, '0')} (0x${b[0].toString(16).padStart(2, '0')} → 0x<b>${f.toString(16).padStart(2, '0')}</b>)</div>
+      <div>Interface ID</div><div>${iid.map(x => x.toString(16).padStart(4, '0')).join(':')}</div>
+      <div>Link-local</div><div><b>${V6.compress(ll)}</b></div>${g}
+      <div>Solicited-node</div><div>${V6.compress([0xff02, 0, 0, 0, 0, 1, 0xff00 | (iid[2] & 255), iid[3]])}</div></div>`;
+  }
+  $('#euGo').onclick = run; run();
+})();
+
+Quiz('quiz10', [
+  { l: 'b', q: 'Which IPv4 field prevents packets from looping forever?', o: ['Identification', 'TTL', 'Header checksum', 'Protocol'], a: 1, e: 'TTL is decremented at each router and the packet is discarded at 0.' },
+  { l: 'b', q: 'Protocol field value 17 means the payload is:', o: ['TCP', 'ICMP', 'UDP', 'OSPF'], a: 2, e: '6 = TCP, 17 = UDP, 1 = ICMP, 89 = OSPF.' },
+  { l: 'b', q: 'ARP is used to find:', o: ['the IP address for a hostname', 'the MAC address for an IPv4 address on the local link', 'the default gateway', 'the path MTU'], a: 1, e: 'Address Resolution Protocol maps IPv4 to MAC on a broadcast LAN.' },
+  { l: 'b', q: 'Correct compression of 2001:0db8:0000:0000:0000:0000:1428:57ab?', o: ['2001:db8::1428:57ab', '2001:db8:0::0:1428:57ab', '2001::db8::1428:57ab', '2001:db8:1428:57ab'], a: 0, e: 'Remove leading zeros and replace the single run of zero groups with "::".' },
+  { l: 'b', q: 'Which prefix identifies IPv6 link-local addresses?', o: ['ff00::/8', 'fe80::/10', 'fc00::/7', '2000::/3'], a: 1, e: 'fe80::/10 is link-local; ff00::/8 multicast; fc00::/7 ULA; 2000::/3 global unicast.' },
+  { l: 'b', q: 'IPv6 has no:', o: ['multicast', 'anycast', 'broadcast', 'loopback'], a: 2, e: 'Broadcast is replaced by multicast groups such as ff02::1.' },
+  { l: 'i', q: 'A 3000-byte datagram (20-byte header) crosses MTU 1500. Offset of the 2nd fragment?', o: ['1480', '185', '1500', '187'], a: 1, e: 'The first fragment carries 1480 data bytes, and 1480/8 = 185.' },
+  { l: 'i', q: 'In PAT, inbound replies are matched to the inside host using:', o: ['the MAC address', 'the translation table (public IP:port ↔ private IP:port)', 'ARP', 'TTL'], a: 1, e: 'The NAT router keeps per-flow mappings keyed by port.' },
+  { l: 'i', q: 'EUI-64 interface ID for MAC 00:1A:2B:3C:4D:5E?', o: ['001a:2bff:fe3c:4d5e', '021a:2bff:fe3c:4d5e', '021a:2bfe:ff3c:4d5e', '001a:2b3c:4d5e:fffe'], a: 1, e: 'Insert ff:fe in the middle and flip bit 0x02 of the first byte (00 becomes 02).' },
+  { l: 'i', q: 'Which NDP message carries the prefix used by SLAAC?', o: ['Neighbor Solicitation', 'Router Advertisement', 'Neighbor Advertisement', 'Redirect'], a: 1, e: 'RAs carry prefix information, flags and the default router.' },
+  { l: 'i', q: 'A typical LAN subnet in IPv6 is a:', o: ['/48', '/56', '/64', '/128'], a: 2, e: 'SLAAC requires a 64-bit interface ID, so LANs are /64.' },
+  { l: 'a', q: 'Which IPv4 field does NOT exist in the IPv6 base header?', o: ['Hop limit equivalent', 'Header checksum', 'Traffic class equivalent', 'Payload length'], a: 1, e: 'The header checksum was removed in IPv6.' },
+  { l: 'a', q: 'Who may fragment an IPv6 packet?', o: ['Any router', 'Only the source, using the Fragment extension header', 'Only the last router', 'Nobody, ever'], a: 1, e: 'Routers send ICMPv6 Packet Too Big; the source fragments if needed.' },
+  { l: 'a', q: 'Large TCP transfers stall while small ones work, and ICMP is filtered. Most likely:', o: ['TTL too low', 'PMTUD black hole', 'ARP spoofing', 'Wrong DSCP'], a: 1, e: 'DF packets larger than the path MTU are dropped and the ICMP feedback never arrives.' },
+  { l: 'a', q: 'Which mechanism lets IPv4-only apps work on an IPv6-only mobile network?', o: ['6to4', 'Teredo', '464XLAT', 'Dual stack'], a: 2, e: '464XLAT combines a client-side CLAT with a provider-side NAT64.' },
+  { l: 'a', q: 'Solicited-node multicast address of 2001:db8::2aa:ff:fe28:9c5a?', o: ['ff02::1:ff28:9c5a', 'ff02::1:ffaa:9c5a', 'ff02::2:ff28:9c5a', 'ff05::1:ff28:9c5a'], a: 0, e: 'ff02::1:ff followed by the last 24 bits (28:9c5a).' }
+]);
+
+NetUI.init();
+</script>
+</body>
+</html>

@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Networks · Week 11 · Routing in IP Networks</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#ffffff;--ink:#1b2233;--muted:#5a6478;--line:#dde2ec;
+  --accent:#2952e3;--accent-soft:#e9eeff;
+  --b:#16884a;--b-soft:#e5f5ec;--i:#b86e00;--i-soft:#fff3dd;--a:#7f33c9;--a-soft:#f2e7ff;
+  --code-bg:#111827;--code-ink:#e5e7eb;--warn:#b42318;--warn-soft:#fdeceb;--ok:#127a3f;--ok-soft:#e3f4ea;
+  --hl:#ffe58a;--shadow:0 1px 2px rgba(16,24,40,.06),0 2px 8px rgba(16,24,40,.05);
+}
+body.dark{
+  --bg:#0e1320;--panel:#161d2e;--ink:#e6e9f2;--muted:#9aa4ba;--line:#2a3349;
+  --accent:#7d9bff;--accent-soft:#1d2848;
+  --b:#4cc985;--b-soft:#12301f;--i:#f0b252;--i-soft:#3a2a0e;--a:#c18cff;--a-soft:#2c1a45;
+  --code-bg:#0a0f1a;--warn:#ff8a7a;--warn-soft:#3b1612;--ok:#5ed492;--ok-soft:#10301d;--hl:#6b5a12;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,.mono{font-family:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;font-size:.92em}
+code{background:var(--accent-soft);padding:.05em .35em;border-radius:4px}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:100}
+header.top{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+header.top .inner{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between;padding:.55rem 1.2rem;max-width:1500px;margin:0 auto}
+header.top .brand{font-weight:700;font-size:1rem}
+header.top .brand small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.tracks{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.tracks span{font-size:.8rem;color:var(--muted);margin-right:.2rem}
+.tracks button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:.35rem .75rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.85rem}
+.tracks button.on[data-track=b]{background:var(--b);color:#fff;border-color:var(--b)}
+.tracks button.on[data-track=i]{background:var(--i);color:#fff;border-color:var(--i)}
+.tracks button.on[data-track=a]{background:var(--a);color:#fff;border-color:var(--a)}
+.btn{border-radius:8px}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:hover{filter:brightness(.96)}
+.btn:disabled{opacity:.5;cursor:default}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:1.5rem;max-width:1500px;margin:0 auto;padding:1.2rem}
+nav#toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;font-size:.86rem;padding:.8rem;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+nav#toc b{display:block;margin-bottom:.4rem}
+nav#toc a{display:block;text-decoration:none;color:var(--ink);padding:.18rem .4rem;border-radius:6px}
+nav#toc a.sub{padding-left:1.2rem;color:var(--muted);font-size:.82rem}
+nav#toc a.active{background:var(--accent-soft);color:var(--accent)}
+nav#toc a.gone{display:none}
+main{min-width:0}
+main section.chapter{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow)}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .4rem}
+h2{font-size:1.5rem;margin:.2rem 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--line);scroll-margin-top:80px}
+h3{font-size:1.18rem;margin:1.4rem 0 .5rem;scroll-margin-top:80px}
+h4{margin:1rem 0 .4rem}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel));border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem}
+.hero .meta{color:var(--muted);font-size:.92rem}
+.lvl{position:relative;border-left:4px solid var(--line);padding:.6rem .9rem .6rem 1rem;margin:.9rem 0;border-radius:0 10px 10px 0}
+.lvl::before{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;padding:.08rem .5rem;border-radius:999px;margin-bottom:.35rem;color:#fff}
+.lvl[data-level=b]{border-color:var(--b);background:var(--b-soft)}
+.lvl[data-level=b]::before{content:"BEGINNER";background:var(--b)}
+.lvl[data-level=i]{border-color:var(--i);background:var(--i-soft)}
+.lvl[data-level=i]::before{content:"INTERMEDIATE";background:var(--i)}
+.lvl[data-level=a]{border-color:var(--a);background:var(--a-soft)}
+.lvl[data-level=a]::before{content:"ADVANCED";background:var(--a)}
+.lvl.plain{background:transparent}
+.hidden-lvl{display:none!important}
+.callout{border:1px solid var(--line);border-radius:10px;padding:.7rem 1rem;margin:.9rem 0;background:var(--panel)}
+.callout.note{border-left:5px solid var(--accent)}
+.callout.tip{border-left:5px solid var(--ok);background:var(--ok-soft)}
+.callout.warn{border-left:5px solid var(--warn);background:var(--warn-soft)}
+.callout.key{border-left:5px solid var(--i);background:var(--i-soft)}
+.callout > b:first-child{display:block;margin-bottom:.2rem}
+table.data{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.92rem;background:var(--panel)}
+table.data th,table.data td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}
+table.data th{background:var(--accent-soft)}
+table.data tr:nth-child(even) td{background:rgba(127,127,127,.04)}
+.scroll{overflow-x:auto}
+pre.code{position:relative;background:var(--code-bg);color:var(--code-ink);padding:.9rem 1rem;border-radius:10px;overflow:auto;font-size:.85rem;line-height:1.5}
+pre.code code{background:none;padding:0;color:inherit}
+pre.code .copy{position:absolute;top:.4rem;right:.4rem;font-size:.72rem;padding:.15rem .5rem;border-radius:6px;border:1px solid #475569;background:#1f2937;color:#e5e7eb;cursor:pointer}
+.c-k{color:#93c5fd}.c-s{color:#fca5a5}.c-c{color:#94a3b8;font-style:italic}.c-n{color:#fcd34d}
+.tool{border:2px solid var(--accent);border-radius:14px;padding:1rem 1.2rem;margin:1.1rem 0;background:var(--panel)}
+.tool > .tt{font-weight:700;color:var(--accent);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:center}
+.tool > .tt::before{content:"⚙";font-size:1.1rem}
+.tool label{font-size:.88rem;color:var(--muted);margin-right:.3rem}
+.tool input[type=text],.tool input[type=number],.tool select,.tool textarea{font:inherit;font-family:"JetBrains Mono",Consolas,monospace;font-size:.92rem;padding:.35rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tool textarea{width:100%;min-height:90px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.4rem 0}
+.out{margin-top:.6rem;font-size:.92rem}
+.out .err{color:var(--warn);font-weight:600}
+.out .ok{color:var(--ok);font-weight:600}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.2rem 1rem;font-size:.92rem}
+.kv div:nth-child(odd){color:var(--muted)}
+.kv div:nth-child(even){font-family:"JetBrains Mono",Consolas,monospace}
+.bitrow{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:.3rem 0}
+.bit{width:30px;height:34px;border-radius:6px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:monospace;cursor:pointer;user-select:none;background:var(--bg)}
+.bit.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bit small{font-size:.55rem;opacity:.75}
+.bits-net{background:var(--b-soft)!important;color:var(--b)!important}
+.bits-host{background:var(--i-soft)!important;color:var(--i)!important}
+.binline{font-family:monospace;letter-spacing:.04em}
+.binline .n{color:var(--b);font-weight:700}
+.binline .h{color:var(--i);font-weight:700}
+.binline .s{color:var(--a);font-weight:700}
+details.sol{border:1px dashed var(--line);border-radius:10px;padding:.45rem .8rem;margin:.6rem 0;background:var(--panel)}
+details.sol summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details.sol[open]{background:var(--bg)}
+.problem{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.9rem 0;background:var(--panel)}
+.problem > .ph{font-weight:700;margin-bottom:.3rem}
+.q{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.8rem 0;background:var(--panel)}
+.q.lvl{border-left-width:4px}
+.qhead{font-weight:600;margin-bottom:.5rem}
+.qnum{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 .45rem;margin-right:.3rem;font-size:.85rem}
+.opts{display:grid;gap:.35rem}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:.45rem .7rem;border-radius:8px;cursor:pointer;font:inherit}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.wrong{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.exp{margin-top:.5rem;font-size:.92rem;padding:.5rem .7rem;background:var(--accent-soft);border-radius:8px}
+.qscore{position:sticky;bottom:10px;margin-top:1rem;background:var(--accent);color:#fff;padding:.5rem 1rem;border-radius:10px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.qscore button{background:#fff;color:var(--accent);border:0;border-radius:6px;padding:.2rem .6rem;cursor:pointer}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:.8rem 0}
+.roadmap .wk{border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;background:var(--panel);font-size:.86rem}
+.roadmap .wk b{display:block;font-size:.95rem;margin-bottom:.2rem}
+.roadmap .wk.cur{border:2px solid var(--accent);background:var(--accent-soft)}
+.roadmap .wk ul{margin:.3rem 0 0;padding-left:1.1rem}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.obj > div{border-radius:12px;padding:.7rem .9rem;font-size:.9rem}
+.obj .ob{background:var(--b-soft);border:1px solid var(--b)}
+.obj .oi{background:var(--i-soft);border:1px solid var(--i)}
+.obj .oa{background:var(--a-soft);border:1px solid var(--a)}
+.obj h4{margin:.1rem 0 .3rem}
+.obj ul{margin:0;padding-left:1.1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.pill{display:inline-block;padding:.05rem .5rem;border-radius:999px;font-size:.78rem;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.bar{display:flex;height:42px;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:.5rem 0;font-size:.7rem}
+.bar > div{display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;white-space:nowrap;border-right:1px solid rgba(255,255,255,.5)}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;font-size:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.3rem}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.hdr-grid{display:grid;grid-template-columns:repeat(32,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.74rem;margin:.6rem 0}
+.hdr-grid .bitscale{background:var(--bg);text-align:center;color:var(--muted);font-size:.62rem;border-right:1px solid var(--line)}
+.hdr-grid .f{border:1px solid var(--line);padding:.45rem .2rem;text-align:center;cursor:pointer;background:var(--accent-soft);transition:background .15s}
+.hdr-grid .f:hover,.hdr-grid .f.sel{background:var(--hl)}
+.checklist label{display:block;padding:.2rem 0}
+.glossary dt{font-weight:700;margin-top:.5rem}
+.glossary dd{margin:0 0 .3rem 1rem;color:var(--muted)}
+svg text{font-family:"Segoe UI",system-ui,sans-serif}
+.small{font-size:.85rem;color:var(--muted)}
+.tag-b,.tag-i,.tag-a{font-size:.7rem;font-weight:700;padding:.05rem .4rem;border-radius:999px;color:#fff}
+.tag-b{background:var(--b)}.tag-i{background:var(--i)}.tag-a{background:var(--a)}
+.footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1rem}
+.drill-ok{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+.drill-bad{background:var(--warn-soft)!important;border-color:var(--warn)!important}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}nav#toc{position:relative;top:0;max-height:none}.roadmap,.obj{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:600px){.roadmap,.obj{grid-template-columns:1fr}main section.chapter{padding:1rem}}
+@media print{header.top,nav#toc,#progress,.tool{display:none}.layout{display:block}details.sol{display:block}details.sol>*{display:block}.hidden-lvl{display:block!important}}
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="top"><div class="inner">
+<div class="brand">Computer Networks · Week 11 · Course + Seminar + Lab<small>Chapter 4 — The Network Layer: Addressing, the Internet Protocol and Routing</small></div>
+<div class="tracks"><span>Learning track:</span>
+<button type="button" data-track="b" title="Show only beginner material">Beginner</button>
+<button type="button" data-track="i" title="Beginner + intermediate material">Intermediate</button>
+<button type="button" data-track="a" title="Everything: beginner + intermediate + advanced">Advanced (all)</button>
+<button type="button" class="btn" id="themeBtn" title="Toggle dark / light theme">◐ Theme</button>
+</div></div></header>
+<div class="layout">
+<nav id="toc"><b>Contents</b></nav>
+<main>
+<div class="hero">
+  <div class="meta">Chapter 4 · The Network Layer · Part 4 of 4 · 2 hours (course 55' + seminar 30' + lab 35')</div>
+  <h1>Routing in IP Networks</h1>
+  <p>In Weeks 08–10 we built addresses and packets, and we saw that a router forwards each packet by looking up its destination in a table. This week answers the remaining question: <b>who fills in that table, and how?</b> We start with the routing table and the rules a router uses to choose between routes. Then come static routes and the classification of dynamic routing algorithms, followed by the two classic algorithms, <b>Dijkstra</b> and <b>Bellman-Ford</b>, which you can run step by step on this page. Finally we see how they become real protocols (distance-vector RIP, link-state OSPF) and how the Internet is held together by the exterior protocol <b>BGP</b>.</p>
+  <p class="small">Level filter: <span class="tag-b">BEGINNER</span> · <span class="tag-i">INTERMEDIATE</span> · <span class="tag-a">ADVANCED</span>.</p>
+</div>
+
+<section class="chapter">
+  <h2 id="roadmap">0. Roadmap and learning outcomes</h2>
+  <div class="roadmap"><div class="wk"><b>Week 08 · Network layer & IPv4 addressing</b><ul><li>Role of the network layer: forwarding vs routing</li><li>Logical vs physical addressing</li><li>IPv4 structure, binary, classes A–E</li><li>Special & private addresses</li><li>Subnet mask, AND, host count</li><li>Java InetAddress class</li></ul></div><div class="wk"><b>Week 09 · Subnetting, VLSM, CIDR, supernetting</b><ul><li>FLSM subnetting & magic number</li><li>Sizing by hosts / by subnets</li><li>VLSM design (largest first)</li><li>CIDR notation & allocation</li><li>Supernetting / route summarization</li><li>Longest prefix match</li></ul></div><div class="wk"><b>Week 10 · The Internet Protocol: IPv4 & IPv6</b><ul><li>IPv4 header, checksum, TTL</li><li>Fragmentation, MTU, PMTUD</li><li>ICMP, ARP, DHCP, NAT</li><li>IPv6 addresses, types, EUI-64</li><li>IPv6 header, NDP, SLAAC</li><li>IPv4→IPv6 transition</li></ul></div><div class="wk cur"><b>Week 11 · Routing in IP networks <span class="pill">you are here</span></b><ul><li>Routing table, LPM, AD, metric</li><li>Static & default routing</li><li>Algorithm classification</li><li>Dijkstra & Bellman-Ford</li><li>Distance-vector (RIP) vs link-state (OSPF)</li><li>IGP vs EGP, BGP</li></ul></div></div>
+  <div class="obj">
+    <div class="ob"><h4>Beginner</h4><ul>
+      <li>Read a routing table (codes C, L, S, O, R, B).</li>
+      <li>Explain the default route and the gateway of last resort.</li>
+      <li>Distinguish static from dynamic routing, and IGP from EGP.</li>
+      <li>Describe distance-vector vs link-state at the idea level.</li></ul></div>
+    <div class="oi"><h4>Intermediate</h4><ul>
+      <li>Apply LPM, then administrative distance, then metric.</li>
+      <li>Configure static, default and floating static routes.</li>
+      <li>Run Dijkstra and Bellman-Ford by hand.</li>
+      <li>Explain RIP timers, the OSPF cost, and count-to-infinity with its remedies.</li></ul></div>
+    <div class="oa"><h4>Advanced</h4><ul>
+      <li>Analyse complexity, negative cycles and oscillations.</li>
+      <li>Explain OSPF areas, LSA flooding and DR/BDR.</li>
+      <li>Apply BGP path selection and explain policy routing and hierarchical routing.</li></ul></div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="fund">1. Fundamental principles of routing</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="what">1.1 Routing vs forwarding (recap)</h3>
+    <p><b>Routing</b> is the process of determining the path packets take from source to destination. It runs in the router's <b>control plane</b> and produces the <b>routing table</b> (RIB, Routing Information Base). The best entries are copied into the <b>forwarding table</b> (FIB), which the <b>data plane</b> consults for every packet. IP routing is <b>hop-by-hop</b>: each router decides only the <em>next hop</em>, trusting the next router to continue.</p>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="table">1.2 Anatomy of a routing table</h3>
+<pre class="code"><code>R1# show ip route
+Codes: L - local, C - connected, S - static, R - RIP, O - OSPF, D - EIGRP, B - BGP, * - candidate default
+Gateway of last resort is 203.0.113.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 203.0.113.1
+      10.0.0.0/8 is variably subnetted, 4 subnets, 3 masks
+C        10.1.1.0/24 is directly connected, GigabitEthernet0/0
+L        10.1.1.1/32 is directly connected, GigabitEthernet0/0
+O        10.2.0.0/16 [110/20] via 10.1.1.2, 00:12:31, GigabitEthernet0/0
+R        10.3.3.0/24 [120/2] via 10.1.1.3, 00:00:17, GigabitEthernet0/0
+         │            │   │      │          │            └ exit interface
+         │            │   │      │          └ age of the route
+         │            │   │      └ next-hop IP address
+         │            │   └ metric (cost)
+         │            └ administrative distance
+         └ destination prefix / length</code></pre>
+    <ul>
+      <li><b>Directly connected (C)</b> routes appear automatically when an interface has an address and is up. <b>Local (L)</b> are /32 routes for the router's own addresses.</li>
+      <li><b>Static (S)</b> routes are configured by hand; <b>dynamic</b> routes (O, R, D, B) are learned from routing protocols.</li>
+      <li>The <b>default route</b> 0.0.0.0/0 (IPv6 ::/0) matches everything. It is the <b>gateway of last resort</b>, used when nothing more specific matches. Without one, unmatched packets are dropped and an ICMP Destination Unreachable is returned.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="select">1.3 How a route is chosen: three tie-breakers in order</h3>
+    <ol>
+      <li><b>Longest prefix match (per packet, in the FIB).</b> The most specific matching prefix wins, regardless of where it came from.</li>
+      <li><b>Administrative distance (when building the RIB).</b> If several <em>sources</em> offer the <em>same</em> prefix, the one with the lowest AD (most trusted) is installed.</li>
+      <li><b>Metric (within one protocol).</b> Among routes from the same protocol to the same prefix, the lowest metric wins. Equal metrics mean <b>ECMP</b> (Equal-Cost Multi-Path) load sharing.</li>
+    </ol>
+    <table class="data"><tr><th>Route source</th><th>Default AD (Cisco)</th><th>Metric</th></tr>
+      <tr><td>Connected</td><td>0</td><td>-</td></tr>
+      <tr><td>Static</td><td>1</td><td>0</td></tr>
+      <tr><td>EIGRP summary</td><td>5</td><td>-</td></tr>
+      <tr><td>eBGP</td><td>20</td><td>attributes (path selection)</td></tr>
+      <tr><td>EIGRP (internal)</td><td>90</td><td>composite (bandwidth, delay)</td></tr>
+      <tr><td>OSPF</td><td>110</td><td>cost = reference BW / interface BW</td></tr>
+      <tr><td>IS-IS</td><td>115</td><td>configured cost (default 10)</td></tr>
+      <tr><td>RIP</td><td>120</td><td>hop count (max 15)</td></tr>
+      <tr><td>EIGRP external</td><td>170</td><td>-</td></tr>
+      <tr><td>iBGP</td><td>200</td><td>-</td></tr>
+      <tr><td>Unknown / unusable</td><td>255</td><td>never installed</td></tr></table>
+    <div class="callout warn"><b>Common confusion</b>AD compares <em>different protocols</em>. Metrics from different protocols are never compared (OSPF cost 20 vs RIP 2 hops means nothing). And LPM always comes first: a RIP /24 beats an OSPF /16 for addresses inside the /24.</div>
+    <div class="tool">
+      <div class="tt">Route selection simulator: from all learned routes to the RIB, then LPM</div>
+      <label>Learned routes, one per line: <code>prefix source AD metric next-hop</code></label>
+<textarea id="rtIn" style="min-height:150px">10.1.1.0/24 connected 0 0 Gi0/0
+10.2.0.0/16 static 1 0 10.1.1.2
+10.2.3.0/24 ospf 110 20 10.1.1.3
+10.2.3.0/24 rip 120 2 10.1.1.4
+10.2.3.0/24 eigrp 90 30720 10.1.1.5
+172.16.0.0/22 ospf 110 30 10.1.1.3
+172.16.0.0/22 ospf 110 30 10.1.1.6
+0.0.0.0/0 static 1 0 203.0.113.1
+0.0.0.0/0 static 5 0 198.51.100.1</textarea>
+      <div class="row"><label>Destination IP:</label><input type="text" id="rtDst" value="10.2.3.77" size="16"><button class="btn primary" type="button" id="rtGo">Build RIB and look up</button>
+      <span class="small">Try 10.2.9.9 · 172.16.2.5 · 8.8.8.8 · 10.1.1.200</span></div>
+      <div class="out" id="rtOut"></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="static">2. Static routing</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="staticwhat">2.1 Concept, advantages and disadvantages</h3>
+    <p>A <b>static route</b> is entered manually by the administrator: "to reach network X, send to next hop Y (or out of interface Z)".</p>
+    <div class="grid2">
+      <div class="callout tip"><b>Advantages</b>No protocol overhead (CPU, bandwidth); predictable and secure (nothing is advertised); simple for small or stub networks; full control of the path.</div>
+      <div class="callout warn"><b>Disadvantages</b>Does not adapt to failures (unless a floating backup exists); laborious and error-prone at scale; every change must be made on many routers.</div>
+    </div>
+    <p>Typical uses: <b>stub networks</b> (one way out), a <b>default route</b> toward the ISP, backup routes, and routes to networks that should not be advertised.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="staticcfg">2.2 Configuration (Cisco IOS and Linux)</h3>
+<pre class="code"><code>! Next-hop static route (recursive lookup of 10.0.12.2)
+R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.12.2
+! Directly attached (exit-interface) static route: fine on point-to-point links
+R1(config)# ip route 192.168.30.0 255.255.255.0 Serial0/0/0
+! Fully specified (interface + next hop): recommended on Ethernet (multi-access)
+R1(config)# ip route 192.168.40.0 255.255.255.0 GigabitEthernet0/1 10.0.13.3
+! Default static route (stub router → ISP)
+R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.1
+! Floating static route: backup, AD 5 > 1, used only if the primary disappears
+R1(config)# ip route 0.0.0.0 0.0.0.0 198.51.100.1 5
+! Summary static route
+R1(config)# ip route 172.16.0.0 255.255.252.0 10.0.12.2
+! IPv6
+R1(config)# ipv6 route 2001:db8:acad:20::/64 2001:db8:acad:12::2
+R1(config)# ipv6 route ::/0 GigabitEthernet0/1 fe80::1     ! link-local next hop needs interface
+
+# Linux
+sudo ip route add 192.168.20.0/24 via 10.0.12.2 dev eth0
+sudo ip route add default via 203.0.113.1
+sudo ip route add default via 198.51.100.1 metric 200      # backup
+ip route get 192.168.20.5                                  # which route would be used?</code></pre>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="staticadv">2.3 Subtleties</h3>
+    <ul>
+      <li><b>Recursive look-up:</b> a next-hop route requires a second look-up to find how to reach the next hop. If that next hop becomes reachable only through the default route, the route may stay "up" while traffic is black-holed. Use fully specified routes or IP SLA / BFD tracking (<code>ip route … track 1</code>).</li>
+      <li><b>Exit-interface-only routes on Ethernet</b> make the router ARP for <em>every</em> destination (proxy ARP needed), so avoid them.</li>
+      <li>Static routes can be <b>redistributed</b> into dynamic protocols (<code>redistribute static</code>); a default route can be originated in OSPF with <code>default-information originate</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="dynamic">3. Dynamic routing and the classification of routing algorithms</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="dynwhat">3.1 What dynamic routing protocols do</h3>
+    <p>A <b>dynamic routing protocol</b> lets routers exchange information automatically, discover remote networks, compute the best paths and react to topology changes. Its components are: <b>data structures</b> (neighbour table, topology database, routing table), an <b>algorithm</b> (Bellman-Ford, Dijkstra, DUAL, path-vector) and <b>messages</b> (hellos, updates, acknowledgements).</p>
+    <ul>
+      <li><b>Convergence:</b> the state in which all routers have consistent, correct tables after a change. Fast convergence is the main quality criterion, since loops and black holes occur during it.</li>
+      <li><b>Metric:</b> the value used to compare paths: hop count (RIP), cost derived from bandwidth (OSPF), bandwidth plus delay (EIGRP), or policy attributes (BGP).</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="b">
+    <h3 id="classif">3.2 Classifications</h3>
+    <div class="scroll"><table class="data">
+      <tr><th>Criterion</th><th>Classes</th><th>Explanation</th></tr>
+      <tr><td>Information used</td><td><b>Global</b> (centralised) vs <b>decentralised</b></td><td>Global: each router knows the full topology and link costs, as in <b>link-state</b> algorithms (Dijkstra). Decentralised: each router knows only its neighbours and the costs they report, computing iteratively, as in <b>distance-vector</b> algorithms (Bellman-Ford).</td></tr>
+      <tr><td>Change over time</td><td><b>Static</b> vs <b>dynamic</b></td><td>Routes change slowly, by hand, or automatically in response to topology or cost changes.</td></tr>
+      <tr><td>Sensitivity to load</td><td>load-sensitive vs load-insensitive</td><td>Costs reflect current congestion (early ARPANET, which caused oscillations) or not (today's RIP, OSPF, BGP).</td></tr>
+      <tr><td>Scope</td><td><b>IGP</b> (interior) vs <b>EGP</b> (exterior)</td><td>Inside one autonomous system (RIP, OSPF, IS-IS, EIGRP) vs between ASes (BGP-4).</td></tr>
+      <tr><td>Algorithm family</td><td>distance-vector · link-state · path-vector · advanced DV / hybrid</td><td>RIP · OSPF, IS-IS · BGP · EIGRP (DUAL).</td></tr>
+      <tr><td>Mask handling</td><td>classful vs classless</td><td>RIPv1, IGRP (no masks) vs RIPv2, OSPF, EIGRP, IS-IS, BGP (carry masks, support VLSM/CIDR).</td></tr>
+      <tr><td>Structure</td><td>flat vs hierarchical</td><td>RIP is flat; OSPF areas and IS-IS levels are hierarchical.</td></tr>
+    </table></div>
+    <div class="scroll"><table class="data">
+      <tr><th>Protocol</th><th>Type</th><th>IGP/EGP</th><th>Algorithm</th><th>Metric</th><th>Transport</th></tr>
+      <tr><td>RIPv2 / RIPng</td><td>distance vector</td><td>IGP</td><td>Bellman-Ford</td><td>hops (16 = ∞)</td><td>UDP 520 / 521</td></tr>
+      <tr><td>EIGRP</td><td>advanced distance vector</td><td>IGP</td><td>DUAL</td><td>bandwidth + delay</td><td>IP proto 88</td></tr>
+      <tr><td>OSPFv2 / v3</td><td>link state</td><td>IGP</td><td>Dijkstra (SPF)</td><td>cost</td><td>IP proto 89</td></tr>
+      <tr><td>IS-IS</td><td>link state</td><td>IGP</td><td>Dijkstra</td><td>cost</td><td>directly over layer 2</td></tr>
+      <tr><td>BGP-4</td><td>path vector</td><td>EGP (and iBGP)</td><td>best-path selection</td><td>attributes / policy</td><td>TCP 179</td></tr>
+    </table></div>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="graph">3.3 The graph abstraction</h3>
+    <p>A network is modelled as a graph G = (N, E): N = routers (nodes), E = links (edges), with a cost c(x,y) for each edge (∞ if there is no direct link). The cost of a path is the sum of its link costs. The routing problem is to find the <b>least-cost path</b> between each pair of nodes. Costs may represent the inverse of bandwidth, delay, money or administrative preference; with all costs equal to 1, least-cost means fewest hops.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="algos">4. Classic routing algorithms: Dijkstra and Bellman-Ford</h2>
+  <div class="lvl" data-level="b">
+    <p>Both algorithms below run on the same editable network. Change link costs in the table (or set a cost to 0 to remove the link), choose a source and step through the algorithms.</p>
+    <div class="tool" id="graphTool">
+      <div class="tt">Network graph (editable)</div>
+      <div class="grid2">
+        <div><svg id="gSvg" viewBox="0 0 580 300" style="width:100%;background:var(--bg);border-radius:10px;border:1px solid var(--line)"></svg></div>
+        <div><table class="data" id="gEdges"></table>
+          <div class="row"><button class="btn" type="button" id="gReset">Reset to textbook example</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lvl" data-level="i">
+    <h3 id="dijkstra">4.1 Dijkstra's algorithm (link-state, global)</h3>
+    <p>Each router knows the <b>whole</b> topology (from flooded link-state advertisements) and computes least-cost paths from itself to all other nodes. After the k-th iteration the least-cost paths to k destinations are known.</p>
+<pre class="code"><code>Initialisation:
+  N' = {u}
+  for all nodes v:
+     if v adjacent to u then D(v) = c(u,v), p(v) = u
+     else D(v) = ∞
+Loop:
+  find w not in N' such that D(w) is a minimum
+  add w to N'
+  for each neighbour v of w not in N':
+     D(v) = min( D(v), D(w) + c(w,v) )      // if improved, p(v) = w
+until N' = N</code></pre>
+    <p><b>Notation:</b> D(v) is the current least cost from the source to v; p(v) is the predecessor of v on that path; N' is the set of nodes whose least-cost path is final.</p>
+    <div class="tool">
+      <div class="tt">Dijkstra step-by-step</div>
+      <div class="row"><label>Source:</label><select id="djSrc"></select><button class="btn primary" type="button" id="djStep">Next step</button><button class="btn" type="button" id="djAll">Run to end</button><button class="btn" type="button" id="djReset">Restart</button></div>
+      <div class="out" id="djOut"></div>
+    </div>
+    <h4>Worked result for the textbook graph, source u (ties broken alphabetically)</h4>
+    <table class="data"><tr><th>Step</th><th>N'</th><th>D(v),p(v)</th><th>D(w),p(w)</th><th>D(x),p(x)</th><th>D(y),p(y)</th><th>D(z),p(z)</th></tr>
+      <tr><td>0</td><td>u</td><td>2,u</td><td>5,u</td><td><b>1,u</b></td><td>∞</td><td>∞</td></tr>
+      <tr><td>1</td><td>ux</td><td><b>2,u</b></td><td>4,x</td><td></td><td>2,x</td><td>∞</td></tr>
+      <tr><td>2</td><td>uxv</td><td></td><td>4,x</td><td></td><td><b>2,x</b></td><td>∞</td></tr>
+      <tr><td>3</td><td>uxvy</td><td></td><td><b>3,y</b></td><td></td><td></td><td>4,y</td></tr>
+      <tr><td>4</td><td>uxvyw</td><td></td><td></td><td></td><td></td><td><b>4,y</b></td></tr>
+      <tr><td>5</td><td>uxvywz</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+    <p><b>Resulting forwarding table of u:</b> v → link (u,v); x, y, w, z → link (u,x). Follow the predecessors backwards: z ← y ← x ← u, so the first hop toward z is x.</p>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="djadv">4.2 Dijkstra: complexity, correctness and oscillations</h3>
+    <ul>
+      <li><b>Complexity:</b> with n nodes, the simple version checks all remaining nodes each iteration, n + (n−1) + … = O(n²). With a binary heap it is O((|E| + |N|) log |N|).</li>
+      <li><b>Requires non-negative costs.</b> With negative edges a node fixed early could later be improved, so greedy finalisation is wrong. Real routing costs are positive.</li>
+      <li><b>Oscillations with load-sensitive costs:</b> if link cost equals the traffic carried, all routers move to the currently cheapest path, making it expensive, and then all move back. Remedies: load-insensitive costs, or desynchronising the SPF runs (random timers). Routers synchronising their periodic messages is a known self-organisation phenomenon (Floyd and Jacobson).</li>
+      <li>Message complexity of link-state: O(|N|·|E|) messages to flood all LSAs.</li>
+    </ul>
+  </div>
+
+  <div class="lvl" data-level="i">
+    <h3 id="bf">4.3 Bellman-Ford (distance vector, decentralised)</h3>
+    <p>The <b>Bellman-Ford equation</b> (dynamic programming): the least cost from x to y is the minimum, over all neighbours v of x, of the cost to reach v plus v's least cost to y:</p>
+    <div class="callout key"><b>d<sub>x</sub>(y) = min<sub>v</sub> { c(x,v) + d<sub>v</sub>(y) }</b>The neighbour v that achieves the minimum is the next hop in x's forwarding table.</div>
+    <p><b>Centralised version:</b> start with d(source) = 0 and everything else ∞, then <em>relax</em> every edge |N| − 1 times. A further round that still improves something reveals a <b>negative cycle</b>. Complexity: O(|N|·|E|).</p>
+    <p><b>Distributed version (distance-vector routing):</b> each node keeps its distance vector D<sub>x</sub> = [D<sub>x</sub>(y) for all y] and the vectors last received from its neighbours. It is <b>iterative</b> (runs until no changes), <b>asynchronous</b> (no lock-step needed) and <b>distributed</b> (each node talks only to neighbours):</p>
+<pre class="code"><code>at each node x:
+  wait for (change in a local link cost  OR  a distance vector from a neighbour)
+  recompute  D_x(y) = min_v { c(x,v) + D_v(y) }   for every destination y
+  if D_x changed for any destination:
+       send D_x to all neighbours</code></pre>
+    <div class="tool">
+      <div class="tt">Bellman-Ford rounds (same graph)</div>
+      <div class="row"><label>Source:</label><select id="bfSrc"></select>
+        <label><input type="checkbox" id="bfDir"> treat edges as directed (a→b as listed) to allow negative costs</label>
+        <button class="btn primary" type="button" id="bfRun">Run</button></div>
+      <div class="out" id="bfOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="cmpalgo">4.4 Link-state vs distance-vector algorithms</h3>
+    <table class="data"><tr><th></th><th>Link state (Dijkstra)</th><th>Distance vector (Bellman-Ford)</th></tr>
+      <tr><td>Knowledge</td><td>full topology</td><td>only neighbours' vectors ("routing by rumour")</td></tr>
+      <tr><td>Messages</td><td>LSAs flooded to all routers: O(|N||E|)</td><td>vectors only to neighbours, possibly often</td></tr>
+      <tr><td>Convergence</td><td>fast: O(n²) computation, no loops in steady state</td><td>variable; can suffer routing loops and count-to-infinity</td></tr>
+      <tr><td>Robustness</td><td>a router that advertises a wrong link cost affects only that cost; each router computes its own table</td><td>a wrong path cost propagates to everyone ("black-holing", e.g. the 1997 AS7007 incident with BGP)</td></tr>
+      <tr><td>Resources</td><td>more memory and CPU</td><td>less memory and CPU</td></tr></table>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="dvp">5. Distance-vector routing protocols</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="rip">5.1 RIP: Routing Information Protocol</h3>
+    <ul>
+      <li><b>Metric:</b> hop count; maximum 15; <b>16 = infinity</b> (unreachable). This limits RIP to small networks.</li>
+      <li><b>Updates:</b> the whole routing table is sent to neighbours every <b>30 s</b> (RIPv1 by broadcast; RIPv2 to multicast 224.0.0.9; RIPng to ff02::9), using UDP port 520 (RIPng: 521).</li>
+      <li><b>Timers:</b> invalid 180 s (route marked unreachable if no update arrives), hold-down 180 s (Cisco), flush 240 s (route removed).</li>
+      <li><b>RIPv1</b> is classful with no authentication. <b>RIPv2</b> (RFC 2453) is classless, carries masks and next hop, supports MD5 authentication and route tags. <b>RIPng</b> (RFC 2080) is for IPv6.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="cti">5.2 The count-to-infinity problem and its remedies</h3>
+    <p>"Good news travels fast, bad news travels slowly." Take the linear network A–B–C (each link cost 1). B reaches A in 1 hop and C in 2 via B. If link A–B fails, B no longer has a direct path. But C still advertises "A at distance 2", so B believes it can reach A through C at 3. C then updates to 4 via B, B to 5 via C, and so on until 16 = ∞. Meanwhile packets for A loop between B and C until their TTL expires.</p>
+    <table class="data"><tr><th>Remedy</th><th>How it works</th></tr>
+      <tr><td><b>Maximum metric (infinity = 16)</b></td><td>Bounds the counting so it ends eventually.</td></tr>
+      <tr><td><b>Split horizon</b></td><td>Never advertise a route back out of the interface through which it was learned. C does not tell B about A.</td></tr>
+      <tr><td><b>Poison reverse</b></td><td>Advertise it back, but with metric ∞. Explicit, so faster than waiting for timeouts.</td></tr>
+      <tr><td><b>Route poisoning</b></td><td>When a route fails, advertise it immediately with metric 16 instead of just dropping it.</td></tr>
+      <tr><td><b>Triggered updates</b></td><td>Send changes immediately rather than waiting for the 30 s timer.</td></tr>
+      <tr><td><b>Hold-down timers</b></td><td>After a route goes down, ignore worse information about it for a period, so stale news cannot resurrect it.</td></tr></table>
+    <div class="callout warn"><b>Limit</b>Split horizon and poison reverse prevent loops between <b>two</b> neighbours, but not loops involving three or more routers. Try the "triangle" topology in the simulator.</div>
+    <div class="tool">
+      <div class="tt">Distance-vector simulator: link failure and count-to-infinity</div>
+      <div class="row"><label>Topology:</label><select id="dvTopo"><option value="line">Linear A–B–C–D</option><option value="tri">A–B plus triangle B–C–D</option></select>
+        <label><input type="checkbox" id="dvPR"> split horizon with poison reverse</label>
+        <button class="btn primary" type="button" id="dvRun">Fail link A–B and simulate</button></div>
+      <div class="small">All link costs are 1. The table shows each router's distance to destination A (and its next hop) after every synchronous exchange of vectors. 16 = ∞ (unreachable), as in RIP.</div>
+      <div class="out" id="dvOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="eigrp">5.3 Advanced distance vector: EIGRP and DUAL</h3>
+    <p>EIGRP (Cisco, published as RFC 7868) avoids loops with the <b>DUAL</b> algorithm. It keeps a <b>successor</b> (the best path) and <b>feasible successors</b>: neighbours whose reported distance is less than the current feasible distance (the <b>feasibility condition</b>), which guarantees they are loop-free. When the successor fails, a feasible successor is used immediately with no recomputation. If none exists, the router sends queries (DUAL "active" state). EIGRP sends partial, bounded updates instead of periodic full tables. Its metric is 256 × (10<sup>7</sup>/min BW<sub>kbps</sub> + Σ delay<sub>tens of µs</sub>) with default K values.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="lsp">6. Link-state routing protocols</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="lsops">6.1 How link-state routing works</h3>
+    <ol>
+      <li><b>Discover neighbours</b> with Hello packets (OSPF: every 10 s on Ethernet; dead interval 40 s).</li>
+      <li><b>Measure the cost</b> of each link.</li>
+      <li><b>Build a link-state packet</b> (LSA/LSP) describing "me, my links, their costs", with a sequence number and an age.</li>
+      <li><b>Flood</b> it reliably to <em>all</em> routers in the area. Each router forwards new LSAs out of all its other interfaces.</li>
+      <li>Every router assembles the identical <b>link-state database (LSDB)</b>, a map of the area.</li>
+      <li>Each router runs <b>Dijkstra (SPF)</b> with itself as the root and installs the results in its routing table.</li>
+    </ol>
+    <p>Updates are sent only when something changes (plus periodic refreshes, every 30 minutes in OSPF), which means less steady-state traffic than RIP and fast convergence.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="ospf">6.2 OSPF</h3>
+    <ul>
+      <li>Open standard: OSPFv2 (RFC 2328) for IPv4, OSPFv3 (RFC 5340) for IPv6. It runs directly over IP (protocol 89) using multicast 224.0.0.5 (all SPF routers) and 224.0.0.6 (DR/BDR).</li>
+      <li><b>Packet types:</b> Hello, Database Description (DBD), Link-State Request (LSR), Link-State Update (LSU), Link-State Ack (LSAck).</li>
+      <li><b>Neighbour states:</b> Down → Init → 2-Way → ExStart → Exchange → Loading → Full.</li>
+      <li><b>Cost</b> = reference bandwidth / interface bandwidth, default reference 100 Mbps, minimum 1. With the default, FastEthernet, GigabitEthernet and 10G all cost 1. Fix it with <code>auto-cost reference-bandwidth 100000</code> (in Mbps) on <b>all</b> routers.</li>
+      <li><b>Router ID</b>: a 32-bit identifier. It is set manually, or else taken from the highest loopback address, or else the highest active interface address.</li>
+      <li><b>DR/BDR</b> on multi-access networks (Ethernet): routers form full adjacencies only with the Designated Router and its Backup, which reduces adjacencies from n(n−1)/2 to about 2n. The highest interface priority wins, then the highest router ID.</li>
+      <li>Authentication (MD5 or SHA), equal-cost multipath, and classless operation with VLSM and summarisation.</li>
+    </ul>
+    <div class="tool">
+      <div class="tt">OSPF cost calculator</div>
+      <div class="row"><label>Reference bandwidth (Mbps):</label><input type="number" id="ocRef" value="100" style="width:110px"><button class="btn primary" type="button" id="ocGo">Compute</button></div>
+      <div class="out" id="ocOut"></div>
+    </div>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="areas">6.3 Hierarchy: OSPF areas and LSA types</h3>
+    <p>Large OSPF domains are divided into <b>areas</b> to limit flooding and SPF computation. <b>Area 0</b> is the backbone, and every other area must attach to it. <b>ABRs</b> (Area Border Routers) connect areas and summarise between them; <b>ASBRs</b> inject external routes. Main LSA types: 1 Router, 2 Network (produced by the DR), 3 Summary (ABR, inter-area), 4 ASBR-summary, 5 AS-External, 7 NSSA-External. Stub, totally stubby and NSSA areas filter external and summary LSAs to keep small routers' databases small. Inside an area routing is link-state; between areas OSPF actually behaves like a distance-vector protocol, which is why all areas must hang off area 0 (to avoid loops).</p>
+    <p><b>IS-IS</b> is a similar link-state protocol originally designed for OSI. It runs directly over layer 2 and uses Level-1/Level-2 routers instead of areas around a backbone. It is popular in large ISP networks because it is protocol-agnostic (IPv4 and IPv6 in one instance) and scales well.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="dvls">6.4 Distance vector vs link state: protocol view</h3>
+    <table class="data"><tr><th></th><th>Distance vector (RIP)</th><th>Link state (OSPF)</th></tr>
+      <tr><td>What is sent</td><td>my whole table (distances)</td><td>my links (topology)</td></tr>
+      <tr><td>To whom</td><td>neighbours only</td><td>everyone in the area (flooding)</td></tr>
+      <tr><td>When</td><td>periodically (30 s) plus triggered</td><td>on change, plus a 30-min refresh</td></tr>
+      <tr><td>Algorithm</td><td>Bellman-Ford</td><td>Dijkstra SPF</td></tr>
+      <tr><td>Convergence</td><td>slow, prone to loops</td><td>fast</td></tr>
+      <tr><td>Scalability</td><td>15 hops, flat</td><td>large, hierarchical areas</td></tr>
+      <tr><td>Configuration</td><td>very simple</td><td>more complex</td></tr></table>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="igpegp">7. Interior and exterior routing: autonomous systems and BGP</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="as">7.1 Why two levels of routing?</h3>
+    <p>The Internet has hundreds of millions of routers. One flat routing domain is impossible because of <b>scale</b> (tables and flooding) and <b>administrative autonomy</b> (each organisation wants to run its network its own way and hide internal details). The solution is <b>hierarchical routing</b>:</p>
+    <ul>
+      <li>An <b>Autonomous System (AS)</b> is a set of routers under one administration with one routing policy, identified by an <b>ASN</b>: 16-bit (1–64511 public, 64512–65534 private) or 32-bit (RFC 6793). Examples: AS15169 Google, AS2614 RoEduNet.</li>
+      <li><b>Intra-AS routing (IGP):</b> RIP, OSPF, IS-IS, EIGRP. They optimise <b>performance</b>, and all routers in the AS run the same IGP.</li>
+      <li><b>Inter-AS routing (EGP):</b> <b>BGP-4</b> (RFC 4271) is the de facto standard, "the glue that holds the Internet together". It is driven by <b>policy</b> (who may carry whose traffic), not just by performance.</li>
+      <li><b>Gateway routers</b> (border routers) sit at the edge of an AS and run both an IGP and BGP.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="bgp">7.2 BGP essentials</h3>
+    <ul>
+      <li><b>Path-vector protocol:</b> advertisements carry a prefix plus <b>attributes</b>, notably the <b>AS_PATH</b>, the list of ASes the advertisement has passed through. A router rejects any route containing its own ASN, which gives <b>loop prevention</b>.</li>
+      <li>Sessions run over <b>TCP port 179</b> between configured peers. <b>eBGP</b> sessions connect different ASes; <b>iBGP</b> sessions distribute external routes inside an AS (full mesh or route reflectors). Messages: OPEN, UPDATE, KEEPALIVE, NOTIFICATION.</li>
+      <li><b>NEXT_HOP</b>: the address of the border router that starts the path. Inside the AS the IGP is used to reach it, which links BGP and the IGP (hot-potato routing).</li>
+      <li><b>Policy:</b> import and export filters. A customer AS does not provide transit between its two providers; providers give customers full transit. Business relationships (customer, peer, provider) decide what is advertised.</li>
+    </ul>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="bgpsel">7.3 BGP best-path selection</h3>
+    <p>When a router learns several paths to the same prefix, it applies these rules in order (simplified; vendors add steps):</p>
+    <ol>
+      <li>Highest <b>Weight</b> (Cisco-local).</li>
+      <li>Highest <b>LOCAL_PREF</b> (set by the AS's policy, applied AS-wide).</li>
+      <li>Locally originated routes.</li>
+      <li>Shortest <b>AS_PATH</b>.</li>
+      <li>Lowest <b>ORIGIN</b> (IGP &lt; EGP &lt; incomplete).</li>
+      <li>Lowest <b>MED</b> (a hint from a neighbouring AS about which entry point to use).</li>
+      <li>eBGP over iBGP.</li>
+      <li>Lowest IGP metric to the NEXT_HOP (<b>hot-potato routing</b>: get rid of the packet as soon as possible).</li>
+      <li>Oldest eBGP route, then lowest router ID.</li>
+    </ol>
+    <div class="tool">
+      <div class="tt">BGP best-path chooser (simplified)</div>
+      <div class="scroll"><table class="data" id="bgpTbl"></table></div>
+      <div class="row"><button class="btn primary" type="button" id="bgpGo">Select best path</button></div>
+      <div class="out" id="bgpOut"></div>
+    </div>
+    <p>Security: BGP trusts its peers by default, which makes prefix hijacks and route leaks possible. Mitigations include prefix filtering (IRR), <b>RPKI</b> route-origin validation and, in progress, ASPA and BGPsec.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="seminar">8. Seminar: worked problems</h2>
+  <div class="problem lvl plain" data-level="b"><div class="ph">S1. Read the table</div>
+    In the table of §1.2, where does R1 send packets for 10.2.7.7, 10.3.3.9, 10.1.1.50 and 9.9.9.9? What do [110/20] and [120/2] mean?
+    <details class="sol"><summary>Show solution</summary>
+    10.2.7.7 → OSPF route 10.2.0.0/16 via 10.1.1.2. 10.3.3.9 → RIP route via 10.1.1.3. 10.1.1.50 → directly connected on Gi0/0 (ARP for the host). 9.9.9.9 → default via 203.0.113.1. [110/20]: OSPF AD 110, cost 20. [120/2]: RIP AD 120, 2 hops.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S2. Route selection</div>
+    A router learns 192.168.5.0/24 via OSPF (cost 50), via RIP (2 hops) and via EIGRP (metric 300000), and 192.168.0.0/16 via a static route. Which route goes into the routing table for each prefix, and where does a packet to 192.168.5.9 go? And to 192.168.6.1?
+    <details class="sol"><summary>Show solution</summary>
+    For the /24: EIGRP (AD 90 &lt; 110 &lt; 120). The /16: static (AD 1). 192.168.5.9 matches both; LPM picks the /24, so it goes via EIGRP. 192.168.6.1 matches only the /16, so it goes via the static route.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S3. Static configuration</div>
+    R1 (LAN 10.1.0.0/24) – R2 (LAN 10.2.0.0/24) are connected by 172.16.12.0/30 (R1 .1, R2 .2). R2 also connects to the ISP at 203.0.113.0/30 (R2 .2, ISP .1). Write the minimal static routes on R1 and R2, plus a backup default on R2 via 198.51.100.1.
+    <details class="sol"><summary>Show solution</summary>
+    R1: <code>ip route 0.0.0.0 0.0.0.0 172.16.12.2</code> (R1 is a stub, so a default is enough).<br>
+    R2: <code>ip route 10.1.0.0 255.255.255.0 172.16.12.1</code> · <code>ip route 0.0.0.0 0.0.0.0 203.0.113.1</code> · <code>ip route 0.0.0.0 0.0.0.0 198.51.100.1 10</code> (floating). The ISP needs a route back to 10.1.0.0/23, or NAT on R2.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S4. Dijkstra by hand</div>
+    Graph: A–B 4, A–C 1, C–B 2, B–D 5, C–D 8, C–E 10, D–E 2, D–F 6, E–F 2. Run Dijkstra from A and give the forwarding table of A.
+    <details class="sol"><summary>Show solution</summary>
+    Order fixed: A(0), C(1, A), B(3, C), D(8, B), E(10, D), F(12, E; via E 10+2 = 12, via D 8+6 = 14).<br>
+    Forwarding table of A: every destination goes via C (B via C; D via C, B; E via C, B, D; F via C, B, D, E). C → direct link. Check it with the graph tool by editing the edges.</details></div>
+  <div class="problem lvl plain" data-level="i"><div class="ph">S5. Distance-vector exchange</div>
+    x has neighbours y (c = 2) and z (c = 7). y advertises D<sub>y</sub> = [x:2, y:0, z:1] and z advertises D<sub>z</sub> = [x:7, y:1, z:0]. Compute D<sub>x</sub>.
+    <details class="sol"><summary>Show solution</summary>
+    D<sub>x</sub>(y) = min(2+0, 7+1) = 2 via y. D<sub>x</sub>(z) = min(2+1, 7+0) = <b>3 via y</b>, cheaper than the direct link of cost 7. D<sub>x</sub>(x) = 0.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S6. Count-to-infinity timing</div>
+    In the linear A–B–C–D network (costs 1), link A–B fails. Without split horizon, how many exchange rounds until all routers mark A unreachable (16)? With poison reverse? Use the DV simulator to verify and explain the difference.
+    <details class="sol"><summary>Show solution</summary>
+    Without remedies B and C ping-pong, each round adding 2 to their values, until the values reach 16; D follows. It takes on the order of 15 rounds (the simulator shows the exact sequence). With poison reverse, C advertises A as ∞ back to B (C's next hop toward A is B), so B immediately sees 16, then C and D follow in successive rounds: convergence in about 3 rounds, equal to the hop distance.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S7. OSPF cost design</div>
+    Paths R1→R4: (a) R1–R2–R4 over two 1 Gbps links; (b) R1–R3–R4 over 10 Gbps then 100 Mbps. With the default reference bandwidth, which path is chosen? With reference 100,000 Mbps?
+    <details class="sol"><summary>Show solution</summary>
+    Default (100): (a) 1 + 1 = 2; (b) 1 + 1 = 2, a tie, so ECMP over both. The 100 Mbps link is treated like 1 Gbps, which is bad. With 100,000: (a) 100 + 100 = 200; (b) 10 + 1000 = 1010, so path (a) is chosen, which is correct.</details></div>
+  <div class="problem lvl plain" data-level="a"><div class="ph">S8. BGP policy</div>
+    AS 65010 is multihomed to ISP-A (AS 100) and ISP-B (AS 200). It wants all outbound traffic to use ISP-A unless ISP-A fails, and it must never become a transit AS between A and B. Which attributes and filters do you use?
+    <details class="sol"><summary>Show solution</summary>
+    Outbound preference: set a higher LOCAL_PREF (e.g. 200) on routes learned from ISP-A. Inbound preference (optional): prepend 65010 several times on announcements to ISP-B so its AS_PATH looks longer. No transit: an outbound filter to each ISP that advertises only the AS's own prefixes (e.g. an AS_PATH filter <code>^$</code>, meaning locally originated routes only).</details></div>
+</section>
+
+<section class="chapter">
+  <h2 id="lab">9. Laboratory (Packet Tracer / GNS3)</h2>
+  <div class="lvl" data-level="b">
+    <h3 id="lab1">Lab 1: Static routing with three routers (15 min)</h3>
+    <p>Topology: LAN1 – R1 – R2 – R3 – LAN3, with LAN2 on R2. Addressing: LAN1 192.168.1.0/24, LAN2 192.168.2.0/24, LAN3 192.168.3.0/24, R1–R2 10.0.12.0/30, R2–R3 10.0.23.0/30.</p>
+<pre class="code"><code>R1(config)# ip route 192.168.2.0 255.255.255.0 10.0.12.2
+R1(config)# ip route 192.168.3.0 255.255.255.0 10.0.12.2
+R1(config)# ip route 10.0.23.0 255.255.255.252 10.0.12.2
+R2(config)# ip route 192.168.1.0 255.255.255.0 10.0.12.1
+R2(config)# ip route 192.168.3.0 255.255.255.0 10.0.23.2
+R3(config)# ip route 0.0.0.0 0.0.0.0 10.0.23.1        ! stub: default route is enough
+! verify
+R1# show ip route static
+R1# traceroute 192.168.3.10
+R1# show ip route 192.168.3.10</code></pre>
+    <p>Task: remove one of R2's static routes and observe with <code>traceroute</code> and Packet Tracer simulation which side loses connectivity and why routes must exist in <b>both</b> directions.</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab2">Lab 2: RIPv2 (10 min)</h3>
+<pre class="code"><code>! Remove the static routes first (no ip route …), then on each router:
+R1(config)# router rip
+R1(config-router)# version 2
+R1(config-router)# no auto-summary
+R1(config-router)# network 192.168.1.0
+R1(config-router)# network 10.0.0.0
+R1(config-router)# passive-interface g0/0          ! do not send updates to the LAN
+R1# show ip protocols
+R1# show ip route rip
+R1# debug ip rip                                   ! watch updates every 30 s (undebug all)</code></pre>
+    <p>Task: shut down the R2–R3 link and measure how long R1 takes to remove 192.168.3.0 (look at the timers in <code>show ip protocols</code>).</p>
+  </div>
+  <div class="lvl" data-level="i">
+    <h3 id="lab3">Lab 3: Single-area OSPF and route preference (10 min)</h3>
+<pre class="code"><code>R1(config)# router ospf 1
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# auto-cost reference-bandwidth 10000
+R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
+R1(config-router)# network 10.0.12.0 0.0.0.3 area 0
+R1(config-router)# passive-interface g0/0
+! alternative interface-level syntax:  interface g0/1 → ip ospf 1 area 0
+R1# show ip ospf neighbor
+R1# show ip ospf interface brief
+R1# show ip ospf database
+R1# show ip route ospf</code></pre>
+    <p>Tasks: (1) Keep RIP running too. Which routes appear in the table, and why? (AD 110 &lt; 120.) (2) Add a direct link R1–R3 and change OSPF costs (<code>ip ospf cost</code>) to make traffic prefer or avoid it; check with <code>traceroute</code>. (3) Configure a floating static default on R3 with AD 130 and verify that it appears only when OSPF fails.</p>
+  </div>
+  <div class="lvl" data-level="a">
+    <h3 id="lab4">Lab 4 (challenge): eBGP between two ASes</h3>
+<pre class="code"><code>R3(config)# router bgp 65001
+R3(config-router)# neighbor 203.0.113.2 remote-as 65002
+R3(config-router)# network 192.168.0.0 mask 255.255.252.0
+R3(config)# ip route 192.168.0.0 255.255.252.0 Null0      ! anchor for the aggregate
+ISP(config)# router bgp 65002
+ISP(config-router)# neighbor 203.0.113.1 remote-as 65001
+R3# show ip bgp summary
+R3# show ip bgp</code></pre>
+    <p>Then add a second ISP link and use LOCAL_PREF (route-map) to prefer one exit; verify the selection with <code>show ip bgp 0.0.0.0</code> or a test prefix.</p>
+  </div>
+</section>
+
+<section class="chapter">
+  <h2 id="quiz">10. Self-assessment quiz</h2>
+  <div id="quiz11"></div>
+</section>
+
+<section class="chapter">
+  <h2 id="summary">11. Summary of the week and of Chapter 4</h2>
+  <div class="lvl" data-level="b"><h3 id="takeaways">Key takeaways</h3><ul>
+    <li>The routing table holds prefix, next hop, interface, AD and metric. Forwarding uses LPM; RIB selection uses AD, then metric.</li>
+    <li>Static routing is simple and controlled but does not adapt; it suits stubs, defaults and backups (floating routes).</li>
+    <li>Algorithms: global link-state (Dijkstra, O(n²)) vs decentralised distance-vector (Bellman-Ford, d<sub>x</sub>(y) = min<sub>v</sub>{c(x,v) + d<sub>v</sub>(y)}).</li>
+    <li>RIP: hops ≤ 15, 30 s updates, count-to-infinity mitigated by split horizon, poison reverse, hold-down and triggered updates.</li>
+    <li>OSPF: link state, cost = reference / bandwidth, hellos, LSDB, SPF, areas with backbone area 0, DR/BDR.</li>
+    <li>IGP inside an AS (performance) vs EGP between ASes: BGP is a path-vector, policy-driven protocol with AS_PATH loop prevention.</li></ul></div>
+  <div class="callout key"><b>Chapter 4 in one picture</b>
+    <b>Addresses</b> (IPv4/IPv6, masks, subnets, CIDR) say <em>where</em> a host is → the <b>IP protocol</b> carries packets with those addresses, hop by hop, best effort → <b>routing algorithms and protocols</b> build the tables so each router knows the next hop → <b>aggregation</b> (CIDR) and <b>hierarchy</b> (areas, ASes) let the whole thing scale to the global Internet.</div>
+  <dl class="glossary">
+    <dt>RIB / FIB</dt><dd>Routing Information Base (control plane) / Forwarding Information Base (data plane).</dd>
+    <dt>Administrative distance</dt><dd>The trustworthiness of a route source; lower is better.</dd>
+    <dt>Floating static route</dt><dd>A static route with a higher AD, used as a backup.</dd>
+    <dt>Convergence</dt><dd>The state in which all routers agree on correct routes.</dd>
+    <dt>Split horizon / poison reverse</dt><dd>Loop-prevention rules of distance-vector protocols.</dd>
+    <dt>LSA / LSDB / SPF</dt><dd>Link-state advertisement / database / shortest-path-first computation.</dd>
+    <dt>Autonomous system (AS)</dt><dd>A routing domain under one administration and policy, identified by an ASN.</dd>
+    <dt>Path vector</dt><dd>Distance vector plus the full AS path, used by BGP.</dd>
+    <dt>Hot-potato routing</dt><dd>Choosing the exit with the lowest internal cost.</dd>
+  </dl>
+  <h3 id="checklist">Self-check</h3>
+  <div class="checklist">
+    <label><input type="checkbox"> I can choose the route for any destination given a mixed routing table.</label>
+    <label><input type="checkbox"> I can configure static, default and floating static routes.</label>
+    <label><input type="checkbox"> I can run Dijkstra and Bellman-Ford on paper and get the forwarding table.</label>
+    <label><input type="checkbox"> I can explain count-to-infinity and its remedies.</label>
+    <label><input type="checkbox"> I can compare RIP, OSPF and BGP.</label>
+  </div>
+  <p class="small">References: RFC 2453 (RIPv2), RFC 2328 (OSPFv2), RFC 5340 (OSPFv3), RFC 4271 (BGP-4), RFC 7868 (EIGRP), RFC 1812 (router requirements); Kurose & Ross, "Network Layer: Control Plane"; Tanenbaum, "Routing Algorithms"; Cisco CCNA "Static Routing" and "Single-Area OSPFv2".</p>
+</section>
+
+</main>
+</div>
+<div class="footer">Computer Networks — Chapter 4 (The Network Layer) — Week 11. Self-contained interactive lesson: course notes, worked seminar problems, laboratory tasks and self-assessment.</div>
+<script>
+/* ===== Common page engine: TOC, tracks, theme, quiz, IPv4 utilities ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const IP = {
+  parse(s) {
+    const m = String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (!m) return null;
+    const p = m.slice(1).map(Number);
+    if (p.some(x => x > 255)) return null;
+    return (((p[0] << 24) >>> 0) + (p[1] << 16) + (p[2] << 8) + p[3]) >>> 0;
+  },
+  str(n) { n >>>= 0; return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); },
+  mask(p) { return p <= 0 ? 0 : (p >= 32 ? 0xFFFFFFFF : ((0xFFFFFFFF << (32 - p)) >>> 0)); },
+  wild(p) { return (~IP.mask(p)) >>> 0; },
+  net(a, p) { return (a & IP.mask(p)) >>> 0; },
+  bcast(a, p) { return (IP.net(a, p) | IP.wild(p)) >>> 0; },
+  bin(n, dots = true) { const s = (n >>> 0).toString(2).padStart(32, '0'); return dots ? s.match(/.{8}/g).join('.') : s; },
+  prefixFromMask(m) {
+    m >>>= 0; const inv = (~m) >>> 0;
+    if (((inv + 1) & inv) !== 0) return -1;
+    let c = 0; for (let i = 31; i >= 0; i--) { if ((m >>> i) & 1) c++; else break; }
+    return c;
+  },
+  parseCidr(s) {
+    const t = String(s).trim().split('/');
+    if (t.length !== 2) return null;
+    const a = IP.parse(t[0]);
+    let p;
+    if (/^\d{1,2}$/.test(t[1])) p = Number(t[1]);
+    else { const m = IP.parse(t[1]); if (m === null) return null; p = IP.prefixFromMask(m); }
+    if (a === null || p < 0 || p > 32) return null;
+    return { addr: a, prefix: p };
+  },
+  cls(a) {
+    const f = a >>> 24;
+    if (f < 128) return 'A'; if (f < 192) return 'B'; if (f < 224) return 'C'; if (f < 240) return 'D'; return 'E';
+  },
+  hosts(p) { if (p === 32) return 1; if (p === 31) return 2; return Math.pow(2, 32 - p) - 2; },
+  inRange(a, cidr) { const c = IP.parseCidr(cidr); return IP.net(a, c.prefix) === IP.net(c.addr, c.prefix); },
+  special(a) {
+    const L = [
+      ['0.0.0.0/8', '"This network" (0.0.0.0 = unspecified / any address)', 'RFC 1122'],
+      ['10.0.0.0/8', 'Private (RFC 1918)', 'RFC 1918'],
+      ['100.64.0.0/10', 'Shared address space for Carrier-Grade NAT', 'RFC 6598'],
+      ['127.0.0.0/8', 'Loopback', 'RFC 1122'],
+      ['169.254.0.0/16', 'Link-local (APIPA)', 'RFC 3927'],
+      ['172.16.0.0/12', 'Private (RFC 1918)', 'RFC 1918'],
+      ['192.0.0.0/24', 'IETF protocol assignments', 'RFC 6890'],
+      ['192.0.2.0/24', 'Documentation (TEST-NET-1)', 'RFC 5737'],
+      ['192.88.99.0/24', 'Deprecated 6to4 relay anycast', 'RFC 7526'],
+      ['192.168.0.0/16', 'Private (RFC 1918)', 'RFC 1918'],
+      ['198.18.0.0/15', 'Benchmarking', 'RFC 2544'],
+      ['198.51.100.0/24', 'Documentation (TEST-NET-2)', 'RFC 5737'],
+      ['203.0.113.0/24', 'Documentation (TEST-NET-3)', 'RFC 5737'],
+      ['224.0.0.0/4', 'Multicast (class D)', 'RFC 5771'],
+      ['255.255.255.255/32', 'Limited broadcast', 'RFC 919'],
+      ['240.0.0.0/4', 'Reserved for future use (class E)', 'RFC 1112']
+    ];
+    for (const [c, d, r] of L) if (IP.inRange(a, c)) return { block: c, desc: d, rfc: r };
+    return { block: '-', desc: 'Public (globally routable) unicast', rfc: '' };
+  },
+  colorBin(a, p, sub) { // sub: number of borrowed bits after default/base prefix (optional {base})
+    const b = IP.bin(a, false); let out = '';
+    for (let i = 0; i < 32; i++) {
+      if (i && i % 8 === 0) out += '.';
+      let cl = i < p ? 'n' : 'h';
+      if (sub && i >= sub.base && i < p) cl = 's';
+      out += `<span class="${cl}">${b[i]}</span>`;
+    }
+    return `<span class="binline">${out}</span>`;
+  }
+};
+
+const NetUI = {
+  track: 'a',
+  setTrack(t) {
+    this.track = t;
+    const order = { b: 1, i: 2, a: 3 };
+    $$('[data-track]').forEach(b => b.classList.toggle('on', b.dataset.track === t));
+    $$('.lvl').forEach(el => el.classList.toggle('hidden-lvl', order[el.dataset.level] > order[t]));
+    $$('nav#toc a').forEach(a => {
+      const h = document.getElementById(a.getAttribute('href').slice(1));
+      a.classList.toggle('gone', !!(h && h.closest('.hidden-lvl')));
+    });
+  },
+  buildToc() {
+    const toc = $('#toc'); if (!toc) return;
+    let n = 0;
+    $$('main h2, main h3').forEach(h => {
+      if (h.closest('.q') || h.dataset.notoc !== undefined) return;
+      if (!h.id) h.id = 'sec' + (++n);
+      const a = document.createElement('a');
+      a.href = '#' + h.id; a.textContent = h.textContent;
+      if (h.tagName === 'H3') a.className = 'sub';
+      toc.appendChild(a);
+    });
+    const links = $$('nav#toc a');
+    const obs = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    $$('main h2, main h3').forEach(h => h.id && obs.observe(h));
+  },
+  copyButtons() {
+    $$('pre.code').forEach(pre => {
+      const b = document.createElement('button'); b.className = 'copy'; b.textContent = 'copy';
+      b.onclick = () => {
+        const txt = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
+        const done = () => { b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); };
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => {});
+      };
+      pre.appendChild(b);
+    });
+  },
+  init() {
+    this.buildToc();
+    this.copyButtons();
+    $$('[data-track]').forEach(btn => btn.addEventListener('click', () => this.setTrack(btn.dataset.track)));
+    const th = $('#themeBtn');
+    if (th) th.onclick = () => document.body.classList.toggle('dark');
+    const pb = $('#progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      pb.style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight || 1)) + '%';
+    });
+    this.setTrack('a');
+  }
+};
+
+function Quiz(id, qs) {
+  const root = document.getElementById(id); if (!root) return;
+  let score = 0, answered = 0;
+  const sc = document.createElement('div'); sc.className = 'qscore';
+  function upd() {
+    sc.innerHTML = `<span>Score: ${score} correct / ${answered} answered (total ${qs.length} questions)</span><button type="button">Reset</button>`;
+    sc.querySelector('button').onclick = () => { root.innerHTML = ''; Quiz(id, qs); NetUI.setTrack(NetUI.track); };
+  }
+  qs.forEach((q, qi) => {
+    const box = document.createElement('div');
+    box.className = 'q lvl plain'; box.dataset.level = q.l || 'b';
+    box.innerHTML = `<div class="qhead"><span class="qnum">Q${qi + 1}</span> ${q.q}</div>`;
+    const opts = document.createElement('div'); opts.className = 'opts';
+    q.o.forEach((o, oi) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = o;
+      b.onclick = () => {
+        if (box.dataset.done) return; box.dataset.done = 1; answered++;
+        if (oi === q.a) { score++; b.classList.add('right'); }
+        else { b.classList.add('wrong'); opts.children[q.a].classList.add('right'); }
+        const e = document.createElement('div'); e.className = 'exp';
+        e.innerHTML = (oi === q.a ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.e;
+        box.appendChild(e); upd();
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); root.appendChild(box);
+  });
+  root.appendChild(sc); upd();
+}
+
+</script>
+<script>
+/* ---------- Route selection simulator ---------- */
+(function () {
+  const out = $('#rtOut');
+  function run() {
+    const routes = [];
+    for (const line of $('#rtIn').value.split('\n')) {
+      const t = line.trim().split(/\s+/); if (!t[0]) continue;
+      const c = IP.parseCidr(t[0]);
+      if (!c || t.length < 5) { out.innerHTML = `<span class="err">Cannot parse: ${esc(line)}</span>`; return; }
+      routes.push({ net: IP.net(c.addr, c.prefix), p: c.prefix, src: t[1], ad: +t[2], met: +t[3], nh: t.slice(4).join(' ') });
+    }
+    const groups = {};
+    routes.forEach(r => { const k = r.net + '/' + r.p; (groups[k] = groups[k] || []).push(r); });
+    const rib = [];
+    let h = '<h4 data-notoc>Step 1: for each prefix, keep the lowest AD, then the lowest metric (ties give ECMP)</h4><table class="data"><tr><th>Prefix</th><th>Source</th><th>[AD/metric]</th><th>Next hop</th><th>Result</th></tr>';
+    Object.values(groups).forEach(g => {
+      const minAd = Math.min(...g.map(r => r.ad)), cand = g.filter(r => r.ad === minAd), minM = Math.min(...cand.map(r => r.met));
+      g.forEach(r => {
+        const win = r.ad === minAd && r.met === minM;
+        if (win) rib.push(r);
+        const why = win ? (cand.filter(x => x.met === minM).length > 1 ? '✔ installed (ECMP)' : '✔ installed') : (r.ad > minAd ? `✘ AD ${r.ad} > ${minAd}` : `✘ metric ${r.met} > ${minM}`);
+        h += `<tr style="${win ? 'background:var(--ok-soft)' : 'opacity:.7'}"><td>${IP.str(r.net)}/${r.p}</td><td>${esc(r.src)}</td><td>[${r.ad}/${r.met}]</td><td>${esc(r.nh)}</td><td>${why}</td></tr>`;
+      });
+    });
+    h += '</table>';
+    const d = IP.parse($('#rtDst').value);
+    if (d === null) { out.innerHTML = h + '<span class="err">Invalid destination.</span>'; return; }
+    const m = rib.filter(r => IP.net(d, r.p) === r.net).sort((a, b) => b.p - a.p);
+    h += `<h4 data-notoc>Step 2: longest prefix match for ${IP.str(d)} in the RIB</h4>`;
+    if (!m.length) h += '<div class="err">No matching route and no default: packet dropped, ICMP Destination Unreachable (net unreachable).</div>';
+    else {
+      const best = m.filter(r => r.p === m[0].p);
+      h += `<div>Matching RIB entries: ${m.map(r => `${IP.str(r.net)}/${r.p}`).filter((v, i, a) => a.indexOf(v) === i).join(', ')}</div>
+        <div class="ok">→ use ${IP.str(best[0].net)}/${best[0].p} (${esc(best[0].src)}) via <b>${best.map(r => esc(r.nh)).join(' and ')}</b>${best.length > 1 ? ' (equal-cost load sharing)' : ''}${best[0].src === 'connected' ? ': deliver directly on the link (ARP for the destination)' : ''}</div>`;
+    }
+    out.innerHTML = h;
+  }
+  $('#rtGo').onclick = run; run();
+})();
+
+/* ---------- Graph model ---------- */
+const G = {
+  pos: { u: [60, 150], v: [195, 50], x: [195, 250], w: [385, 50], y: [385, 250], z: [520, 150] },
+  def: [['u', 'v', 2], ['u', 'x', 1], ['u', 'w', 5], ['v', 'x', 2], ['v', 'w', 3], ['x', 'w', 3], ['x', 'y', 1], ['w', 'y', 1], ['w', 'z', 5], ['y', 'z', 2]],
+  edges: [], nodes: ['u', 'v', 'w', 'x', 'y', 'z'], hl: { visited: [], cur: null, tree: [] }
+};
+G.edges = G.def.map(e => e.slice());
+function gRender() {
+  const svg = $('#gSvg'); let s = '';
+  G.edges.forEach(([a, b, c]) => {
+    if (!c) return;
+    const [x1, y1] = G.pos[a], [x2, y2] = G.pos[b], mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const inTree = G.hl.tree.some(([p, q]) => (p === a && q === b) || (p === b && q === a));
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${inTree ? 'var(--ok)' : 'var(--muted)'}" stroke-width="${inTree ? 5 : 2}" opacity="${inTree ? 1 : .6}"/>`;
+    s += `<rect x="${mx - 13}" y="${my - 11}" width="26" height="20" rx="5" fill="var(--panel)" stroke="var(--line)"/><text x="${mx}" y="${my + 4}" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="700">${c}</text>`;
+  });
+  G.nodes.forEach(n => {
+    const [x, y] = G.pos[n];
+    const fill = n === G.hl.cur ? 'var(--i)' : G.hl.visited.includes(n) ? 'var(--ok)' : 'var(--accent)';
+    s += `<circle cx="${x}" cy="${y}" r="20" fill="${fill}"/><text x="${x}" y="${y + 6}" text-anchor="middle" font-size="18" fill="#fff" font-weight="700">${n}</text>`;
+  });
+  svg.innerHTML = s;
+}
+function gEdgeTable() {
+  let h = '<tr><th>Link</th><th>Cost (0 = no link)</th></tr>';
+  G.edges.forEach((e, i) => h += `<tr><td>${e[0]} – ${e[1]}</td><td><input type="number" data-i="${i}" value="${e[2]}" style="width:80px"></td></tr>`);
+  $('#gEdges').innerHTML = h;
+  $$('#gEdges input').forEach(inp => inp.oninput = () => { G.edges[+inp.dataset.i][2] = Number(inp.value) || 0; gChanged(); });
+}
+function adj(directed) {
+  const A = {}; G.nodes.forEach(n => A[n] = []);
+  G.edges.forEach(([a, b, c]) => { if (!c) return; A[a].push([b, c]); if (!directed) A[b].push([a, c]); });
+  return A;
+}
+function gChanged() { G.hl = { visited: [], cur: null, tree: [] }; gRender(); DJ.reset(); $('#bfOut').innerHTML = ''; }
+$('#gReset').onclick = () => { G.edges = G.def.map(e => e.slice()); gEdgeTable(); gChanged(); };
+['#djSrc', '#bfSrc'].forEach(s => $(s).innerHTML = G.nodes.map(n => `<option>${n}</option>`).join(''));
+
+/* ---------- Dijkstra ---------- */
+const DJ = {
+  st: null,
+  reset() {
+    const src = $('#djSrc').value, A = adj(false);
+    const D = {}, P = {}; G.nodes.forEach(n => { D[n] = Infinity; P[n] = null; });
+    D[src] = 0;
+    A[src].forEach(([v, c]) => { D[v] = c; P[v] = src; });
+    this.st = { src, A, N: [src], D, P, rows: [] };
+    this.st.rows.push(this.snap(src));
+    G.hl = { visited: [src], cur: src, tree: [] };
+    this.render();
+  },
+  snap(added) { const s = this.st; return { N: s.N.slice(), D: { ...s.D }, P: { ...s.P }, added }; },
+  step() {
+    const s = this.st; if (s.N.length === G.nodes.length) return false;
+    let w = null;
+    G.nodes.forEach(n => { if (!s.N.includes(n) && (w === null || s.D[n] < s.D[w])) w = n; });
+    if (s.D[w] === Infinity) { s.N.push(...G.nodes.filter(n => !s.N.includes(n))); s.rows.push({ ...this.snap(null), unreachable: true }); this.render(); return false; }
+    s.N.push(w);
+    s.A[w].forEach(([v, c]) => { if (!s.N.includes(v) && s.D[w] + c < s.D[v]) { s.D[v] = s.D[w] + c; s.P[v] = w; } });
+    s.rows.push(this.snap(w));
+    G.hl.visited = s.N.slice(); G.hl.cur = w;
+    G.hl.tree = s.N.filter(n => s.P[n]).map(n => [s.P[n], n]);
+    this.render(); return true;
+  },
+  render() {
+    const s = this.st, others = G.nodes.filter(n => n !== s.src);
+    const neg = G.edges.some(e => e[2] < 0);
+    let h = neg ? '<div class="err">Warning: negative link costs: Dijkstra\'s greedy choice is not guaranteed correct.</div>' : '';
+    h += `<div class="scroll"><table class="data"><tr><th>Step</th><th>N'</th>${others.map(n => `<th>D(${n}),p(${n})</th>`).join('')}</tr>`;
+    s.rows.forEach((r, i) => {
+      h += `<tr><td>${i}</td><td class="mono">${r.N.join('')}</td>`;
+      others.forEach(n => {
+        const prevIn = i > 0 && s.rows[i - 1].N.includes(n);
+        if (prevIn) { h += '<td></td>'; return; }
+        const txt = r.D[n] === Infinity ? '∞' : `${r.D[n]},${r.P[n]}`;
+        const justAdded = i + 1 < s.rows.length && s.rows[i + 1].added === n;
+        h += `<td${justAdded ? ' style="font-weight:700;background:var(--ok-soft)"' : ''}>${txt}</td>`;
+      });
+      h += '</tr>';
+    });
+    h += '</table></div>';
+    if (s.N.length === G.nodes.length) {
+      h += `<h4 data-notoc>Shortest-path tree and forwarding table of ${s.src}</h4><table class="data"><tr><th>Destination</th><th>Cost</th><th>Path</th><th>Outgoing link (next hop)</th></tr>`;
+      others.forEach(n => {
+        if (s.D[n] === Infinity) { h += `<tr><td>${n}</td><td>∞</td><td>unreachable</td><td>-</td></tr>`; return; }
+        const path = [n]; let c = n; while (s.P[c]) { c = s.P[c]; path.unshift(c); }
+        h += `<tr><td>${n}</td><td>${s.D[n]}</td><td class="mono">${path.join(' → ')}</td><td>(${s.src}, ${path[1]})</td></tr>`;
+      });
+      h += '</table>';
+      G.hl.cur = null;
+    } else h += '<div class="small">Bold green cell = node chosen in the next step (minimum D among nodes not yet in N\'). Ties are broken alphabetically.</div>';
+    $('#djOut').innerHTML = h; gRender();
+  }
+};
+$('#djStep').onclick = () => DJ.step();
+$('#djAll').onclick = () => { while (DJ.step()); };
+$('#djReset').onclick = () => DJ.reset();
+$('#djSrc').onchange = () => DJ.reset();
+
+/* ---------- Bellman-Ford ---------- */
+$('#bfRun').onclick = () => {
+  const dir = $('#bfDir').checked, src = $('#bfSrc').value;
+  const E = []; G.edges.forEach(([a, b, c]) => { if (!c) return; E.push([a, b, c]); if (!dir) E.push([b, a, c]); });
+  const D = {}, P = {}; G.nodes.forEach(n => { D[n] = Infinity; P[n] = '-'; }); D[src] = 0;
+  const rows = [{ D: { ...D }, P: { ...P }, ch: '' }];
+  let r;
+  for (r = 1; r < G.nodes.length; r++) {
+    let changed = [];
+    const old = { ...D };
+    E.forEach(([a, b, c]) => { if (old[a] !== Infinity && old[a] + c < D[b]) { D[b] = old[a] + c; P[b] = a; changed.push(b); } });
+    rows.push({ D: { ...D }, P: { ...P }, ch: [...new Set(changed)].join(', ') || 'none' });
+    if (!changed.length) break;
+  }
+  let negc = E.some(([a, b, c]) => D[a] !== Infinity && D[a] + c < D[b]);
+  let h = '<div class="scroll"><table class="data"><tr><th>Round</th>' + G.nodes.map(n => `<th>${n}</th>`).join('') + '<th>Improved</th></tr>';
+  rows.forEach((x, i) => h += `<tr><td>${i}</td>${G.nodes.map(n => `<td>${x.D[n] === Infinity ? '∞' : x.D[n] + (x.P[n] !== '-' ? ` <small>(${x.P[n]})</small>` : '')}</td>`).join('')}<td>${i ? x.ch : 'init'}</td></tr>`);
+  h += '</table></div>';
+  h += `<div class="small">Synchronous ("Jacobi") rounds: each round uses the distances of the previous round, exactly like routers exchanging vectors simultaneously. ${rows.length - 1 < G.nodes.length - 1 ? `Stopped early: no change in round ${rows.length - 1}.` : `Maximum |N| − 1 = ${G.nodes.length - 1} rounds performed.`}</div>`;
+  h += negc ? '<div class="err">An extra round still improves a distance: there is a NEGATIVE CYCLE reachable from the source. Least costs are undefined (−∞). (Undirected negative edges always form one.)</div>' : '<div class="ok">No negative cycle: these are the least costs (predecessor in brackets).</div>';
+  $('#bfOut').innerHTML = h;
+};
+
+/* ---------- Distance-vector simulator ---------- */
+$('#dvRun').onclick = () => {
+  const topo = $('#dvTopo').value, pr = $('#dvPR').checked;
+  const nodes = ['A', 'B', 'C', 'D'];
+  let links = topo === 'line' ? [['A', 'B'], ['B', 'C'], ['C', 'D']] : [['A', 'B'], ['B', 'C'], ['B', 'D'], ['C', 'D']];
+  const nb = l => { const N = {}; nodes.forEach(n => N[n] = []); l.forEach(([a, b]) => { N[a].push(b); N[b].push(a); }); return N; };
+  // converged state before failure (BFS hop counts to A)
+  let N = nb(links); const D = { A: 0 }, NH = { A: '-' }; const q = ['A'];
+  while (q.length) { const x = q.shift(); N[x].forEach(v => { if (D[v] === undefined) { D[v] = D[x] + 1; NH[v] = x; q.push(v); } }); }
+  links = links.filter(([a, b]) => !(a === 'A' && b === 'B'));
+  N = nb(links);
+  const rows = [{ D: { ...D }, NH: { ...NH }, label: 'before failure' }];
+  let cur = { D: { ...D }, NH: { ...NH } };
+  for (let r = 1; r <= 40; r++) {
+    const nd = { A: 0 }, nh = { A: '-' };
+    nodes.slice(1).forEach(x => {
+      let best = 16, via = '-';
+      N[x].forEach(v => {
+        const adv = (pr && cur.NH[v] === x) ? 16 : cur.D[v];
+        const c = Math.min(16, 1 + adv);
+        if (c < best || (c === best && v === cur.NH[x] && c < 16)) { best = c; via = v; }
+      });
+      nd[x] = best; nh[x] = best >= 16 ? '-' : via;
+    });
+    const same = nodes.every(n => nd[n] === cur.D[n] && nh[n] === cur.NH[n]);
+    cur = { D: nd, NH: nh };
+    rows.push({ D: { ...nd }, NH: { ...nh }, label: `round ${r}` });
+    if (same) break;
+  }
+  let h = '<div class="scroll"><table class="data"><tr><th>Exchange</th>' + nodes.slice(1).map(n => `<th>${n}: dist to A (via)</th>`).join('') + '</tr>';
+  rows.forEach((x, i) => {
+    h += `<tr${i === 0 ? ' style="background:var(--ok-soft)"' : ''}><td>${x.label}</td>` + nodes.slice(1).map(n => {
+      const v = x.D[n];
+      return `<td style="${v >= 16 ? 'color:var(--warn);font-weight:700' : ''}">${v >= 16 ? '16 = ∞' : v} <small>(${x.NH[n]})</small></td>`;
+    }).join('') + '</tr>';
+  });
+  h += '</table></div>';
+  const n = rows.length - 2;
+  h += `<div class="small">Link A–B failed after the first row. Converged after about ${n} exchange round(s)${n >= 10 ? ': this is count-to-infinity (routers keep raising each other\'s distance until 16)' : ''}. ${pr ? 'Poison reverse: a router advertises ∞ to the neighbour it uses as its next hop.' : 'No split horizon: each router believes the stale distance offered by its neighbour.'} ${n >= 10 ? 'During the counting, packets for A loop between routers until their TTL expires.' : ''}</div>`;
+  $('#dvOut').innerHTML = h;
+};
+
+/* ---------- OSPF cost ---------- */
+(function () {
+  const out = $('#ocOut');
+  const IF = [['Serial T1', 1.544], ['Ethernet', 10], ['FastEthernet', 100], ['GigabitEthernet', 1000], ['10 GigabitEthernet', 10000], ['40 GigabitEthernet', 40000], ['100 GigabitEthernet', 100000]];
+  function run() {
+    const ref = +$('#ocRef').value;
+    if (!(ref > 0)) { out.innerHTML = '<span class="err">Reference must be positive.</span>'; return; }
+    let h = '<table class="data"><tr><th>Interface</th><th>Bandwidth (Mbps)</th><th>OSPF cost = max(1, ⌊ref / BW⌋)</th></tr>', costs = [];
+    IF.forEach(([n, bw]) => { const c = Math.min(65535, Math.max(1, Math.floor(ref / bw))); costs.push(c); h += `<tr><td>${n}</td><td>${bw}</td><td><b>${c}</b></td></tr>`; });
+    h += '</table>';
+    const dup = costs.filter((c, i) => c === 1).length;
+    h += dup > 1 ? `<div class="err">${dup} interface types share cost 1: OSPF cannot distinguish them. Raise the reference bandwidth (e.g. 100000) on ALL routers.</div>` : '<div class="ok">All interface speeds are distinguishable.</div>';
+    out.innerHTML = h;
+  }
+  $('#ocGo').onclick = run; run();
+})();
+
+/* ---------- BGP chooser ---------- */
+(function () {
+  const F = ['Path', 'Weight', 'LOCAL_PREF', 'AS_PATH', 'ORIGIN (i/e/?)', 'MED', 'eBGP/iBGP', 'IGP metric to NH', 'Router ID'];
+  const init = [
+    ['via ISP-A', 0, 100, '100 300 400', 'i', 0, 'eBGP', 0, '1.1.1.1'],
+    ['via ISP-B', 0, 100, '200 400', 'i', 50, 'eBGP', 0, '2.2.2.2'],
+    ['via iBGP peer R5', 0, 100, '200 400', 'i', 10, 'iBGP', 20, '3.3.3.3']
+  ];
+  let h = '<tr>' + F.map(f => `<th>${f}</th>`).join('') + '</tr>';
+  init.forEach((r, i) => h += '<tr>' + r.map((v, j) => `<td><input type="text" data-r="${i}" data-c="${j}" value="${v}" size="${j === 3 ? 12 : j === 0 ? 14 : 7}"></td>`).join('') + '</tr>');
+  $('#bgpTbl').innerHTML = h;
+  const rid = s => s.split('.').reduce((a, x) => a * 256 + (+x || 0), 0);
+  $('#bgpGo').onclick = () => {
+    const R = init.map((_, i) => { const g = j => $(`#bgpTbl input[data-r="${i}"][data-c="${j}"]`).value.trim(); return { name: g(0), w: +g(1), lp: +g(2), path: g(3) ? g(3).split(/\s+/) : [], org: g(4), med: +g(5), typ: g(6).toLowerCase(), igp: +g(7), rid: rid(g(8)) }; });
+    let C = R.slice(), log = [];
+    const step = (label, key, better) => {
+      if (C.length < 2) return;
+      const bestV = C.map(key).reduce((a, b) => better(a, b) ? a : b);
+      const keep = C.filter(r => key(r) === bestV);
+      if (keep.length < C.length) log.push(`<b>${label}</b>: kept ${keep.map(r => esc(r.name)).join(', ')}; eliminated ${C.filter(r => !keep.includes(r)).map(r => esc(r.name)).join(', ')}`);
+      else log.push(`${label}: tie (${bestV})`);
+      C = keep;
+    };
+    step('1. Highest Weight', r => r.w, (a, b) => a > b);
+    step('2. Highest LOCAL_PREF', r => r.lp, (a, b) => a > b);
+    step('4. Shortest AS_PATH', r => r.path.length, (a, b) => a < b);
+    step('5. Lowest ORIGIN (i < e < ?)', r => ({ i: 0, e: 1, '?': 2 }[r.org] ?? 2), (a, b) => a < b);
+    if (C.length > 1) {
+      const first = new Set(C.map(r => r.path[0]));
+      if (first.size === 1) step('6. Lowest MED (same neighbour AS ' + [...first][0] + ')', r => r.med, (a, b) => a < b);
+      else log.push('6. MED: not compared (paths come from different neighbouring ASes)');
+    }
+    step('7. Prefer eBGP over iBGP', r => r.typ === 'ebgp' ? 0 : 1, (a, b) => a < b);
+    step('8. Lowest IGP metric to NEXT_HOP', r => r.igp, (a, b) => a < b);
+    step('10. Lowest router ID', r => r.rid, (a, b) => a < b);
+    $('#bgpOut').innerHTML = `<ol style="margin:.3rem 0">${log.map(l => `<li style="list-style:none">${l}</li>`).join('')}</ol><div class="ok">Best path: <b>${esc(C[0].name)}</b></div><div class="small">Try: raise LOCAL_PREF of ISP-A to 200 (policy beats path length), or make the MEDs equal.</div>`;
+  };
+  $('#bgpGo').click();
+})();
+
+/* ---------- init graph ---------- */
+gEdgeTable(); gRender(); DJ.reset();
+
+Quiz('quiz11', [
+  { l: 'b', q: 'What does the code "S*" with 0.0.0.0/0 in a Cisco routing table indicate?', o: ['A summary route', 'A static default route (candidate default)', 'An OSPF external route', 'A connected route'], a: 1, e: 'S = static, * = candidate default; 0.0.0.0/0 is the gateway of last resort.' },
+  { l: 'b', q: 'Which is an exterior gateway protocol?', o: ['OSPF', 'RIP', 'BGP', 'EIGRP'], a: 2, e: 'BGP-4 routes between autonomous systems; the others are IGPs.' },
+  { l: 'b', q: 'RIP uses as metric:', o: ['bandwidth', 'delay', 'hop count', 'cost = 10^8/BW'], a: 2, e: 'Hop count, with 16 meaning unreachable.' },
+  { l: 'b', q: 'A link-state router knows:', o: ['only its neighbours\' distance vectors', 'the complete topology of its area', 'only directly connected networks', 'nothing until a packet arrives'], a: 1, e: 'Flooded LSAs give every router the same link-state database.' },
+  { l: 'i', q: 'A router has 10.0.0.0/8 via OSPF and 10.1.0.0/16 via RIP. A packet to 10.1.2.3 uses:', o: ['OSPF (lower AD)', 'RIP (longest prefix)', 'both (ECMP)', 'the default route'], a: 1, e: 'Longest prefix match comes before administrative distance.' },
+  { l: 'i', q: 'Same prefix learned via OSPF and EIGRP. Which is installed (default AD)?', o: ['OSPF (110)', 'EIGRP (90)', 'Both', 'The one with lower metric'], a: 1, e: 'Lower AD wins; metrics of different protocols are never compared.' },
+  { l: 'i', q: 'A floating static route is:', o: ['a route that moves between interfaces', 'a static route with a higher AD used as a backup', 'a route learned from BGP', 'a host route'], a: 1, e: 'It appears in the RIB only when the preferred route disappears.' },
+  { l: 'i', q: 'Dijkstra from u on the textbook graph: the least cost to z is:', o: ['3', '4', '5', '6'], a: 1, e: 'u–x (1), x–y (1), y–z (2): total 4.' },
+  { l: 'i', q: 'Bellman-Ford equation:', o: ['dx(y) = max_v{c(x,v) + dv(y)}', 'dx(y) = min_v{c(x,v) + dv(y)}', 'dx(y) = c(x,y)', 'dx(y) = min_v{c(v,y)}'], a: 1, e: 'Least cost = minimum over neighbours of (link cost + neighbour\'s cost).' },
+  { l: 'i', q: 'Split horizon means:', o: ['never send updates', 'do not advertise a route out of the interface it was learned on', 'split the network into areas', 'use two routing tables'], a: 1, e: 'This prevents simple two-node loops.' },
+  { l: 'i', q: 'With the default reference bandwidth (100 Mbps), the OSPF cost of a 1 Gbps interface is:', o: ['0', '1', '10', '100'], a: 1, e: '100/1000 < 1, rounded up to the minimum of 1, the same as FastEthernet.' },
+  { l: 'a', q: 'Complexity of the simple (array) implementation of Dijkstra with n nodes:', o: ['O(n)', 'O(n log n)', 'O(n²)', 'O(2^n)'], a: 2, e: 'n iterations, each scanning up to n nodes.' },
+  { l: 'a', q: 'Poison reverse fails to prevent count-to-infinity when:', o: ['the network is a line', 'the loop involves three or more routers', 'costs are all 1', 'RIPv2 is used'], a: 1, e: 'It only removes two-node loops.' },
+  { l: 'a', q: 'BGP prevents inter-AS loops by:', o: ['TTL', 'split horizon', 'rejecting routes whose AS_PATH contains its own ASN', 'hold-down timers'], a: 2, e: 'The path-vector property.' },
+  { l: 'a', q: 'Which BGP attribute is used by an AS to choose its exit point for outbound traffic, consistently across its routers?', o: ['MED', 'LOCAL_PREF', 'AS_PATH', 'NEXT_HOP'], a: 1, e: 'LOCAL_PREF is propagated inside the AS via iBGP; MED influences inbound traffic from a neighbour.' },
+  { l: 'a', q: 'In OSPF, why must every area connect to area 0?', o: ['To save addresses', 'Inter-area routing is distance-vector-like; a backbone hub-and-spoke structure prevents loops', 'Because DR election requires it', 'It is only a recommendation'], a: 1, e: 'ABRs exchange summary LSAs through the backbone only.' }
+]);
+
+NetUI.init();
+</script>
+</body>
+</html>
